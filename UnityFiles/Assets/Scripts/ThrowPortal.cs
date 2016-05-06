@@ -5,7 +5,10 @@ public class ThrowPortal : MonoBehaviour {
 	public GameObject leftPortal;
 	public GameObject rightPortal;
 
-	private Transform surface;
+	bool leftTriggerInUse = false;
+	bool rightTriggerInUse = false;
+	float fireLeft;
+	float fireRight;
 
 	GameObject mainCamera;
 	// Use this for initialization
@@ -13,33 +16,28 @@ public class ThrowPortal : MonoBehaviour {
 		mainCamera = GameObject.FindWithTag ("MainCamera");
 	}
 
-	Vector3 currentPos;
-	Vector3 lastPos;
+	// Update is called once per frame
+	void Update () {
+		fireLeft = Input.GetAxis ("Left Fire");
+		fireRight = Input.GetAxis ("Right Fire");
 
-	void Update() {
-		if (Input.GetMouseButtonDown (0)) {
-			throwPortal(leftPortal);
+		if (Input.GetMouseButtonDown (0) || fireLeft == -1) {
+			if (!leftTriggerInUse) {
+				throwPortal (leftPortal);
+				leftTriggerInUse = true;
+			}
+		} else {
+			leftTriggerInUse = false;
 		}
-		else if (Input.GetMouseButtonDown (1)) {
-			throwPortal (rightPortal);
+		if (Input.GetMouseButtonDown (1) || fireRight == -1) {
+			if (!rightTriggerInUse) {
+				throwPortal (rightPortal);
+				rightTriggerInUse = true;
+			}
+		} else {
+			rightTriggerInUse = false;
 		}
-		//add this var to your movment vector
-		Vector3 PlatformMovement = CalculatePlatformDifference();
-//		Debug.Log (currentPos);
-//		transform += PlatformMovement;
 
-	}
-
-	Vector3 CalculatePlatformDifference() {
-		if(!surface ) {
-			return Vector3.zero;
-		}
-		return lastPos - currentPos;
-
-	}
-
-	void LateUpdate() {
-		lastPos = currentPos;
 	}
 
 	void throwPortal(GameObject portal) {
@@ -51,11 +49,8 @@ public class ThrowPortal : MonoBehaviour {
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit)) {
 			Quaternion hitObjectRotation = Quaternion.LookRotation (hit.normal);
-
-			portal.transform.position = currentPos = hit.point;
+			portal.transform.position = hit.point;
 			portal.transform.rotation = hitObjectRotation;
-			surface = hit.transform;
-//			portal.transform.parent = hit.transform;
 		}
 	}
 }
