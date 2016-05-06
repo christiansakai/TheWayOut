@@ -5,20 +5,41 @@ public class ThrowPortal : MonoBehaviour {
 	public GameObject leftPortal;
 	public GameObject rightPortal;
 
+	private Transform surface;
+
 	GameObject mainCamera;
 	// Use this for initialization
 	void Start () {
 		mainCamera = GameObject.FindWithTag ("MainCamera");
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	Vector3 currentPos;
+	Vector3 lastPos;
+
+	void Update() {
 		if (Input.GetMouseButtonDown (0)) {
-			throwPortal (leftPortal);
+			throwPortal(leftPortal);
 		}
-		if (Input.GetMouseButtonDown (1)) {
+		else if (Input.GetMouseButtonDown (1)) {
 			throwPortal (rightPortal);
 		}
+		//add this var to your movment vector
+		Vector3 PlatformMovement = CalculatePlatformDifference();
+//		Debug.Log (currentPos);
+//		transform += PlatformMovement;
+
+	}
+
+	Vector3 CalculatePlatformDifference() {
+		if(!surface ) {
+			return Vector3.zero;
+		}
+		return lastPos - currentPos;
+
+	}
+
+	void LateUpdate() {
+		lastPos = currentPos;
 	}
 
 	void throwPortal(GameObject portal) {
@@ -30,8 +51,11 @@ public class ThrowPortal : MonoBehaviour {
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit)) {
 			Quaternion hitObjectRotation = Quaternion.LookRotation (hit.normal);
-			portal.transform.position = hit.point;
+
+			portal.transform.position = currentPos = hit.point;
 			portal.transform.rotation = hitObjectRotation;
+			surface = hit.transform;
+//			portal.transform.parent = hit.transform;
 		}
 	}
 }

@@ -6,7 +6,7 @@ public class StepThroughPortal : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		Debug.Log (UnityEngine.SceneManagement.SceneManager.sceneCount);
 	}
 	
 	// Update is called once per frame
