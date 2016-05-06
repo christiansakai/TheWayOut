@@ -5,6 +5,11 @@ public class ThrowPortal : MonoBehaviour {
 	public GameObject leftPortal;
 	public GameObject rightPortal;
 
+	bool leftTriggerInUse = false;
+	bool rightTriggerInUse = false;
+	float fireLeft;
+	float fireRight;
+
 	GameObject mainCamera;
 	// Use this for initialization
 	void Start () {
@@ -13,12 +18,26 @@ public class ThrowPortal : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown (0)) {
-			throwPortal (leftPortal);
+		fireLeft = Input.GetAxis ("Left Fire");
+		fireRight = Input.GetAxis ("Right Fire");
+
+		if (Input.GetMouseButtonDown (0) || fireLeft == -1) {
+			if (!leftTriggerInUse) {
+				throwPortal (leftPortal);
+				leftTriggerInUse = true;
+			}
+		} else {
+			leftTriggerInUse = false;
 		}
-		if (Input.GetMouseButtonDown (1)) {
-			throwPortal (rightPortal);
+		if (Input.GetMouseButtonDown (1) || fireRight == -1) {
+			if (!rightTriggerInUse) {
+				throwPortal (rightPortal);
+				rightTriggerInUse = true;
+			}
+		} else {
+			rightTriggerInUse = false;
 		}
+
 	}
 
 	void throwPortal(GameObject portal) {
