@@ -38,10 +38,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			float yJoyStick = Mathf.Floor (Input.GetAxis ("JoyStick Y") * joyXSensitivity);
 			float xJoyStick = Mathf.Floor (Input.GetAxis ("JoyStick X") * joyYSensitivity);
 
-			Debug.Log ("xRot " + xRot+ " yRot " + yRot + " xJoyStick " + xJoyStick + " yJoyStick " + yJoyStick);
-
-//            m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
-//            m_CameraTargetRot *= Quaternion.Euler (-xRot, 0f, 0f);
+            m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
+            m_CameraTargetRot *= Quaternion.Euler (-xRot, 0f, 0f);
 
 			m_CharacterTargetRot *= Quaternion.Euler (0f, xJoyStick, 0f);
 			m_CameraTargetRot *= Quaternion.Euler (yJoyStick, 0f, 0f);
