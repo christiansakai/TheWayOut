@@ -53,7 +53,7 @@ public class ThrowPortal : MonoBehaviour {
 		if (Physics.Raycast (ray, out hit)) {
 			Quaternion hitObjectRotation = Quaternion.LookRotation (hit.normal);
 
-			portal.transform.position = currentPos = hit.point;
+			portal.transform.position = hit.point;
 			portal.transform.rotation = hitObjectRotation;
 			if (hit.transform.tag == "MovingPlatform") {
 				portal.transform.parent = hit.transform.GetChild(0);
