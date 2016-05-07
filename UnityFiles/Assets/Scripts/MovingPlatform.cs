@@ -26,6 +26,9 @@ public class MovingPlatform : MonoBehaviour {
 	void FixedUpdate() {
 		float timeSpeed = platformSpeed * Time.fixedDeltaTime;
 		platform.GetComponent<Rigidbody>().MovePosition (platform.position + direction * timeSpeed);
+		// alternative using Lerp - which moves from one position to another.
+		// much jerkier, but would be interesting as a different mechanic
+//		platform.position = Vector3.Lerp(platform.position, destination.position, timeSpeed);
 
 		if (Vector3.Distance (platform.position, destination.position) < timeSpeed) {
 			SetDestination (destination == startTransform ? endTransform : startTransform);
