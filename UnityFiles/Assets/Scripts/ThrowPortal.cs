@@ -4,6 +4,7 @@ using System.Collections;
 public class ThrowPortal : MonoBehaviour {
 	public GameObject leftPortal;
 	public GameObject rightPortal;
+	public GameObject emptyObject;
 
 	bool leftTriggerInUse = false;
 	bool rightTriggerInUse = false;
@@ -15,7 +16,7 @@ public class ThrowPortal : MonoBehaviour {
 	void Start () {
 		mainCamera = GameObject.FindWithTag ("MainCamera");
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		fireLeft = Input.GetAxis ("Left Fire");
@@ -39,7 +40,7 @@ public class ThrowPortal : MonoBehaviour {
 		}
 
 	}
-
+		
 	void throwPortal(GameObject portal) {
 		int x = Screen.width / 2;
 		int y = Screen.height / 2;
@@ -51,6 +52,9 @@ public class ThrowPortal : MonoBehaviour {
 			Quaternion hitObjectRotation = Quaternion.LookRotation (hit.normal);
 			portal.transform.position = hit.point;
 			portal.transform.rotation = hitObjectRotation;
+			if (hit.transform.tag == "MovingPlatform") {
+				portal.transform.parent = hit.transform.GetChild(0);
+			}
 		}
 	}
 }
