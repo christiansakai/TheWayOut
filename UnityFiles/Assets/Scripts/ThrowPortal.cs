@@ -10,8 +10,6 @@ public class ThrowPortal : MonoBehaviour {
 	float fireLeft;
 	float fireRight;
 
-	private Transform surface;
-
 	GameObject mainCamera;
 	// Use this for initialization
 	void Start () {
