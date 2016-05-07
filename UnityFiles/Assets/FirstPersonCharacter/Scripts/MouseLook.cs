@@ -9,6 +9,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
     {
         public float XSensitivity = 2f;
         public float YSensitivity = 2f;
+		public float joyXSensitivity = 2f;
+		public float joyYSensitivity = 2f;
         public bool clampVerticalRotation = true;
         public float MinimumX = -90F;
         public float MaximumX = 90F;
@@ -33,8 +35,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
             float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
 
+			float yJoyStick = Mathf.Floor (Input.GetAxis ("JoyStick Y") * joyXSensitivity);
+			float xJoyStick = Mathf.Floor (Input.GetAxis ("JoyStick X") * joyYSensitivity);
+
             m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
             m_CameraTargetRot *= Quaternion.Euler (-xRot, 0f, 0f);
+
+			m_CharacterTargetRot *= Quaternion.Euler (0f, xJoyStick, 0f);
+			m_CameraTargetRot *= Quaternion.Euler (yJoyStick, 0f, 0f);
 
             if(clampVerticalRotation)
                 m_CameraTargetRot = ClampRotationAroundXAxis (m_CameraTargetRot);

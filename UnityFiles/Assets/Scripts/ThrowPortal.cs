@@ -4,6 +4,12 @@ using System.Collections;
 public class ThrowPortal : MonoBehaviour {
 	public GameObject leftPortal;
 	public GameObject rightPortal;
+	public GameObject emptyObject;
+
+	bool leftTriggerInUse = false;
+	bool rightTriggerInUse = false;
+	float fireLeft;
+	float fireRight;
 
 	private Transform surface;
 
@@ -13,35 +19,30 @@ public class ThrowPortal : MonoBehaviour {
 		mainCamera = GameObject.FindWithTag ("MainCamera");
 	}
 
-	Vector3 currentPos;
-	Vector3 lastPos;
+	// Update is called once per frame
+	void Update () {
+		fireLeft = Input.GetAxis ("Left Fire");
+		fireRight = Input.GetAxis ("Right Fire");
 
-	void Update() {
-		if (Input.GetMouseButtonDown (0)) {
-			throwPortal(leftPortal);
+		if (Input.GetMouseButtonDown (0) || fireLeft == -1) {
+			if (!leftTriggerInUse) {
+				throwPortal (leftPortal);
+				leftTriggerInUse = true;
+			}
+		} else {
+			leftTriggerInUse = false;
 		}
-		else if (Input.GetMouseButtonDown (1)) {
-			throwPortal (rightPortal);
+		if (Input.GetMouseButtonDown (1) || fireRight == -1) {
+			if (!rightTriggerInUse) {
+				throwPortal (rightPortal);
+				rightTriggerInUse = true;
+			}
+		} else {
+			rightTriggerInUse = false;
 		}
-		//add this var to your movment vector
-		Vector3 PlatformMovement = CalculatePlatformDifference();
-//		Debug.Log (currentPos);
-//		transform += PlatformMovement;
 
 	}
-
-	Vector3 CalculatePlatformDifference() {
-		if(!surface ) {
-			return Vector3.zero;
-		}
-		return lastPos - currentPos;
-
-	}
-
-	void LateUpdate() {
-		lastPos = currentPos;
-	}
-
+		
 	void throwPortal(GameObject portal) {
 		int x = Screen.width / 2;
 		int y = Screen.height / 2;
@@ -54,8 +55,9 @@ public class ThrowPortal : MonoBehaviour {
 
 			portal.transform.position = currentPos = hit.point;
 			portal.transform.rotation = hitObjectRotation;
-			surface = hit.transform;
-//			portal.transform.parent = hit.transform;
+			if (hit.transform.tag == "MovingPlatform") {
+				portal.transform.parent = hit.transform.GetChild(0);
+			}
 		}
 	}
 }

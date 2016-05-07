@@ -26,7 +26,6 @@ public class FirstPersonController : MonoBehaviour {
 		//Player Rotation
 		leftRight = Input.GetAxis("JoyStick X") * joySensitivity;
 		leftRight += Input.GetAxis("Mouse X") * mouseSensitivity;
-		Debug.Log (leftRight);
 		transform.Rotate (0, leftRight, 0);
 
 		verticalRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
