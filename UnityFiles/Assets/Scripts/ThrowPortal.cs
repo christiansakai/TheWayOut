@@ -4,7 +4,6 @@ using System.Collections;
 public class ThrowPortal : MonoBehaviour {
 	public GameObject leftPortal;
 	public GameObject rightPortal;
-	public GameObject emptyObject;
 
 	bool leftTriggerInUse = false;
 	bool rightTriggerInUse = false;
@@ -55,9 +54,7 @@ public class ThrowPortal : MonoBehaviour {
 
 			portal.transform.position = hit.point;
 			portal.transform.rotation = hitObjectRotation;
-			if (hit.transform.tag == "MovingPlatform") {
-				portal.transform.parent = hit.transform.GetChild(0);
-			}
+			portal.transform.parent.transform.parent = hit.transform;
 		}
 	}
 }
