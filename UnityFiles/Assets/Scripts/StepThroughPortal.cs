@@ -5,7 +5,7 @@ public class StepThroughPortal : MonoBehaviour {
 	public GameObject otherPortal;
 
 	void OnTriggerEnter(Collider other) {
-//		if (other.tag == "Player") {
+		if (other.tag == "Player") {
 			// this line is questionable - still having difficulty reorienting player according to where they come out
 //			other.transform.localEulerAngles += Quaternion.LookRotation (otherPortal.transform.forward).eulerAngles;
 
@@ -25,6 +25,6 @@ public class StepThroughPortal : MonoBehaviour {
 
 //		other.transform.rotation.Set(otherPortal.transform.rotation.x);
 
-//		}
+		}
 	}
 }
