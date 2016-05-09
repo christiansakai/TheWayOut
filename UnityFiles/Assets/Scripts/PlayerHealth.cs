@@ -15,6 +15,9 @@ public class PlayerHealth : MonoBehaviour
 	bool isDead;                                                // Whether the player is dead.
 	bool damaged;                                               // True when the player gets damaged.
 
+	public GameObject player;
+//	public string currentScene;
+	public static Vector3 respawnPoint;
 
 	void Awake ()
 	{
@@ -22,6 +25,11 @@ public class PlayerHealth : MonoBehaviour
 		currentHealth = startingHealth;
 	}
 
+	void Start(){
+		// set the initial respawnPoint position to level start position;
+		respawnPoint = new Vector3(0,1,0);
+	}
+		
 
 	void Update ()
 	{
@@ -59,6 +67,8 @@ public class PlayerHealth : MonoBehaviour
 		{
 			isDead = true;
 			Debug.Log("You died"); 
+//			UnityEngine.SceneManagement.SceneManager.LoadScene (currentScene);
+			player.transform.position = respawnPoint;
 		}
 	}  
 }
