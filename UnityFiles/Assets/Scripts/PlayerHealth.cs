@@ -10,7 +10,7 @@ public class PlayerHealth : MonoBehaviour
 	public Image damageImage;                                   // Reference to an image to flash on the screen on being hurt.
 	public float flashSpeed = 5f;                               // The speed the damageImage will fade at.
 	public Color flashColour = new Color(1f, 0f, 0f, 0.1f);     // The colour the damageImage is set to, to flash.
-
+	public float fallKillDistance = 100;
 
 	bool isDead;                                                // Whether the player is dead.
 	bool damaged;                                               // True when the player gets damaged.
@@ -53,7 +53,7 @@ public class PlayerHealth : MonoBehaviour
 		// Reset the damaged flag.
 		damaged = false;
 
-		if (playerPosition.y <= -100) {
+		if (playerPosition.y <= -fallKillDistance) {
 			toKill ();
 		}
 	}
