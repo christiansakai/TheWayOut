@@ -12,27 +12,40 @@ public class PlayerHealth : MonoBehaviour
 	public Color flashColour = new Color(1f, 0f, 0f, 0.1f);     // The colour the damageImage is set to, to flash.
 
 	public Slider staminaSlider;
+	private float staminaMax = 100f;
+	private float staminaInterval = 0.5f;
+	private float staminaCurrent;
 
 	bool isDead;                                                // Whether the player is dead.
 	bool damaged;                                               // True when the player gets damaged.
 //	public string currentScene;
 	public static Vector3 respawnPoint;
-
+	private UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
 
 	void Awake ()
 	{
 		// Set the initial health of the player.
 		currentHealth = startingHealth;
+		staminaCurrent = staminaMax;
 	}
 
 	void Start(){
 		// set the initial respawnPoint position to level start position;
 		respawnPoint = new Vector3(0,1,0);
+		controller = GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController> ();
+
 	}
 		
 
-	void Update ()
+	void FixedUpdate ()
 	{
+		if (controller.Running && controller.Grounded && staminaCurrent != 0) {
+			staminaCurrent -= staminaInterval;
+		} else if (staminaCurrent < staminaMax) {
+			staminaCurrent += staminaInterval / 2;
+		}
+		Debug.Log (staminaCurrent);
+		staminaSlider.value = staminaCurrent;
 
 		// If the player has just been damaged...
 		// ... set the colour of the damageImage to the flash colour.
@@ -45,9 +58,7 @@ public class PlayerHealth : MonoBehaviour
 		if (transform.position.y <= -100) {
 			toKill ();
 		}
-	}
-
-	void FixedUpdate () {
+			
 
 	}
 
