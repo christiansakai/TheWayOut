@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour
 	private float staminaMax = 100f;
 	private float staminaInterval = 0.5f;
 	private float staminaCurrent;
+	public float fallKillDistance = 100;
 
 	bool isDead;                                                // Whether the player is dead.
 	bool damaged;                                               // True when the player gets damaged.
@@ -44,7 +45,6 @@ public class PlayerHealth : MonoBehaviour
 		} else if (staminaCurrent < staminaMax) {
 			staminaCurrent += staminaInterval / 2;
 		}
-		Debug.Log (staminaCurrent);
 		staminaSlider.value = staminaCurrent;
 
 		// If the player has just been damaged...
@@ -55,7 +55,8 @@ public class PlayerHealth : MonoBehaviour
 		// Reset the damaged flag.
 		damaged = false;
 
-		if (transform.position.y <= -100) {
+		if (transform.position.y <= -fallKillDistance) {
+
 			toKill ();
 		}
 			
