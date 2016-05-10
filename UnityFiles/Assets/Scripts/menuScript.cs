@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class menuScript : MonoBehaviour {
 	public Canvas quitMenu;
@@ -39,6 +40,5 @@ public class menuScript : MonoBehaviour {
 		Application.Quit ();
 	}
 
-//	public void Load(){
-//		if(File.Exists
+
 }
