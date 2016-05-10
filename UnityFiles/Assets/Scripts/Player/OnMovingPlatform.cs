@@ -20,6 +20,7 @@ public class OnMovingPlatform : MonoBehaviour {
 		}
 	}
 
+	// This needs work!!!
 	void OnCollisionEnter(Collision col) {
 		if (col.collider.tag == "Platform") {
 			onPlatform = true;

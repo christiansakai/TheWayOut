@@ -12,9 +12,12 @@ public class PlayerHealth : MonoBehaviour
 	public Color flashColour = new Color(1f, 0f, 0f, 0.1f);     // The colour the damageImage is set to, to flash.
 
 	public Slider staminaSlider;
+	public Image sliderFill;
 	private float staminaMax = 100f;
 	private float staminaInterval = 0.5f;
 	private float staminaCurrent;
+	private float tempRun;
+	private bool outOfStamina = false;
 	public float fallKillDistance = 100;
 
 	bool isDead;                                                // Whether the player is dead.
@@ -34,16 +37,26 @@ public class PlayerHealth : MonoBehaviour
 		// set the initial respawnPoint position to level start position;
 		respawnPoint = new Vector3(0,1,0);
 		controller = GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController> ();
+		tempRun = controller.movementSettings.RunMultiplier;
 
 	}
 		
 
 	void FixedUpdate ()
 	{
-		if (controller.Running && controller.Grounded && staminaCurrent != 0) {
+		if (!outOfStamina && controller.Running && controller.Grounded && staminaCurrent > 0) {
 			staminaCurrent -= staminaInterval;
+			if (staminaCurrent <= 0) {
+				StaminaDamage ();
+			}
 		} else if (staminaCurrent < staminaMax) {
 			staminaCurrent += staminaInterval / 2;
+			if (staminaCurrent >= staminaMax) {
+				outOfStamina = false;
+				staminaCurrent = staminaMax;
+				controller.movementSettings.RunMultiplier = tempRun;
+				sliderFill.color = Color.white;
+			}
 		}
 		staminaSlider.value = staminaCurrent;
 
@@ -56,13 +69,17 @@ public class PlayerHealth : MonoBehaviour
 		damaged = false;
 
 		if (transform.position.y <= -fallKillDistance) {
-
 			toKill ();
 		}
-			
 
 	}
 
+	private void StaminaDamage() {
+		tempRun = controller.movementSettings.RunMultiplier;
+		controller.movementSettings.RunMultiplier = 1.0f;
+		sliderFill.color = Color.red;
+		outOfStamina = true;
+	}
 
 	public void TakeDamage (int amount)
 	{
