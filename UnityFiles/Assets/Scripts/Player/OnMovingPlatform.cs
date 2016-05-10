@@ -26,6 +26,12 @@ public class OnMovingPlatform : MonoBehaviour {
 		}
 	}
 
+	void OnCollisionStay(Collision col) {
+		if (col.collider.tag == "Platform") {
+			onPlatform = true;
+		}
+	}
+
 	void OnCollisionExit(Collision col) {
 		if (col.collider.tag == "Platform") {
 			onPlatform = false;
