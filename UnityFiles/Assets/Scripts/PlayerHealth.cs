@@ -11,15 +11,12 @@ public class PlayerHealth : MonoBehaviour
 	public float flashSpeed = 5f;                               // The speed the damageImage will fade at.
 	public Color flashColour = new Color(1f, 0f, 0f, 0.1f);     // The colour the damageImage is set to, to flash.
 
+	public Slider staminaSlider;
 
 	bool isDead;                                                // Whether the player is dead.
 	bool damaged;                                               // True when the player gets damaged.
-	public GameObject player;
 //	public string currentScene;
 	public static Vector3 respawnPoint;
-
-	//Check Player fall Distance
-	Vector3 playerPosition;
 
 
 	void Awake ()
@@ -36,26 +33,22 @@ public class PlayerHealth : MonoBehaviour
 
 	void Update ()
 	{
-		playerPosition = player.transform.position;
+
 		// If the player has just been damaged...
-		if(damaged)
-		{
-			// ... set the colour of the damageImage to the flash colour.
-			damageImage.color = flashColour;
-		}
-		// Otherwise...
-		else
-		{
-			// ... transition the colour back to clear.
-			damageImage.color = Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
-		}
+		// ... set the colour of the damageImage to the flash colour.
+		// ... otherwise transition the colour back to clear.
+		damageImage.color = damaged ? flashColour : Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
 
 		// Reset the damaged flag.
 		damaged = false;
 
-		if (playerPosition.y <= -100) {
+		if (transform.position.y <= -100) {
 			toKill ();
 		}
+	}
+
+	void FixedUpdate () {
+
 	}
 
 
@@ -79,10 +72,9 @@ public class PlayerHealth : MonoBehaviour
 	public void toKill () {
 		isDead = true;
 		Debug.Log("You died"); 
-		//UnityEngine.SceneManagement.SceneManager.LoadScene (currentScene);
 		//Need to be seperated to another function
 		currentHealth = 100;
-		player.transform.position = respawnPoint;
+		transform.position = respawnPoint;
 		isDead = false;
 		//End of seperated function
 	}
