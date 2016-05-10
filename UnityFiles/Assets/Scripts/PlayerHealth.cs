@@ -14,10 +14,13 @@ public class PlayerHealth : MonoBehaviour
 
 	bool isDead;                                                // Whether the player is dead.
 	bool damaged;                                               // True when the player gets damaged.
-
 	public GameObject player;
 //	public string currentScene;
 	public static Vector3 respawnPoint;
+
+	//Check Player fall Distance
+	Vector3 playerPosition;
+
 
 	void Awake ()
 	{
@@ -33,6 +36,7 @@ public class PlayerHealth : MonoBehaviour
 
 	void Update ()
 	{
+		playerPosition = player.transform.position;
 		// If the player has just been damaged...
 		if(damaged)
 		{
@@ -48,6 +52,10 @@ public class PlayerHealth : MonoBehaviour
 
 		// Reset the damaged flag.
 		damaged = false;
+
+		if (playerPosition.y <= -100) {
+			toKill ();
+		}
 	}
 
 
@@ -65,10 +73,17 @@ public class PlayerHealth : MonoBehaviour
 		// If the player has lost all it's health and the death flag hasn't been set yet...
 		if(currentHealth <= 0 && !isDead)
 		{
-			isDead = true;
-			Debug.Log("You died"); 
-//			UnityEngine.SceneManagement.SceneManager.LoadScene (currentScene);
-			player.transform.position = respawnPoint;
+			toKill ();
 		}
-	}  
+	}
+	public void toKill () {
+		isDead = true;
+		Debug.Log("You died"); 
+		//UnityEngine.SceneManagement.SceneManager.LoadScene (currentScene);
+		//Need to be seperated to another function
+		currentHealth = 100;
+		player.transform.position = respawnPoint;
+		isDead = false;
+		//End of seperated function
+	}
 }
