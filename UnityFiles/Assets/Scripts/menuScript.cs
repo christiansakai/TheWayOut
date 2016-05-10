@@ -32,10 +32,13 @@ public class menuScript : MonoBehaviour {
 
 	public void StartLevel()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene (nextScene);;   // load Scene
+		UnityEngine.SceneManagement.SceneManager.LoadScene (nextScene);   // load Scene
 	}
 
 	public void ExitGame(){
 		Application.Quit ();
 	}
+
+//	public void Load(){
+//		if(File.Exists
 }
