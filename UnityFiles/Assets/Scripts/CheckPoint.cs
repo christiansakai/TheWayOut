@@ -15,8 +15,7 @@ public class CheckPoint : MonoBehaviour {
 		//		file.Close ();
 
 		// also set the respawn position to this checkpoint position;
-		PlayerHealth.respawnPoint = transform.position; 
-
+		PlayerHealth.respawnPoint = transform.position;
 		
 	}
 		
