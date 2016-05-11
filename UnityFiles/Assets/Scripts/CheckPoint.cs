@@ -11,15 +11,19 @@ public class CheckPoint : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		// also set the respawn position to this checkpoint position;
+		// also update the respawn position to this checkpoint position;
 		PlayerHealth.respawnPoint = transform.position;
 		PlayerHealth.respawnPointAngle = transform.eulerAngles;
+
 		// save all the player info at the checkpoint to PlayerPrefs;
+		  //position
 		PlayerPrefs.SetFloat ("x",Player.position.x);
 		PlayerPrefs.SetFloat ("y",Player.position.y);
 		PlayerPrefs.SetFloat ("z",Player.position.z);
 		PlayerPrefs.SetFloat ("Cam_y", Player.eulerAngles.y);
+		 //health
 //		PlayerPrefs.SetInt ("currentHealth", PlayerHealth.currentHealth);
+		 //respawnPoint
 		PlayerPrefs.SetFloat ("RPx", PlayerHealth.respawnPoint.x);
 		PlayerPrefs.SetFloat ("RPy", PlayerHealth.respawnPoint.y);
 		PlayerPrefs.SetFloat ("RPz", PlayerHealth.respawnPoint.z);
