@@ -23,19 +23,21 @@ public class PlayerHealth : MonoBehaviour
 	bool isDead;                                                // Whether the player is dead.
 	bool damaged;                                               // True when the player gets damaged.
 	public static Vector3 respawnPoint;
+	public static Vector3 respawnPointAngle;
 	private UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
 
 	void Awake ()
 	{
 		// Set the initial health of the player.
-		if (!PlayerPrefs.HasKey("currentHealth")) {
-			currentHealth = startingHealth;
-		} else {
-			currentHealth = PlayerPrefs.GetInt("currentHealth");
-		}
-
+//		if (!PlayerPrefs.HasKey("currentHealth")) {
+//			currentHealth = startingHealth;
+//		} else {
+//			currentHealth = PlayerPrefs.GetInt("currentHealth");
+//		}
+			
 		staminaCurrent = staminaMax;
 
+		// initial respawn point position
 		if (!PlayerPrefs.HasKey ("RPx")) {
 			// set the initial respawnPoint position to level start position;
 			respawnPoint = new Vector3 (0, 1, 0);
@@ -43,10 +45,19 @@ public class PlayerHealth : MonoBehaviour
 			respawnPoint = new Vector3 (PlayerPrefs.GetFloat ("RPx"), PlayerPrefs.GetFloat ("RPy"), PlayerPrefs.GetFloat ("RPz"));
 		}
 
+		// initial respawn angle
+		if (!PlayerPrefs.HasKey ("RPA_y")) {
+			respawnPointAngle = new Vector3 (0, 1);
+		} else {
+			respawnPointAngle = new Vector3 (0, PlayerPrefs.GetFloat ("RPA_y", 0));
+		}
+
+
 		
 	}
 
 	void Start(){
+		currentHealth = startingHealth;
 		controller = GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController> ();
 		tempRun = controller.movementSettings.RunMultiplier;
 
@@ -112,13 +123,14 @@ public class PlayerHealth : MonoBehaviour
 	public void toKill () {
 		isDead = true;
 		Debug.Log("You died"); 
-		toRespawn ();
-	}
-
-
-	public void toRespawn(){
-		currentHealth = 100;
+//		toRespawn ();
 		transform.position = respawnPoint;
+		transform.eulerAngles = respawnPointAngle; 
+		currentHealth = 100;
 		isDead = false;
 	}
+		
+//	public void toRespawn(){
+//
+//	}
 }
