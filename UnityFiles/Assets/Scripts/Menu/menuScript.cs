@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class menuScript : MonoBehaviour {
 	public Canvas quitMenu;
 	public Button startText;
 	public Button exitText;
-	public string nextScene;
+	public string Level1;
+	public string SceneToLoad;
 
 	// Use this for initialization
 	void Start () {
@@ -32,13 +34,16 @@ public class menuScript : MonoBehaviour {
 
 	public void StartLevel()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene (nextScene);   // load Scene
+		UnityEngine.SceneManagement.SceneManager.LoadScene (Level1);   // load Scene
+	}
+
+	public void LoadScene(){
+		UnityEngine.SceneManagement.SceneManager.LoadScene (SceneToLoad);
 	}
 
 	public void ExitGame(){
 		Application.Quit ();
 	}
+		
 
-//	public void Load(){
-//		if(File.Exists
 }
