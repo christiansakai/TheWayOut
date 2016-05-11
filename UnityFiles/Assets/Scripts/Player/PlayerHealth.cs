@@ -22,20 +22,31 @@ public class PlayerHealth : MonoBehaviour
 
 	bool isDead;                                                // Whether the player is dead.
 	bool damaged;                                               // True when the player gets damaged.
-//	public string currentScene;
 	public static Vector3 respawnPoint;
 	private UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
 
 	void Awake ()
 	{
 		// Set the initial health of the player.
-		currentHealth = startingHealth;
+		if (!PlayerPrefs.HasKey("currentHealth")) {
+			currentHealth = startingHealth;
+		} else {
+			currentHealth = PlayerPrefs.GetInt("currentHealth");
+		}
+
 		staminaCurrent = staminaMax;
+
+		if (!PlayerPrefs.HasKey ("RPx")) {
+			// set the initial respawnPoint position to level start position;
+			respawnPoint = new Vector3 (0, 1, 0);
+		} else {
+			respawnPoint = new Vector3 (PlayerPrefs.GetFloat ("RPx"), PlayerPrefs.GetFloat ("RPy"), PlayerPrefs.GetFloat ("RPz"));
+		}
+
+		
 	}
 
 	void Start(){
-		// set the initial respawnPoint position to level start position;
-		respawnPoint = new Vector3(0,1,0);
 		controller = GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController> ();
 		tempRun = controller.movementSettings.RunMultiplier;
 
@@ -101,10 +112,13 @@ public class PlayerHealth : MonoBehaviour
 	public void toKill () {
 		isDead = true;
 		Debug.Log("You died"); 
-		//Need to be seperated to another function
+		toRespawn ();
+	}
+
+
+	public void toRespawn(){
 		currentHealth = 100;
 		transform.position = respawnPoint;
 		isDead = false;
-		//End of seperated function
 	}
 }

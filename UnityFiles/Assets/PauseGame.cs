@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class PauseGame : MonoBehaviour {
 	public Transform canvas;
 //	private UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
@@ -25,9 +26,5 @@ public class PauseGame : MonoBehaviour {
 			}
 
 	}
-
-	public void ResumeGame (){
-//		controller.enabled = true;
-//		PauseScreen.enabled = false;
-	}
+		
 }
