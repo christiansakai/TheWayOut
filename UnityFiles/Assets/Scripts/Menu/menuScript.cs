@@ -9,8 +9,6 @@ public class menuScript : MonoBehaviour {
 	public Button exitText;
 	public string Level1;
 	public string SceneToLoad;
-	public Canvas LogInMenu;
-	public Canvas SignUpMenu;
 
 	// Use this for initialization
 	void Start () {
@@ -18,10 +16,6 @@ public class menuScript : MonoBehaviour {
 		startText = startText.GetComponent<Button> ();
 		exitText = exitText.GetComponent<Button> ();
 		quitMenu.enabled = false;
-		LogInMenu = LogInMenu.GetComponent<Canvas> ();
-		LogInMenu.enabled = false;
-//		SignUpMenu = LogInMenu.GetComponent<Canvas> ();
-//		SignUpMenu.enabled = false;
 	}
 	
 	public void ExitPress()
@@ -50,15 +44,6 @@ public class menuScript : MonoBehaviour {
 	public void ExitGame(){
 		Application.Quit ();
 	}
-
-	public void LogIn(){
-		LogInMenu.enabled = true;
-		SignUpMenu.enabled = false;
-	}
-
-	public void SignUp(){
-		LogInMenu.enabled = false;
-		SignUpMenu.enabled = true;
-	}
+		
 
 }
