@@ -60,7 +60,6 @@ public class PlayerHealth : MonoBehaviour
 		currentHealth = startingHealth;
 		controller = GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController> ();
 		tempRun = controller.movementSettings.RunMultiplier;
-
 	}
 		
 
