@@ -27,9 +27,12 @@ public class StepThroughPortal : MonoBehaviour {
 			vel = Vector3.Reflect (vel, transform.forward);		
 			vel = transform.InverseTransformDirection (vel);		
 			vel = otherPortal.transform.TransformDirection (vel);		
-			rb.velocity = vel;		
+				
 			rb.rotation = otherPortal.transform.rotation;		
 			rb.position = otherPortal.transform.position + otherPortal.transform.forward * 3;
+			rb.AddForce ((otherPortal.transform.position - player.transform.position).normalized * 20 * Time.smoothDeltaTime);
+//			rb.velocity = vel * rb.velocity.magnitude;
+
 
 //			other.transform.position = otherPortal.transform.position + otherPortal.transform.forward * 1;
 
