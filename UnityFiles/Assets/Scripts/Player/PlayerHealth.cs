@@ -38,19 +38,19 @@ public class PlayerHealth : MonoBehaviour
 		staminaCurrent = staminaMax;
 
 		// initial respawn point position
-		if (!PlayerPrefs.HasKey ("RPx")) {
-			// set the initial respawnPoint position to level start position;
+//		if (!PlayerPrefs.HasKey ("RPx")) {
+//			// set the initial respawnPoint position to level start position;
 			respawnPoint = new Vector3 (0, 1, 0);
-		} else {
-			respawnPoint = new Vector3 (PlayerPrefs.GetFloat ("RPx"), PlayerPrefs.GetFloat ("RPy"), PlayerPrefs.GetFloat ("RPz"));
-		}
+//		} else {
+//			respawnPoint = new Vector3 (PlayerPrefs.GetFloat ("RPx"), PlayerPrefs.GetFloat ("RPy"), PlayerPrefs.GetFloat ("RPz"));
+//		}
 
 		// initial respawn angle
-		if (!PlayerPrefs.HasKey ("RPA_y")) {
+//		if (!PlayerPrefs.HasKey ("RPA_y")) {
 			respawnPointAngle = new Vector3 (0, 1);
-		} else {
-			respawnPointAngle = new Vector3 (0, PlayerPrefs.GetFloat ("RPA_y", 0));
-		}
+//		} else {
+//			respawnPointAngle = new Vector3 (0, PlayerPrefs.GetFloat ("RPA_y", 0));
+//		}
 
 
 		
@@ -126,6 +126,7 @@ public class PlayerHealth : MonoBehaviour
 		transform.position = respawnPoint;
 		transform.eulerAngles = respawnPointAngle; 
 		currentHealth = 100;
+		healthSlider.value = currentHealth;
 		isDead = false;
 	}
 		
