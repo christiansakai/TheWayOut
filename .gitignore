@@ -1,6 +1,9 @@
 node_modules
 .DS_Store
 
+# Assets
+UnityFiles/Assets/Dungeon_Creator_Kit_LITE
+
 UnityFiles/Library
 UnityFiles/Temp
 UnityFiles/obj
