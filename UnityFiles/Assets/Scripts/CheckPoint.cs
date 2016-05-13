@@ -28,12 +28,16 @@ public class CheckPoint : MonoBehaviour {
 		}
 	}
 
-	void Update() {
+	void FixedUpdate() {
 		currentTime = Time.time;
-
-		if (currentTime - enteredTime > showDuration && !isCalled) {
-			isCalled = true;
+//		Debug.Log (alreadyEntered +  " " + txtmessage);
+//		Debug.Log (currentTime - enteredTime > showDuration);
+		if (alreadyEntered && currentMsg.text == txtmessage && Time.time - enteredTime > showDuration) {
+//			isCalled = true;
 			currentMsg.text = "";
+			if (enterOnce) {
+				Destroy (gameObject);
+			}
 		}
 	}
 
