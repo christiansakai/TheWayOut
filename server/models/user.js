@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var _ = require('lodash');
 var crypto = require('crypto');
 var Schema = mongoose.Schema;
+var Time = mongoose.model("Time");
 
 var schema = new Schema({
   name: {
@@ -17,6 +18,9 @@ var schema = new Schema({
     type: String,
     required: true
   },
+  salt: {
+    type: String
+  },
   currentLevel: {
     type: Schema.Types.ObjectId,
     ref: "Level"
@@ -26,6 +30,13 @@ var schema = new Schema({
   }
 });
 
+// get all the time for a level for a player
+schema.method.findTimeOfOneLevel = function(reqbody){
+  return Time.find({player:reqbody.player, level: reqbody.level}).exec()
+}
+
+
+// sanitize userinfo
 schema.methods.sanitize = function () {
     return _.omit(this.toJSON(), ['password', 'salt']);
 };
