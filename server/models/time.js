@@ -8,7 +8,7 @@ var schema = new Schema({
     required: true
   },
   player: {
-    type: schema.types.objectid,
+    type: Schema.Types.ObjectId,
     ref: "User",
     required: true
   },

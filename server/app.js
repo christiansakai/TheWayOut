@@ -5,14 +5,15 @@ var bodyParser = require('body-parser');
 
 var mongoose = require("mongoose");
 require("./models");
+require("./authentication")(app);
 
 var port = 1337;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-app.user("/api", require("./routes"));
+// api routes
+app.use("/api", require("./routes"));
 
 app.get("/", (req, res, next) => {
   

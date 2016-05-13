@@ -3,7 +3,7 @@ var _ = require('lodash');
 var crypto = require('crypto');
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
+var schema = new Schema({
   name: {
     type: String,
     required: true
@@ -20,12 +20,17 @@ var UserSchema = new Schema({
   currentLevel: {
     type: Schema.Types.ObjectId,
     ref: "Level"
+  },
+  checkpoint: {
+    type: Number
   }
 });
 
 schema.methods.sanitize = function () {
     return _.omit(this.toJSON(), ['password', 'salt']);
 };
+
+// hash the password with salt
 var generateSalt = function () {
     return crypto.randomBytes(16).toString('base64');
 };
@@ -40,8 +45,9 @@ var encryptPassword = function (plainText, salt) {
 schema.pre('save', function (next) {
 	if (this.isModified('password')) {
 		this.salt = this.constructor.generateSalt();
-		this.password = this.constructor.encryptPassword(this.password, this.     salt);
+		this.password = this.constructor.encryptPassword(this.password, this.salt);
 	}
+  next();
 });
 
 schema.statics.generateSalt = generateSalt;
@@ -51,4 +57,4 @@ schema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
 }); 
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", schema);
