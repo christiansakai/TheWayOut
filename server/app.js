@@ -3,6 +3,7 @@ var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
 
+// models
 var mongoose = require("mongoose");
 require("./models");
 require("./authentication")(app);

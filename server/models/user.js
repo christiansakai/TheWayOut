@@ -3,6 +3,7 @@ var _ = require('lodash');
 var crypto = require('crypto');
 var Schema = mongoose.Schema;
 var Time = mongoose.model("Time");
+var Level = mongoose.model("Level");
 
 var schema = new Schema({
   name: {
@@ -31,8 +32,12 @@ var schema = new Schema({
 });
 
 // get all the time for a level for a player
-schema.method.findTimeOfOneLevel = function(reqbody){
-  return Time.find({player:reqbody.player, level: reqbody.level}).exec()
+schema.statics.findTimeOfOneLevel = function(userId, level){
+  return Level.findOne({name: level})
+  .then(foundlevel => {
+    return Time.find({"player":userId,"level":foundlevel._id}).exec()
+  })
+  
 }
 
 

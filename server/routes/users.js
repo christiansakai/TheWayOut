@@ -24,12 +24,12 @@ module.exports = require("express").Router()
   .then(() => next(), next);
 })
 
-.get("/:id", ({user}, res, next) => res.json(user))
-
-.get("/:id/times",(req, res, next) => {
-  User.findTimeOfOneLevel(req.body)
+.get("/:id/:level",(req, res, next) => {
+  User.findTimeOfOneLevel(req.user._id, req.params.level)
   .then(timeinfo => res.json(timeinfo));
 })
+.get("/:id", ({user}, res, next) => res.json(user))
+
 
 .put("/:id", ({user, body}, res, next) => {
   User.set(body);
