@@ -8,6 +8,8 @@ module.exports = require("express").Router()
 })
 
 .post("/", (req, res, next) => {
+	Time.createTime(req.body)
+	.then(time => res.json(time));
 
 })
 
