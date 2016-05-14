@@ -5,11 +5,14 @@ using System;
 
 public class HighScores : MonoBehaviour {
 
-	public UILineInfo HighScoreTable;
-	HighScores highScores;
-	public ArrayList scores = new ArrayList();
+	private ArrayList scores = new ArrayList();
+	private GameObject nameList;
+	private GameObject timeList;
 
 	void Start () {
+
+		nameList = GameObject.Find ("NameList");
+		timeList = GameObject.Find ("TimeList");
 		
 		Score score1 = new Score ();
 		Score score2 = new Score ();
@@ -46,30 +49,30 @@ public class HighScores : MonoBehaviour {
 		placeScores (scores);
 	}
 
-	string addScore (string name, int time, DateTime date) {
-		return name + time.ToString () + date.ToString ();
-	}
-
-	void placeScores(IList list) {
-		foreach (Score score in list) {
-			GameObject ngo = new GameObject();
-			ngo.AddComponent<LayoutElement> ();
-			LayoutElement le = ngo.GetComponent<LayoutElement> ();
-			le.preferredHeight = 35.125f;
-			le.preferredWidth = 1f;
-			ngo.transform.SetParent(this.transform);
-
-			Text myText = ngo.AddComponent<Text>();
-			myText.horizontalOverflow = HorizontalWrapMode.Overflow;
-			myText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 14);
-			myText.text = score.name.ToString() + "  " + score.time.ToString();
+	void killTheKids(GameObject parent) {
+		for (int i = parent.transform.childCount - 1; i >= 0; --i) {
+			Destroy (parent.transform.GetChild (i).gameObject);
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void placeScores(ArrayList list) {
+		killTheKids (nameList);
+		killTheKids (timeList);
+		foreach (Score score in list) {
+			GameObject name = new GameObject ();
+			GameObject time = new GameObject ();
+			name.transform.SetParent (nameList.transform);
+			time.transform.SetParent (timeList.transform);
+			Text nameText = name.AddComponent<Text> ();
+			Text timeText = time.AddComponent<Text> ();
+			nameText.text = name.name = score.name.ToString ();
+			timeText.text = time.name = score.time.ToString ();
+			nameText.font = timeText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 14);
+			nameText.horizontalOverflow = timeText.horizontalOverflow = HorizontalWrapMode.Overflow;
+			timeText.alignment = TextAnchor.UpperCenter;
+		}
 	}
+
 }
 
 public class Score {

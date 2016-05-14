@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var User = mongoose.model("User");
 
+
 module.exports = require("express").Router()
 
 .get("/", (req, res, next) => {
@@ -19,20 +20,25 @@ module.exports = require("express").Router()
 .param("id", (req, res, next, id) => {
   User.findById(id)
   .populate("currentLevel")
-  .then(user => req.player = user)
+  .then(user => req.user = user)
   .then(() => next(), next);
 })
 
-.get("/:id", ({player}, res, next) => res.json(player))
+.get("/:id/:level",(req, res, next) => {
+  User.findTimeOfOneLevel(req.user._id, req.params.level)
+  .then(timeinfo => res.json(timeinfo));
+})
+.get("/:id", ({user}, res, next) => res.json(user))
 
-.put("/:id", ({player, body}, res, next) => {
-  player.set(body);
-  player.save()
+
+.put("/:id", ({user, body}, res, next) => {
+  User.set(body);
+  User.save()
   .then(updatedPlayer => res.json(updatedPlayer))
   .catch(next);
 })
 
-.delete("/:id", ({player}, res, next) => {
+.delete("/:id", ({user}, res, next) => {
 
 });
 
