@@ -5,11 +5,14 @@ using System;
 
 public class HighScores : MonoBehaviour {
 
-	public UILineInfo HighScoreTable;
-	HighScores highScores;
-	public ArrayList scores = new ArrayList();
+	private ArrayList scores = new ArrayList();
+	private GameObject nameList;
+	private GameObject timeList;
 
 	void Start () {
+
+		nameList = GameObject.Find ("NameList");
+		timeList = GameObject.Find ("TimeList");
 		
 		Score score1 = new Score ();
 		Score score2 = new Score ();
@@ -46,62 +49,27 @@ public class HighScores : MonoBehaviour {
 		placeScores (scores);
 	}
 
-	string addScore (string name, int time, DateTime date) {
-		return name + time.ToString () + date.ToString ();
-	}
-
-	void killTheKids() {
-		for (int i = transform.childCount - 1; i >= 0; --i) {
-			Destroy (transform.GetChild (i).gameObject);
+	void killTheKids(GameObject parent) {
+		for (int i = parent.transform.childCount - 1; i >= 0; --i) {
+			Destroy (parent.transform.GetChild (i).gameObject);
 		}
 	}
 
 	void placeScores(ArrayList list) {
-		killTheKids ();
+		killTheKids (nameList);
+		killTheKids (timeList);
 		foreach (Score score in list) {
-			GameObject row = new GameObject ();
-
 			GameObject name = new GameObject ();
 			GameObject time = new GameObject ();
-
-			name.transform.SetParent (row.transform);
-			time.transform.SetParent (row.transform);
-
-			name.AddComponent<LayoutElement> ();
-			time.AddComponent<LayoutElement> ();
-			LayoutElement nle = name.GetComponent<LayoutElement> ();
-			LayoutElement tle = time.GetComponent<LayoutElement> ();
-			nle.preferredHeight = tle.preferredHeight = 35.125f;
-			nle.preferredWidth = tle.preferredWidth = 1f;
-
-			row.AddComponent<LayoutElement> ();
-			LayoutElement le = row.GetComponent<LayoutElement> ();
-			le.preferredHeight = 35.125f;
-			le.preferredWidth = 1f;
-
+			name.transform.SetParent (nameList.transform);
+			time.transform.SetParent (timeList.transform);
 			Text nameText = name.AddComponent<Text> ();
 			Text timeText = time.AddComponent<Text> ();
-
 			nameText.text = name.name = score.name.ToString ();
 			timeText.text = time.name = score.time.ToString ();
-
 			nameText.font = timeText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 14);
 			nameText.horizontalOverflow = timeText.horizontalOverflow = HorizontalWrapMode.Overflow;
-			timeText.alignment = TextAnchor.UpperRight;
-
-			row.transform.SetParent (this.transform);
-
-//			GameObject ngo = new GameObject();
-//			ngo.AddComponent<LayoutElement> ();
-//			LayoutElement le = ngo.GetComponent<LayoutElement> ();
-//			le.preferredHeight = 35.125f;
-//			le.preferredWidth = 1f;
-//			ngo.transform.SetParent(this.transform);
-//
-//			Text nameText = ngo.AddComponent<Text>();
-//			nameText.horizontalOverflow = HorizontalWrapMode.Overflow;
-//			nameText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 14);
-//			nameText.text = ngo.name = score.name.ToString() + "  " + score.time.ToString();
+			timeText.alignment = TextAnchor.UpperCenter;
 		}
 	}
 
