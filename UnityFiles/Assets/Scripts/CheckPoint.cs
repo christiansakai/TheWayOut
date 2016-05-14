@@ -9,16 +9,11 @@ public class CheckPoint : MonoBehaviour {
 	public float showDuration = 3.0f;
 	public bool isCheckpoint = false;
 	public string txtmessage = "Enter Text";
-//	public GUIStyle textStyle;
 
 	private bool alreadyEntered = false;
 	private float enteredTime;
 	private float currentTime;
-	private bool showMsg = false;
-	private bool created = false;
-	private bool isCalled = false;
 	private Text currentMsg;
-//	PlayerHealth PlayerHealth;
 
 	void Start(){
 
@@ -30,10 +25,7 @@ public class CheckPoint : MonoBehaviour {
 
 	void FixedUpdate() {
 		currentTime = Time.time;
-//		Debug.Log (alreadyEntered +  " " + txtmessage);
-//		Debug.Log (currentTime - enteredTime > showDuration);
 		if (alreadyEntered && currentMsg.text == txtmessage && Time.time - enteredTime > showDuration) {
-//			isCalled = true;
 			currentMsg.text = "";
 			if (enterOnce) {
 				Destroy (gameObject);
@@ -41,24 +33,10 @@ public class CheckPoint : MonoBehaviour {
 		}
 	}
 
-//	void OnGUI() {
-//		if (showMsg) {
-//			if (!created) {
-//				GUI.Label (new Rect (Screen.width / 2 - 50, 20, 100, 50), txtmessage, textStyle);
-//			} else {
-//				Debug.Log ("Other Text");
-////				GUI.Label (new Rect (Screen.width / 2 - 50, 20, 100, 50), txtmessage, textStyle);
-//			}
-//
-//		}
-//	}
-
 	void OnTriggerEnter(Collider other){
 		if (!alreadyEntered || !enterOnce) {
-			//Start timer and show Text
 			enteredTime = Time.time;
 			currentMsg.text = txtmessage;
-//			showMsg = true;
 
 			if(isCheckpoint) {
 				
