@@ -5,14 +5,14 @@ using UnityEngine.SceneManagement;
 public class ExitAndSave : MonoBehaviour {
 	public Transform Player;
 
-	void Awake()
-	{	
-		// set the initial playerPosition from PlayerPrefs
-		if (PlayerPrefs.HasKey ("x")) {
-			Player.position = new Vector3 (PlayerPrefs.GetFloat ("x"), PlayerPrefs.GetFloat ("y"), PlayerPrefs.GetFloat ("z"));
-			Player.eulerAngles = new Vector3(0, PlayerPrefs.GetFloat("Cam_y",0));
-		}
-	}
+//	void Awake()
+//	{	
+//		// set the initial playerPosition from PlayerPrefs
+//		if (PlayerPrefs.HasKey ("x")) {
+//			Player.position = new Vector3 (PlayerPrefs.GetFloat ("x"), PlayerPrefs.GetFloat ("y"), PlayerPrefs.GetFloat ("z"));
+//			Player.eulerAngles = new Vector3(0, PlayerPrefs.GetFloat("Cam_y",0));
+//		}
+//	}
 
 	public void SaveGameSettings(bool Quit)
 	{
