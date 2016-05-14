@@ -24,7 +24,10 @@ public class PlayerHealth : MonoBehaviour
 	bool damaged;                                               // True when the player gets damaged.
 	public static Vector3 respawnPoint;
 	public static Vector3 respawnPointAngle;
-	private UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
+//	private UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
+
+	PlayerControls playerControls;
+	CharacterController characterController;
 
 	void Awake ()
 	{
@@ -57,15 +60,20 @@ public class PlayerHealth : MonoBehaviour
 	}
 
 	void Start(){
+		characterController = GetComponent<CharacterController> ();
+		GameObject player = GameObject.Find ("Player");
+		playerControls = player.GetComponent<PlayerControls> ();
 		currentHealth = startingHealth;
-		controller = GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController> ();
-		tempRun = controller.movementSettings.RunMultiplier;
+//		controller = GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController> ();
+//		tempRun = controller.movementSettings.RunMultiplier;
+		tempRun = playerControls.runMultipler;
 	}
 		
 
 	void FixedUpdate ()
 	{
-		if (!outOfStamina && controller.Running && controller.Grounded && staminaCurrent > 0) {
+		Debug.Log (playerControls.isRunning);
+		if (!outOfStamina && playerControls.isRunning && staminaCurrent > 0) {
 			staminaCurrent -= staminaInterval;
 			if (staminaCurrent <= 0) {
 				StaminaDamage ();
@@ -75,7 +83,7 @@ public class PlayerHealth : MonoBehaviour
 			if (staminaCurrent >= staminaMax) {
 				outOfStamina = false;
 				staminaCurrent = staminaMax;
-				controller.movementSettings.RunMultiplier = tempRun;
+				playerControls.runMultipler = tempRun;
 				sliderFill.color = Color.white;
 			}
 		}
@@ -96,8 +104,8 @@ public class PlayerHealth : MonoBehaviour
 	}
 
 	private void StaminaDamage() {
-		tempRun = controller.movementSettings.RunMultiplier;
-		controller.movementSettings.RunMultiplier = 1.0f;
+		tempRun = playerControls.runMultipler;
+		playerControls.runMultipler = 1.0f;
 		sliderFill.color = Color.red;
 		outOfStamina = true;
 	}

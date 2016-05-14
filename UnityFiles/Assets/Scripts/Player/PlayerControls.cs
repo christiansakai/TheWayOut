@@ -11,6 +11,8 @@ public class PlayerControls : MonoBehaviour {
 	public bool invertControls = false;
 	public float joyStickXSensitivity = 2.0f;
 	public float joyStickYSensitivity = 2.0f;
+	public float runMultipler = 2.0f;
+	public bool isRunning = false;
 
 	float rotY = 0;
 	float rotX;
@@ -47,18 +49,27 @@ public class PlayerControls : MonoBehaviour {
 		horizontal = Input.GetAxis ("Horizontal") * strafeSpeed;
 
 		verticalVelocity += Physics.gravity.y * Time.deltaTime;
-		Vector3 speed = new Vector3 (horizontal, verticalVelocity, vertical);
 		 
 		if (characterController.isGrounded && Input.GetButtonDown ("Jump")) {
 			verticalVelocity = jumpHeight;
 		}
+
+		Vector3 speed = new Vector3 (horizontal, verticalVelocity, vertical);
+
+//		Debug.Log (verticalVelocity);
 		speed = transform.rotation * speed;
+
+		if (characterController.isGrounded && Input.GetButton ("Sprint")) {
+			speed = speed * runMultipler;
+			isRunning = true;
+		} else {
+			isRunning = false;
+		}
 
 		characterController.Move (speed * Time.deltaTime);
 	}
 
 	void OnControllerColliderHit(ControllerColliderHit other) {
-		Debug.Log ("Entered");
 		if(other.collider.tag == "Portal") {
 			GameObject portal = other.collider.GetComponent<StepThroughPortal> ().otherPortal;
 			transform.position = portal.transform.position + portal.transform.forward * 3;
