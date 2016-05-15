@@ -71,6 +71,7 @@ public class PlayerControls : MonoBehaviour {
 			verticalVelocity = jumpHeight;
 			isJumping = true;
 		} else if (isGrounded) {
+			verticalVelocity = 0;
 			isFalling = false;
 		}
 
@@ -90,14 +91,31 @@ public class PlayerControls : MonoBehaviour {
 	}
 
 	void OnControllerColliderHit(ControllerColliderHit other) {
+		Debug.Log ("I'm hit!");
 		if(other.collider.tag == "Portal") {
+			
 			Transform p = other.collider.transform;
 			Transform op = other.gameObject == leftPortal ? rightPortal.transform : leftPortal.transform;
 			isFalling = true;
 			transform.position = op.position + op.forward * 3;
-			transform.Rotate(0, p.rotation.eulerAngles.y + op.rotation.eulerAngles.y, 0);
+//			characterController.Move ((op.position + op.forward * 3));
+//			transform.Rotate(0, p.rotation.eulerAngles.y + op.rotation.eulerAngles.y, 0);
+			transform.rotation = Quaternion.Euler(0, p.rotation.y - transform.rotation.y + op.rotation.eulerAngles.y, 0);
 
+
+
+			float mag = characterController.velocity.magnitude;
+			Vector3 vel = op.forward * mag;
+//			Vector3 vel = new Vector3(op.forward.x * 20, op.forward.y * 20, op.forward.z * 20);
+
+			vel = transform.rotation * vel;
+//			characterController.Move (vel * Time.deltaTime);
+//			verticalVelocity = 0;
+//			characterController.velocity.Set (vel.x, vel.y, vel.z);
 //			Debug.Log (op.forward * verticalVelocity);
+//			characterController.velocity.Set(vel.x, vel.y, vel.z);
+
+//			characterController.Move (vel);
 
 		}
 	}
@@ -106,8 +124,13 @@ public class PlayerControls : MonoBehaviour {
 	{
 		previouslyGrounded = isGrounded;
 		RaycastHit hitInfo;
-		isGrounded = (Physics.SphereCast (transform.position, characterController.radius * (1.0f - characterController.stepOffset), Vector3.down, out hitInfo,
-			((characterController.height / 2f) - characterController.radius), ~0, QueryTriggerInteraction.Ignore));
+		if (Physics.SphereCast (transform.position, characterController.radius * (1.0f - characterController.stepOffset), Vector3.down, out hitInfo,
+			((characterController.height / 2f) - characterController.radius), ~0, QueryTriggerInteraction.Ignore))
+		{
+			isGrounded = hitInfo.collider.tag != "Portal";
+		} else {
+			isGrounded = false;
+		}
 		if (!previouslyGrounded && isGrounded && isJumping)
 		{
 			isJumping = false;
