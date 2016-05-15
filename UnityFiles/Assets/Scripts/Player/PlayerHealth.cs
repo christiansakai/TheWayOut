@@ -24,10 +24,8 @@ public class PlayerHealth : MonoBehaviour
 	bool damaged;                                               // True when the player gets damaged.
 	public static Vector3 respawnPoint;
 	public static Vector3 respawnPointAngle;
-//	private UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
 
 	PlayerControls playerControls;
-	CharacterController characterController;
 
 	void Awake ()
 	{
@@ -60,19 +58,15 @@ public class PlayerHealth : MonoBehaviour
 	}
 
 	void Start(){
-		characterController = GetComponent<CharacterController> ();
 		GameObject player = GameObject.Find ("Player");
 		playerControls = player.GetComponent<PlayerControls> ();
 		currentHealth = startingHealth;
-//		controller = GetComponent<UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController> ();
-//		tempRun = controller.movementSettings.RunMultiplier;
 		tempRun = playerControls.runMultipler;
 	}
 		
 
 	void FixedUpdate ()
 	{
-		Debug.Log (playerControls.isRunning);
 		if (!outOfStamina && playerControls.isRunning && staminaCurrent > 0) {
 			staminaCurrent -= staminaInterval;
 			if (staminaCurrent <= 0) {
@@ -89,9 +83,6 @@ public class PlayerHealth : MonoBehaviour
 		}
 		staminaSlider.value = staminaCurrent;
 
-		// If the player has just been damaged...
-		// ... set the colour of the damageImage to the flash colour.
-		// ... otherwise transition the colour back to clear.
 		damageImage.color = damaged ? flashColour : Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
 
 		// Reset the damaged flag.
@@ -137,8 +128,5 @@ public class PlayerHealth : MonoBehaviour
 		healthSlider.value = currentHealth;
 		isDead = false;
 	}
-		
-//	public void toRespawn(){
-//
-//	}
+
 }
