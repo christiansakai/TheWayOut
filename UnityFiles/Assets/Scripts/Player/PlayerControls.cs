@@ -13,13 +13,7 @@ public class PlayerControls : MonoBehaviour {
 	public float joyStickYSensitivity = 2.0f;
 	public float runMultipler = 5.0f;
 	public bool isRunning = false;
-
 	private bool isJumping = false;
-	private bool isFalling = true;
-
-	private bool isGrounded = false;
-	private bool previouslyGrounded = false;
-	Vector3 GroundContactNormal;
 
 	float rotY = 0;
 	float rotX;
@@ -28,6 +22,8 @@ public class PlayerControls : MonoBehaviour {
 	float vertical;
 	float horizontal;
 	float verticalVelocity = 0;
+
+	Collider colliderOn;
 
 	Vector3 prevPlatform = Vector3.zero;
 	GameObject platform;
@@ -54,7 +50,6 @@ public class PlayerControls : MonoBehaviour {
 		rotY += Input.GetAxis ("JoyStick Y") * joyStickYSensitivity;
 		rotY -= Input.GetAxis ("Mouse Y") * mouseSensitivity;
 
-
 		transform.Rotate (0, rotX, 0);
 
 		rotY = Mathf.Clamp (rotY, -clampLook, clampLook);
@@ -64,48 +59,40 @@ public class PlayerControls : MonoBehaviour {
 		vertical = Input.GetAxis ("Vertical") * forwardSpeed;
 		horizontal = Input.GetAxis ("Horizontal") * strafeSpeed;
 
-		verticalVelocity += Physics.gravity.y * Time.deltaTime;
-
-		GroundCheck ();
-		if (!isJumping && !isGrounded && !isFalling) {
-			isFalling = true;
-			verticalVelocity = 0.5f;
-		} else if (isGrounded && Input.GetButtonDown ("Jump")) {
-			verticalVelocity = jumpHeight;
+		//got rid of isGrounded and replaced it with bool check function
+		if (GroundCheck()) {
+			// assign isJumping to whether jump button is pressed
+			// change verticalVelocity based on whether isJumping is true or false
+			verticalVelocity = (isJumping = Input.GetButtonDown ("Jump")) ? jumpHeight : 0;
+		} else if (!isJumping) {
 			isJumping = true;
-		} else if (isGrounded) {
-			verticalVelocity = 0;
-			isFalling = false;
+			verticalVelocity = 0.5f;
+		} else {
+			verticalVelocity += Physics.gravity.y * Time.deltaTime;
 		}
-
-
+			
 		Vector3 speed = new Vector3 (horizontal, verticalVelocity, vertical);
 
 		speed = transform.rotation * speed;
 
-		if (isGrounded && Input.GetButton ("Sprint")) {
-			speed = speed * runMultipler;
-			isRunning = true;
-		} else {
-			isRunning = false;
+		//this needs to change so player speed is adjusted if running is pressed and is in air
+		if (isRunning = Input.GetButton ("Sprint")) {
+			speed *= isJumping ? runMultipler / 2 : runMultipler;
 		}
 
 		characterController.Move (speed * Time.deltaTime);
 	}
 
 	void OnControllerColliderHit(ControllerColliderHit other) {
-//		Debug.Log ("controllerCollide!");
 		if (other.collider.tag == "Portal") {
 			
 			Transform p = other.collider.transform;
 			Transform op = other.gameObject == leftPortal ? rightPortal.transform : leftPortal.transform;
-			isFalling = true;
+			isJumping = true;
 			transform.position = op.position + op.forward * 3;
 //			characterController.Move ((op.position + op.forward * 3));
 //			transform.Rotate(0, p.rotation.eulerAngles.y + op.rotation.eulerAngles.y, 0);
 			transform.rotation = Quaternion.Euler (0, p.rotation.y - transform.rotation.y + op.rotation.eulerAngles.y, 0);
-
-
 
 			float mag = characterController.velocity.magnitude;
 			Vector3 vel = op.forward * mag;
@@ -123,33 +110,34 @@ public class PlayerControls : MonoBehaviour {
 		}
 	}
 
-	private void GroundCheck()
+	private bool GroundCheck()
 	{
-		previouslyGrounded = isGrounded;
+		bool isGrounded;
 		RaycastHit hitInfo;
 		if (Physics.SphereCast (transform.position, characterController.radius * (1.0f - characterController.stepOffset), Vector3.down, out hitInfo,
 			((characterController.height / 2f) - characterController.radius), ~0, QueryTriggerInteraction.Ignore))
 		{
-			isGrounded = hitInfo.collider.tag != "Portal";
-			if (hitInfo.collider.tag == "Platform") {
-				Debug.Log (prevPlatform);
-				if (platform == hitInfo.collider.gameObject) {
-					Debug.Log (hitInfo.collider.transform.position - prevPlatform);
-					characterController.Move (hitInfo.collider.transform.position - prevPlatform);
+			colliderOn = hitInfo.collider;
+			isGrounded = colliderOn.tag != "Portal";
+			if (colliderOn.tag == "Platform") {
+				if (platform == colliderOn.gameObject) {
+					characterController.Move (colliderOn.transform.position - prevPlatform);
 				}
-				platform = hitInfo.collider.gameObject;
-				prevPlatform = hitInfo.collider.transform.position;
+				platform = colliderOn.gameObject;
+				prevPlatform = colliderOn.transform.position;
 			} else {
 				platform = null;
 				prevPlatform = Vector3.zero;
+			}
+			if (colliderOn.tag == "GravityLift") {
+				isGrounded = false;
+				verticalVelocity = colliderOn.gameObject.GetComponent<GravityLift> ().liftForce;
 			}
 		} else {
 			platform = null;
 			isGrounded = false;
 		}
-		if (!previouslyGrounded && isGrounded && isJumping)
-		{
-			isJumping = false;
-		}
+		isJumping = !isGrounded;
+		return isGrounded;
 	}
 }
