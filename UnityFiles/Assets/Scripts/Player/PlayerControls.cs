@@ -29,6 +29,9 @@ public class PlayerControls : MonoBehaviour {
 	float horizontal;
 	float verticalVelocity = 0;
 
+	Vector3 prevPlatform = Vector3.zero;
+	GameObject platform;
+
 	CharacterController characterController;
 
 	GameObject leftPortal;
@@ -91,8 +94,8 @@ public class PlayerControls : MonoBehaviour {
 	}
 
 	void OnControllerColliderHit(ControllerColliderHit other) {
-		Debug.Log ("I'm hit!");
-		if(other.collider.tag == "Portal") {
+//		Debug.Log ("controllerCollide!");
+		if (other.collider.tag == "Portal") {
 			
 			Transform p = other.collider.transform;
 			Transform op = other.gameObject == leftPortal ? rightPortal.transform : leftPortal.transform;
@@ -100,7 +103,7 @@ public class PlayerControls : MonoBehaviour {
 			transform.position = op.position + op.forward * 3;
 //			characterController.Move ((op.position + op.forward * 3));
 //			transform.Rotate(0, p.rotation.eulerAngles.y + op.rotation.eulerAngles.y, 0);
-			transform.rotation = Quaternion.Euler(0, p.rotation.y - transform.rotation.y + op.rotation.eulerAngles.y, 0);
+			transform.rotation = Quaternion.Euler (0, p.rotation.y - transform.rotation.y + op.rotation.eulerAngles.y, 0);
 
 
 
@@ -128,7 +131,20 @@ public class PlayerControls : MonoBehaviour {
 			((characterController.height / 2f) - characterController.radius), ~0, QueryTriggerInteraction.Ignore))
 		{
 			isGrounded = hitInfo.collider.tag != "Portal";
+			if (hitInfo.collider.tag == "Platform") {
+				Debug.Log (prevPlatform);
+				if (platform == hitInfo.collider.gameObject) {
+					Debug.Log (hitInfo.collider.transform.position - prevPlatform);
+					characterController.Move (hitInfo.collider.transform.position - prevPlatform);
+				}
+				platform = hitInfo.collider.gameObject;
+				prevPlatform = hitInfo.collider.transform.position;
+			} else {
+				platform = null;
+				prevPlatform = Vector3.zero;
+			}
 		} else {
+			platform = null;
 			isGrounded = false;
 		}
 		if (!previouslyGrounded && isGrounded && isJumping)
