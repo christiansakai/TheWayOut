@@ -67,7 +67,7 @@ public class PlayerHealth : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-		if (!outOfStamina && playerControls.isRunning && staminaCurrent > 0) {
+		if (!outOfStamina && !playerControls.isJumping && playerControls.isRunning && staminaCurrent > 0) {
 			staminaCurrent -= staminaInterval;
 			if (staminaCurrent <= 0) {
 				StaminaDamage ();
