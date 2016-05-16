@@ -13,7 +13,7 @@ public class PlayerControls : MonoBehaviour {
 	public float joyStickYSensitivity = 2.0f;
 	public float runMultipler = 5.0f;
 	public bool isRunning = false;
-	private bool isJumping = false;
+	public bool isJumping = false;
 
 	float rotY = 0;
 	float rotX;
