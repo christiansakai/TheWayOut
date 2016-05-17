@@ -22,6 +22,10 @@ public class PlayerControls : MonoBehaviour {
 	float vertical;
 	float horizontal;
 	float verticalVelocity = 0;
+	float currXVel;
+	float currZVel;
+
+	Vector3 temp;
 
 	Collider colliderOn;
 
@@ -32,6 +36,9 @@ public class PlayerControls : MonoBehaviour {
 
 	GameObject leftPortal;
 	GameObject rightPortal;
+
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -54,29 +61,86 @@ public class PlayerControls : MonoBehaviour {
 
 		rotY = Mathf.Clamp (rotY, -clampLook, clampLook);
 		Camera.main.transform.localRotation = Quaternion.Euler (rotY, 0, 0);
-		
-		//Movement
+
 		vertical = Input.GetAxis ("Vertical") * forwardSpeed;
-		horizontal = Input.GetAxis ("Horizontal") * strafeSpeed;
+		horizontal = Input.GetAxis ("Horizontal") * forwardSpeed;
+
 
 		//got rid of isGrounded and replaced it with bool check function
 		if (GroundCheck()) {
+			//Debug.Log ("Euler Angles " + transform.eulerAngles);
+//			Debug.Log ("Local Rotation " + transform.localRotation);
+//			Debug.Log (characterController.velocity);
+//			Debug.Log(vertical);
+//			Debug.Log(transform.forward);
+//			Debug.Log(characterController.velocity);
 			// assign isJumping to whether jump button is pressed
 			// change verticalVelocity based on whether isJumping is true or false
-			verticalVelocity = (isJumping = Input.GetButtonDown ("Jump")) ? jumpHeight : 0;
-		} else if (!isJumping) {
-			isJumping = true;
-			verticalVelocity = 0.5f;
+//			currXVel = vertical;
+//			currZVel = horizontal;
+//			Debug.Log(transform.forward);
+			if (isJumping = Input.GetButtonDown ("Jump")) {
+				verticalVelocity = jumpHeight;
+
+//				xVel = currXVel > 0 ? 9 : -9;
+//				zVel = currZVel > 0 ? 9 : -9;
+//				if (characterController.velocity.x < 0) {
+//					currXVel = -1 * characterController.velocity.x;
+//				} else {
+//					currXVel = characterController.velocity.x;
+//				}
+
+//				if (vertical < 0) {
+//					currZVel = -1 * Mathf.Abs(characterController.velocity.z);
+//				} else {
+//					currZVel = Mathf.Abs(characterController.velocity.z);
+//				}
+//
+//				if (horizontal < 0) {
+//					currXVel = -1 * Mathf.Abs(characterController.velocity.x);
+//				} else {
+//					currXVel = Mathf.Abs(characterController.velocity.x);
+//				}
+//				temp = characterController.velocity;
+//				temp = transform.rotation * temp;
+
+				currZVel = characterController.velocity.magnitude * Mathf.Round(Input.GetAxis("Vertical"));
+				currXVel = characterController.velocity.magnitude * Mathf.Round(Input.GetAxis("Horizontal"));
+//				Debug.Log();
+
+
+//				currXVel = characterController.velocity.x;
+//				currZVel = characterController.velocity.z;
+//				currXVel = characterController.velocity.x;
+
+//				currZVel = Mathf.Abs(characterController.velocity.z);
+
+//				Debug.Log ("Transform forward: " + transform.forward);
+//				Debug.Log ("Transform right: " + transform.right);
+//				Debug.Log (currXVel);
+			} else {
+				verticalVelocity = 0;
+			}
 		} else {
 			verticalVelocity += Physics.gravity.y * Time.deltaTime;
+//			vertical += xVel * Time.deltaTime;
+//			horizontal += zVel * Time.deltaTime;
+			horizontal = currXVel;
+			vertical = currZVel;
 		}
-			
-		Vector3 speed = new Vector3 (horizontal, verticalVelocity, vertical);
 
+		Vector3 speed = new Vector3 (horizontal, verticalVelocity, vertical);
+//		speed = transform.TransformDirection (speed);
 		speed = transform.rotation * speed;
+//		speed = transform.forward * speed;
+//		currXVel = transform.rotation * currXVel;
+//		currZVel = transform.rotation * currZVel;
 
 		//this needs to change so player speed is adjusted if running is pressed and is in air
 		if (isRunning = Input.GetButton ("Sprint")) {
+//			Debug.Log (characterController.velocity.x);
+//			horizontal = characterController.velocity.x;
+//			vertical = characterController.velocity.z;
 			speed *= isJumping ? runMultipler / 2 : runMultipler;
 		}
 
