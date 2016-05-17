@@ -24,6 +24,7 @@ public class PlayerControls : MonoBehaviour {
 	float verticalVelocity = 0;
 	float currXVel;
 	float currZVel;
+	float currentMag;
 
 	Vector3 temp;
 
@@ -54,7 +55,7 @@ public class PlayerControls : MonoBehaviour {
 		//Rotation
 		rotX = Input.GetAxis ("JoyStick X") * joyStickXSensitivity;
 		rotX += Input.GetAxis("Mouse X") * mouseSensitivity;
-		rotY += Input.GetAxis ("JoyStick Y") * joyStickYSensitivity;
+		rotY = !invertControls ? rotY + Input.GetAxis ("JoyStick Y") * joyStickYSensitivity : rotY - Input.GetAxis ("JoyStick Y") * joyStickYSensitivity ;
 		rotY -= Input.GetAxis ("Mouse Y") * mouseSensitivity;
 
 		transform.Rotate (0, rotX, 0);
@@ -64,6 +65,9 @@ public class PlayerControls : MonoBehaviour {
 
 		vertical = Input.GetAxis ("Vertical") * forwardSpeed;
 		horizontal = Input.GetAxis ("Horizontal") * forwardSpeed;
+
+		// Dividing this changes orientation pulls to the right
+		currentMag = characterController.velocity.magnitude;
 
 
 		//got rid of isGrounded and replaced it with bool check function
@@ -103,9 +107,14 @@ public class PlayerControls : MonoBehaviour {
 //				}
 //				temp = characterController.velocity;
 //				temp = transform.rotation * temp;
+			
+				currZVel = currentMag * Mathf.Round(Input.GetAxis("Vertical"));
+				currXVel = currentMag * Mathf.Round(Input.GetAxis("Horizontal"));
 
-				currZVel = characterController.velocity.magnitude * Mathf.Round(Input.GetAxis("Vertical"));
-				currXVel = characterController.velocity.magnitude * Mathf.Round(Input.GetAxis("Horizontal"));
+				if (isRunning) {
+					currZVel /= 2;
+					currXVel /= 2;
+				}
 //				Debug.Log();
 
 
@@ -122,11 +131,15 @@ public class PlayerControls : MonoBehaviour {
 				verticalVelocity = 0;
 			}
 		} else {
+			isRunning = false;
 			verticalVelocity += Physics.gravity.y * Time.deltaTime;
 //			vertical += xVel * Time.deltaTime;
 //			horizontal += zVel * Time.deltaTime;
-			horizontal = currXVel;
-			vertical = currZVel;
+			horizontal = horizontal / 2 + currXVel;
+			vertical = vertical / 2 +  currZVel;
+			//Working above
+//			horizontal = currXVel;
+//			vertical = currZVel;
 		}
 
 		Vector3 speed = new Vector3 (horizontal, verticalVelocity, vertical);
@@ -137,7 +150,7 @@ public class PlayerControls : MonoBehaviour {
 //		currZVel = transform.rotation * currZVel;
 
 		//this needs to change so player speed is adjusted if running is pressed and is in air
-		if (isRunning = Input.GetButton ("Sprint")) {
+		if (isRunning = Input.GetButton ("Sprint") && !isJumping) {
 //			Debug.Log (characterController.velocity.x);
 //			horizontal = characterController.velocity.x;
 //			vertical = characterController.velocity.z;
@@ -158,11 +171,11 @@ public class PlayerControls : MonoBehaviour {
 //			transform.Rotate(0, p.rotation.eulerAngles.y + op.rotation.eulerAngles.y, 0);
 			transform.rotation = Quaternion.Euler (0, p.rotation.y - transform.rotation.y + op.rotation.eulerAngles.y, 0);
 
-			float mag = characterController.velocity.magnitude;
-			Vector3 vel = op.forward * mag;
+			Vector3 vel = op.forward * currentMag;
+			Debug.Log (vel);
 //			Vector3 vel = new Vector3(op.forward.x * 20, op.forward.y * 20, op.forward.z * 20);
 
-			vel = transform.rotation * vel;
+//			vel = transform.rotation * vel;
 //			characterController.Move (vel * Time.deltaTime);
 //			verticalVelocity = 0;
 //			characterController.velocity.Set (vel.x, vel.y, vel.z);
