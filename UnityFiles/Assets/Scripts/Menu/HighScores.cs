@@ -4,7 +4,6 @@ using System.Collections;
 using System;
 using UnityEngine.Experimental.Networking;
 using SimpleJSON;
-using System.Linq;
 
 public class HighScores : MonoBehaviour {
 
@@ -52,17 +51,25 @@ public class HighScores : MonoBehaviour {
 			} else {
 				scores = JSON.Parse(request.downloadHandler.text);
 				FilterScores ("1", "");
-//				placeScores (scores);
 			}
 		}
 	}
 
-	void FilterScores(string level, string name) {
+	public void FilterScores(string level, string name) {
 		ArrayList filteredScores = new ArrayList();
+		ArrayList nameList = new ArrayList ();
 		for (int i = 0; i < scores.Count; i++) {
 			JSONNode score = scores [i];
-			if (score["level"]["name"].Value == level && (name == "" || score ["player"] ["name"].Value == name)) {
-				filteredScores.Add (score);
+			string playerName = score ["player"] ["name"].Value;
+			if (score["level"]["name"].Value == level) {
+				if (name == "") {
+					if (!nameList.Contains (playerName)) {
+						filteredScores.Add (score);
+						nameList.Add (playerName);
+					}
+				} else if (playerName == name) {
+					filteredScores.Add (score);
+				}
 			}
 		}
 		placeScores (filteredScores);
