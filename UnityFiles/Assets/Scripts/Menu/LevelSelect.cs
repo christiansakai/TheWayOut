@@ -20,18 +20,26 @@ public class LevelSelect : MonoBehaviour {
 		highScore = scorePanel.GetComponent<HighScores> ();
 	}
 
-	public void Filter() {
-		highScore.FilterScores (level, name);
+	public void Filter(string scores) {
+		highScore.FilterScores (level, scores);
 	}
 
 	public void ChangeLevel (string newLevel) {
 		level = newLevel;
-		Filter ();
+		Filter ("");
 	}
 
 	public void ChangeName (string newName) {
 		name = newName;
-		Filter ();
+		Filter (name);
+	}
+
+	public void DisplayPlayerScores (){
+		Filter (name);
+	}
+
+	public void DisplayAllScores () {
+		Filter ("");
 	}
 
 }
