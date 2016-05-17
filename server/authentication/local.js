@@ -18,7 +18,6 @@ module.exports = function (app) {
                     done(null, false);
                 } else {
                     // Properly authenticated.
-                    console.log('strategyFn',user)
                     done(null, user);
                 }
             }, function (err) {
@@ -27,7 +26,7 @@ module.exports = function (app) {
     };
 
     passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password' }, strategyFn));
-
+ 
     // A POST /login route is created to handle login.
     app.post('/login', function (req, res, next) {
         // callback of passport local authentification
