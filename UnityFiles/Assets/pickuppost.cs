@@ -18,6 +18,7 @@ public class pickuppost : MonoBehaviour {
 		// Drop object;
 		PickUpObject.carrying = false;
 		PickUpObject.carriedObject = null;
+		Debug.Log ("post respawn");
 		// change the post2 position back to the original
 		transform.position = PostRespawnPoint;
 	}
