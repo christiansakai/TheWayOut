@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 
 public class PauseGame : MonoBehaviour {
 	public Transform canvas;
@@ -10,6 +10,10 @@ public class PauseGame : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Pause ();
+		}
+		if (Input.GetKeyDown(KeyCode.Q)){
+			Time.timeScale = 1;
+			SceneManager.LoadScene ("Menu");
 		}
 	}
 
