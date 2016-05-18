@@ -147,6 +147,7 @@ public class PlayerControls : MonoBehaviour {
 	{
 		Vector3 shift = Vector3.zero;
 		RaycastHit hitInfo;
+		Vector3 shift = Vector3.zero;
 		if (Physics.SphereCast (transform.position, characterController.radius * (1.0f - characterController.stepOffset), Vector3.down, out hitInfo,
 			((characterController.height / 2f) - characterController.radius), ~0, QueryTriggerInteraction.Ignore))
 		{
