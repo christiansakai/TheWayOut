@@ -27,7 +27,8 @@ var schema = new Schema({
     ref: "Level"
   },
   checkpoint: {
-    type: Number
+    type: Schema.Types.ObjectId,
+    ref: "Checkpoint"
   }
 });
 
