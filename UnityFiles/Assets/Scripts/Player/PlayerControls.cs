@@ -145,29 +145,33 @@ public class PlayerControls : MonoBehaviour {
 
 	private bool GroundCheck()
 	{
-		RaycastHit hitInfo;
 		Vector3 shift = Vector3.zero;
+		RaycastHit hitInfo;
 		if (Physics.SphereCast (transform.position, characterController.radius * (1.0f - characterController.stepOffset), Vector3.down, out hitInfo,
 			((characterController.height / 2f) - characterController.radius), ~0, QueryTriggerInteraction.Ignore))
 		{
 			colliderOn = hitInfo.collider;
 			isGrounded = colliderOn.tag != "Portal";
-	
-
-			if (colliderOn.tag == "Platform") {
-				if (platform == colliderOn.gameObject) {
-					characterController.Move (colliderOn.transform.position - prevPlatform);
-				}
-				platform = colliderOn.gameObject;
-				prevPlatform = colliderOn.transform.position;
-			} else {
-				platform = null;
-				prevPlatform = Vector3.zero;
-			}
+			shift.y = (characterController.height / 2f - characterController.radius) - hitInfo.distance;
 			if (colliderOn.tag == "GravityLift") {
 				isGrounded = false;
 				verticalVelocity = colliderOn.gameObject.GetComponent<GravityLift> ().liftForce;
 			}
+
+			if (colliderOn.tag == "Platform") {
+				if (platform == colliderOn.gameObject) {
+					characterController.Move (colliderOn.transform.position - prevPlatform);
+				} else {
+					characterController.Move (shift);
+				}
+				platform = colliderOn.gameObject;
+				prevPlatform = colliderOn.transform.position;
+			} else if (isGrounded) {
+				platform = null;
+				prevPlatform = Vector3.zero;
+				characterController.Move (shift);
+			}
+
 		} else {
 			platform = null;
 			isGrounded = false;
