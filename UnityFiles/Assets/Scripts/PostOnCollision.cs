@@ -16,8 +16,7 @@ public class PostOnCollision : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
-		if (collision.gameObject.tag == "Post2" && PickUpObject.carrying == false) {
-			Debug.Log ("post2");
+		if (collision.gameObject.tag == "Post2") {
 			LeftGate.transform.Translate (Vector3.forward * 3);
 			RightGate.transform.Translate(Vector3.forward * (-3));
 		}
