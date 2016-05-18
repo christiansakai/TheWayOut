@@ -12,12 +12,14 @@ public class LevelSelect : MonoBehaviour {
 	HighScores highScore;
 	string level = "1";
 	string name = "";
+	State state;
 
 	// Use this for initialization
 	void Start () {
 		levelPanel = GameObject.Find ("LevelPanel");
 		scorePanel = GameObject.Find ("ScorePanel");
 		highScore = scorePanel.GetComponent<HighScores> ();
+		state = GameObject.Find ("GameState").GetComponent<State> ();
 	}
 
 	public void Filter(string scores) {
@@ -40,6 +42,22 @@ public class LevelSelect : MonoBehaviour {
 
 	public void DisplayAllScores () {
 		Filter ("");
+	}
+
+	public void LoadLevel() {
+		string toLoad = "";
+		if (level == "1") {
+			toLoad = "GetTrough";
+		} else if (level == "2") {
+			toLoad = "PlatformerInTheSky";
+		} else if (level == "3") {
+			toLoad = "CindyLevel";
+		}
+		state.LoadScene (toLoad);
+	}
+
+	public void LoadMenu() {
+		state.LoadScene ("Menu");
 	}
 
 }
