@@ -27,6 +27,8 @@ public class PlayerHealth : MonoBehaviour
 
 	PlayerControls playerControls;
 
+	public pickuppost pickpostscript;
+
 	void Awake ()
 	{
 		// Set the initial health of the player.
@@ -118,6 +120,7 @@ public class PlayerHealth : MonoBehaviour
 			toKill ();
 		}
 	}
+
 	public void toKill () {
 		isDead = true;
 		Debug.Log("You died"); 
@@ -127,6 +130,7 @@ public class PlayerHealth : MonoBehaviour
 		currentHealth = 100;
 		healthSlider.value = currentHealth;
 		isDead = false;
+		pickpostscript.PostRespawn ();
 	}
 
 }
