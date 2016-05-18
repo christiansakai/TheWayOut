@@ -14,6 +14,7 @@ public class PlayerControls : MonoBehaviour {
 	public float runMultipler = 5.0f;
 	public bool isRunning = false;
 	public bool isJumping = false;
+	public bool isGrounded = false;
 
 	float rotY = 0;
 	float rotX;
@@ -26,7 +27,10 @@ public class PlayerControls : MonoBehaviour {
 	float currZVel;
 	float currentMag;
 
-	Vector3 temp;
+	bool isPortaling = false;
+	bool isVertical = false;
+
+	Vector3 portalVel;
 
 	Collider colliderOn;
 
@@ -40,7 +44,6 @@ public class PlayerControls : MonoBehaviour {
 
 
 
-
 	// Use this for initialization
 	void Start () {
 		leftPortal = GameObject.Find ("LeftPortal");
@@ -51,7 +54,6 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
 		//Rotation
 		rotX = Input.GetAxis ("JoyStick X") * joyStickXSensitivity;
 		rotX += Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -72,41 +74,11 @@ public class PlayerControls : MonoBehaviour {
 
 		//got rid of isGrounded and replaced it with bool check function
 		if (GroundCheck()) {
-			//Debug.Log ("Euler Angles " + transform.eulerAngles);
-//			Debug.Log ("Local Rotation " + transform.localRotation);
-//			Debug.Log (characterController.velocity);
-//			Debug.Log(vertical);
-//			Debug.Log(transform.forward);
-//			Debug.Log(characterController.velocity);
-			// assign isJumping to whether jump button is pressed
-			// change verticalVelocity based on whether isJumping is true or false
-//			currXVel = vertical;
-//			currZVel = horizontal;
-//			Debug.Log(transform.forward);
+			portalVel = Vector3.zero;
+			isPortaling = false;
+			isVertical = false;
 			if (isJumping = Input.GetButtonDown ("Jump")) {
 				verticalVelocity = jumpHeight;
-
-//				xVel = currXVel > 0 ? 9 : -9;
-//				zVel = currZVel > 0 ? 9 : -9;
-//				if (characterController.velocity.x < 0) {
-//					currXVel = -1 * characterController.velocity.x;
-//				} else {
-//					currXVel = characterController.velocity.x;
-//				}
-
-//				if (vertical < 0) {
-//					currZVel = -1 * Mathf.Abs(characterController.velocity.z);
-//				} else {
-//					currZVel = Mathf.Abs(characterController.velocity.z);
-//				}
-//
-//				if (horizontal < 0) {
-//					currXVel = -1 * Mathf.Abs(characterController.velocity.x);
-//				} else {
-//					currXVel = Mathf.Abs(characterController.velocity.x);
-//				}
-//				temp = characterController.velocity;
-//				temp = transform.rotation * temp;
 			
 				currZVel = currentMag * Mathf.Round(Input.GetAxis("Vertical"));
 				currXVel = currentMag * Mathf.Round(Input.GetAxis("Horizontal"));
@@ -115,45 +87,33 @@ public class PlayerControls : MonoBehaviour {
 					currZVel /= 2;
 					currXVel /= 2;
 				}
-//				Debug.Log();
 
+			} 
 
-//				currXVel = characterController.velocity.x;
-//				currZVel = characterController.velocity.z;
-//				currXVel = characterController.velocity.x;
-
-//				currZVel = Mathf.Abs(characterController.velocity.z);
-
-//				Debug.Log ("Transform forward: " + transform.forward);
-//				Debug.Log ("Transform right: " + transform.right);
-//				Debug.Log (currXVel);
-			} else {
+			else {
 				verticalVelocity = 0;
 			}
-		} else {
+		} 
+		else if (isPortaling) {
+				verticalVelocity += Physics.gravity.y * Time.deltaTime;
+
+				if (!isVertical) {
+					horizontal = portalVel.x;
+					vertical = portalVel.z;
+				}
+			} 
+		else {
 			isRunning = false;
 			verticalVelocity += Physics.gravity.y * Time.deltaTime;
-//			vertical += xVel * Time.deltaTime;
-//			horizontal += zVel * Time.deltaTime;
 			horizontal = horizontal / 2 + currXVel;
 			vertical = vertical / 2 +  currZVel;
-			//Working above
-//			horizontal = currXVel;
-//			vertical = currZVel;
+
 		}
 
 		Vector3 speed = new Vector3 (horizontal, verticalVelocity, vertical);
-//		speed = transform.TransformDirection (speed);
 		speed = transform.rotation * speed;
-//		speed = transform.forward * speed;
-//		currXVel = transform.rotation * currXVel;
-//		currZVel = transform.rotation * currZVel;
 
-		//this needs to change so player speed is adjusted if running is pressed and is in air
 		if (isRunning = Input.GetButton ("Sprint") && !isJumping) {
-//			Debug.Log (characterController.velocity.x);
-//			horizontal = characterController.velocity.x;
-//			vertical = characterController.velocity.z;
 			speed *= isJumping ? runMultipler / 2 : runMultipler;
 		}
 
@@ -167,29 +127,24 @@ public class PlayerControls : MonoBehaviour {
 			Transform op = other.gameObject == leftPortal ? rightPortal.transform : leftPortal.transform;
 			isJumping = true;
 			transform.position = op.position + op.forward * 3;
-//			characterController.Move ((op.position + op.forward * 3));
-//			transform.Rotate(0, p.rotation.eulerAngles.y + op.rotation.eulerAngles.y, 0);
 			transform.rotation = Quaternion.Euler (0, p.rotation.y - transform.rotation.y + op.rotation.eulerAngles.y, 0);
 
-			Vector3 vel = op.forward * currentMag;
-			Debug.Log (vel);
-//			Vector3 vel = new Vector3(op.forward.x * 20, op.forward.y * 20, op.forward.z * 20);
+			if(op.transform.rotation.eulerAngles.z == 0 && op.transform.rotation.eulerAngles.y == 0) {
+				portalVel = new Vector3(0,characterController.velocity.y, 0);
+				isPortaling = true;
+				isVertical = true;
 
-//			vel = transform.rotation * vel;
-//			characterController.Move (vel * Time.deltaTime);
-//			verticalVelocity = 0;
-//			characterController.velocity.Set (vel.x, vel.y, vel.z);
-//			Debug.Log (op.forward * verticalVelocity);
-//			characterController.velocity.Set(vel.x, vel.y, vel.z);
-
-//			characterController.Move (vel);
-
+			}
+			else {
+				isVertical = false;
+				portalVel = new Vector3(0,0,currentMag);
+				isPortaling = true;
+			}
 		}
 	}
 
 	private bool GroundCheck()
 	{
-		bool isGrounded;
 		RaycastHit hitInfo;
 		if (Physics.SphereCast (transform.position, characterController.radius * (1.0f - characterController.stepOffset), Vector3.down, out hitInfo,
 			((characterController.height / 2f) - characterController.radius), ~0, QueryTriggerInteraction.Ignore))
