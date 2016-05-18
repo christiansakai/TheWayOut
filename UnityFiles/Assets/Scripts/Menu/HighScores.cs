@@ -15,7 +15,7 @@ public class HighScores : MonoBehaviour {
 	void Start () {
 		nameList = GameObject.Find ("NameList");
 		timeList = GameObject.Find ("TimeList");
-		state = GameObject.Find ("Standard Level Package").GetComponent<State> ();
+		state = GameObject.Find ("GameState").GetComponent<State> ();
 		StartCoroutine (GetScores ());
 	}
 
