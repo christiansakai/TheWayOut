@@ -146,11 +146,14 @@ public class PlayerControls : MonoBehaviour {
 	private bool GroundCheck()
 	{
 		RaycastHit hitInfo;
+		Vector3 shift = Vector3.zero;
 		if (Physics.SphereCast (transform.position, characterController.radius * (1.0f - characterController.stepOffset), Vector3.down, out hitInfo,
 			((characterController.height / 2f) - characterController.radius), ~0, QueryTriggerInteraction.Ignore))
 		{
 			colliderOn = hitInfo.collider;
 			isGrounded = colliderOn.tag != "Portal";
+	
+
 			if (colliderOn.tag == "Platform") {
 				if (platform == colliderOn.gameObject) {
 					characterController.Move (colliderOn.transform.position - prevPlatform);
