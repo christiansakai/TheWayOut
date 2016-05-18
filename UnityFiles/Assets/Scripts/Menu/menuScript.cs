@@ -9,9 +9,11 @@ public class menuScript : MonoBehaviour {
 	public Button exitText;
 	public string Level1;
 	public string SceneToLoad;
+	State state;
 
 	// Use this for initialization
 	void Start () {
+		state = GameObject.Find ("GameState").GetComponent<State> ();
 		quitMenu = quitMenu.GetComponent<Canvas> ();
 		startText = startText.GetComponent<Button> ();
 		exitText = exitText.GetComponent<Button> ();

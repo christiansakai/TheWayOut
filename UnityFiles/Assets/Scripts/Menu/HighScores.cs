@@ -10,10 +10,12 @@ public class HighScores : MonoBehaviour {
 	private GameObject nameList;
 	private GameObject timeList;
 	private JSONNode scores;
+	State state;
 
 	void Start () {
 		nameList = GameObject.Find ("NameList");
 		timeList = GameObject.Find ("TimeList");
+		state = GameObject.Find ("Standard Level Package").GetComponent<State> ();
 		StartCoroutine (GetScores ());
 	}
 
@@ -44,7 +46,7 @@ public class HighScores : MonoBehaviour {
 
 	IEnumerator GetScores ()
 	{
-		using (UnityWebRequest request = UnityWebRequest.Get ("http://localhost:1337/api/times")) {
+		using (UnityWebRequest request = UnityWebRequest.Get (state.url + "api/times")) {
 			yield return request.Send ();
 			if (request.isError) {
 				Debug.Log (request.error);

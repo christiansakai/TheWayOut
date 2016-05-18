@@ -17,7 +17,7 @@ public class CheckPoint : MonoBehaviour {
 
 	void Start(){
 
-		currentMsg = GameObject.Find ("MessageCenter").GetComponent<Text>();
+//		currentMsg = GameObject.Find ("MessageCenter").GetComponent<Text>();
 		if (isCheckpoint) {
 			txtmessage = "Checkpoint!";
 		}
