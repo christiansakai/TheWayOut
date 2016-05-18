@@ -2,51 +2,19 @@
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using UnityEngine.Experimental.Networking;
+using SimpleJSON;
 
 public class HighScores : MonoBehaviour {
 
-	private ArrayList scores = new ArrayList();
 	private GameObject nameList;
 	private GameObject timeList;
+	private JSONNode scores;
 
 	void Start () {
-
 		nameList = GameObject.Find ("NameList");
 		timeList = GameObject.Find ("TimeList");
-		
-		Score score1 = new Score ();
-		Score score2 = new Score ();
-		Score score3 = new Score ();
-		Score score4 = new Score ();
-		Score score5 = new Score ();
-		Score score6 = new Score ();
-
-		score1.name = "Bill Higgins";
-		score1.time = 12345;
-
-		score2.name = "Rudger Light";
-		score2.time = 85948;
-
-		score3.name = "Jo Blow";
-		score3.time = 9999;
-
-		score4.name = "Cindy Bindy";
-		score4.time = 12345;
-
-		score5.name = "Immad Facade";
-		score5.time = 12345;
-
-		score6.name = "Ari Bobarry";
-		score6.time = 12345;
-
-		scores.Add (score1);
-		scores.Add (score2);
-		scores.Add (score3);
-		scores.Add (score4);
-		scores.Add (score5);
-		scores.Add (score6);
-
-		placeScores (scores);
+		StartCoroutine (GetScores ());
 	}
 
 	void killTheKids(GameObject parent) {
@@ -58,24 +26,53 @@ public class HighScores : MonoBehaviour {
 	void placeScores(ArrayList list) {
 		killTheKids (nameList);
 		killTheKids (timeList);
-		foreach (Score score in list) {
+		foreach(JSONNode score in list) {
+//		for(int i = 0; i < list.Count; i++) {
 			GameObject name = new GameObject ();
 			GameObject time = new GameObject ();
 			name.transform.SetParent (nameList.transform);
 			time.transform.SetParent (timeList.transform);
 			Text nameText = name.AddComponent<Text> ();
 			Text timeText = time.AddComponent<Text> ();
-			nameText.text = name.name = score.name.ToString ();
-			timeText.text = time.name = score.time.ToString ();
+			nameText.text = score["player"]["name"];
+			timeText.text = score["time"];
 			nameText.font = timeText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 14);
 			nameText.horizontalOverflow = timeText.horizontalOverflow = HorizontalWrapMode.Overflow;
 			timeText.alignment = TextAnchor.UpperCenter;
 		}
 	}
 
-}
+	IEnumerator GetScores ()
+	{
+		using (UnityWebRequest request = UnityWebRequest.Get ("http://localhost:1337/api/times")) {
+			yield return request.Send ();
+			if (request.isError) {
+				Debug.Log (request.error);
+			} else {
+				scores = JSON.Parse(request.downloadHandler.text);
+				FilterScores ("1", "");
+			}
+		}
+	}
 
-public class Score {
-	public string name;
-	public int time;
+	public void FilterScores(string level, string name) {
+		ArrayList filteredScores = new ArrayList();
+		ArrayList nameList = new ArrayList ();
+		for (int i = 0; i < scores.Count; i++) {
+			JSONNode score = scores [i];
+			string playerName = score ["player"] ["name"].Value;
+			if (score["level"]["name"].Value == level) {
+				if (name == "") {
+					if (!nameList.Contains (playerName)) {
+						filteredScores.Add (score);
+						nameList.Add (playerName);
+					}
+				} else if (playerName == name) {
+					filteredScores.Add (score);
+				}
+			}
+		}
+		placeScores (filteredScores);
+	}
+
 }
