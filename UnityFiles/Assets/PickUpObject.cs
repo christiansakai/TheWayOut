@@ -3,9 +3,10 @@ using System.Collections;
 
 public class PickUpObject : MonoBehaviour {
 	GameObject mainCamera;
-	bool carrying;
+	bool carrying = false;
 	GameObject carriedObject;
 	public float distance;
+	public float smooth;
 	// Use this for initialization
 	void Start () {
 		mainCamera = GameObject.FindWithTag ("MainCamera");
@@ -14,8 +15,9 @@ public class PickUpObject : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (carrying) {
-			Debug.Log (carrying);
+			//change the position of the object with camera
 			carry(carriedObject);
+			// if E pressed, drop the object
 			checkDrop ();
 		} else {
 			pickup ();
@@ -23,12 +25,12 @@ public class PickUpObject : MonoBehaviour {
 	}
 
 	void carry(GameObject o){
-//		o.GetComponent<Rigidbody>().isKinematic = true;
-		o.transform.position = new Vector3(1,2,0);
+		o.transform.position = Vector3.Lerp(o.transform.position,mainCamera.transform.position + mainCamera.transform.forward * distance,Time.deltaTime*smooth);
 	}
 
 	void pickup(){
 		if (Input.GetKeyDown (KeyCode.E)) {
+			Debug.Log ("Pick up");
 			int x = Screen.width / 2;
 			int y = Screen.height / 2;
 
@@ -39,6 +41,7 @@ public class PickUpObject : MonoBehaviour {
 				if (p != null) {
 					carrying = true;
 					carriedObject = p.gameObject;
+//					p.gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
 				}
 			}
@@ -47,6 +50,7 @@ public class PickUpObject : MonoBehaviour {
 
 	void checkDrop(){
 		if (Input.GetKeyDown (KeyCode.E)) {
+			Debug.Log ("Drop");
 			dropObject ();
 		}
 	}
@@ -54,5 +58,6 @@ public class PickUpObject : MonoBehaviour {
 	void dropObject(){
 		carrying = false;
 		carriedObject = null;
+//		carriedObject.gameObject.GetComponent<Rigidbody> ().isKinematic = false;
 	}
 }
