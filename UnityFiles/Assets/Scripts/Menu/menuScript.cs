@@ -40,6 +40,7 @@ public class menuScript : MonoBehaviour {
 	}
 
 	public void LoadScene(){
+		DontDestroyOnLoad (state.transform.gameObject);
 		UnityEngine.SceneManagement.SceneManager.LoadScene (SceneToLoad);
 	}
 

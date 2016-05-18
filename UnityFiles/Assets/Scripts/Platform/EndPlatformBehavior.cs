@@ -6,7 +6,7 @@ public class EndPlatformBehavior : MonoBehaviour {
 	public string nextScene;
 
 	void OnTriggerEnter(Collider other) {
-//		DontDestroyOnLoad (GameObject.Find("GameState").transform.gameObject);
+		DontDestroyOnLoad (GameObject.Find("GameState").transform.gameObject);
 		UnityEngine.SceneManagement.SceneManager.LoadScene (nextScene);
 	}
 }
