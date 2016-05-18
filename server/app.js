@@ -7,7 +7,6 @@ var cookieParser = require("cookie-parser");
 // models
 var mongoose = require("mongoose");
 require("./models");
-require("./authentication")(app);
 
 var port = 1337;
 
@@ -15,6 +14,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+require("./authentication")(app);
 // api routes
 app.use("/api", require("./routes"));
 
