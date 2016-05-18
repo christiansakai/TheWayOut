@@ -164,6 +164,7 @@ public class PlayerControls : MonoBehaviour {
 				} else {
 					characterController.Move (shift);
 				}
+				isGrounded = true;
 				platform = colliderOn.gameObject;
 				prevPlatform = colliderOn.transform.position;
 			} else if (isGrounded) {
