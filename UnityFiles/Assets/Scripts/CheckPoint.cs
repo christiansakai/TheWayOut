@@ -4,7 +4,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.UI;
 
 public class CheckPoint : MonoBehaviour {
-	public Transform Player;
 	public bool enterOnce = true;
 	public float showDuration = 3.0f;
 	public bool isCheckpoint = false;
@@ -14,12 +13,13 @@ public class CheckPoint : MonoBehaviour {
 	private float enteredTime;
 	private float currentTime;
 	private Text currentMsg;
-
+	Transform Player;
 	void Start(){
 
 		currentMsg = GameObject.Find ("MessageCenter").GetComponent<Text>();
 		if (isCheckpoint) {
 			txtmessage = "Checkpoint!";
+			Player = GameObject.Find ("Player").transform;
 		}
 	}
 

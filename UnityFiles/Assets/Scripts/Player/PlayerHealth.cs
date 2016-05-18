@@ -41,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
 		// initial respawn point position
 //		if (!PlayerPrefs.HasKey ("RPx")) {
 //			// set the initial respawnPoint position to level start position;
-			respawnPoint = new Vector3 (0, 1, 0);
+			respawnPoint = new Vector3 (0, 4, 0);
 //		} else {
 //			respawnPoint = new Vector3 (PlayerPrefs.GetFloat ("RPx"), PlayerPrefs.GetFloat ("RPy"), PlayerPrefs.GetFloat ("RPz"));
 //		}
