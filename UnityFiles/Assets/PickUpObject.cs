@@ -4,7 +4,7 @@ using System.Collections;
 public class PickUpObject : MonoBehaviour {
 	GameObject mainCamera;
 	public static bool carrying = false;
-	GameObject carriedObject;
+	public static GameObject carriedObject;
 	public float distance;
 	public float smooth;
 	// Use this for initialization
