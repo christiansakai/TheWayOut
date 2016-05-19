@@ -109,7 +109,6 @@ public class PlayerControls : MonoBehaviour {
 			vertical = vertical / 2 +  currZVel;
 
 		}
-
 		Vector3 speed = new Vector3 (horizontal, verticalVelocity, vertical);
 		speed = transform.rotation * speed;
 

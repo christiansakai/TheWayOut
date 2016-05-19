@@ -52,7 +52,7 @@ public class HighScores : MonoBehaviour {
 				Debug.Log (request.error);
 			} else {
 				scores = JSON.Parse(request.downloadHandler.text);
-				FilterScores ("1", "");
+				FilterScores ("1", state.playerName);
 			}
 		}
 	}
