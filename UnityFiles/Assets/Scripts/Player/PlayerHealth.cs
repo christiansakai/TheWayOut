@@ -27,6 +27,8 @@ public class PlayerHealth : MonoBehaviour
 
 	PlayerControls playerControls;
 
+	public pickuppost pickpostscript;
+
 	void Awake ()
 	{
 		// Set the initial health of the player.
@@ -41,7 +43,7 @@ public class PlayerHealth : MonoBehaviour
 		// initial respawn point position
 //		if (!PlayerPrefs.HasKey ("RPx")) {
 //			// set the initial respawnPoint position to level start position;
-			respawnPoint = new Vector3 (0, 1, 0);
+			respawnPoint = new Vector3 (0, 4, 0);
 //		} else {
 //			respawnPoint = new Vector3 (PlayerPrefs.GetFloat ("RPx"), PlayerPrefs.GetFloat ("RPy"), PlayerPrefs.GetFloat ("RPz"));
 //		}
@@ -118,6 +120,7 @@ public class PlayerHealth : MonoBehaviour
 			toKill ();
 		}
 	}
+
 	public void toKill () {
 		isDead = true;
 		Debug.Log("You died"); 
@@ -127,6 +130,7 @@ public class PlayerHealth : MonoBehaviour
 		currentHealth = 100;
 		healthSlider.value = currentHealth;
 		isDead = false;
+		pickpostscript.PostRespawn ();
 	}
 
 }

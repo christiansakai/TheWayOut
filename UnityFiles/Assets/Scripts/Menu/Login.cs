@@ -3,16 +3,18 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.Experimental.Networking;
+using SimpleJSON;
 
 public class Login : MonoBehaviour {
 	public GameObject username;
 	public GameObject password;
 	private string Username;
 	private string Password;
+	State state;
 
 	// Use this for initialization
 	void Start () {
-	
+		state = GameObject.Find ("GameState").GetComponent<State> ();
 	}
 	
 	// Update is called once per frame
@@ -34,33 +36,34 @@ public class Login : MonoBehaviour {
 	}
 
 	public void LogInEnter(){
-		SceneManager.LoadScene ("Menu");
-	}
-
-	public class UserData
-	{
-		public string user;
-		public static UserData CreateFromJson(string jsonString)
-		{
-			return JsonUtility.FromJson<UserData> (jsonString);
-		}
+		Username = username.GetComponent<InputField> ().text;
+		Password = password.GetComponent<InputField> ().text;
+		StartCoroutine(UserAuthentification(Username, Password));
+//		SceneManager.LoadScene ("Menu");
 	}
 
 	IEnumerator UserAuthentification(string username, string password)
 	{
 		WWWForm form = new WWWForm();
-		form.AddField("email", username);    // email is the username;
-		form.AddField("password", password);
-		using (UnityWebRequest request = UnityWebRequest.Post ("http://localhost:1337/login", form)) {
+		form.AddField("email", Username);    // email is the username;
+		form.AddField("password", Password);
+		using (UnityWebRequest request = UnityWebRequest.Post (state.url + "login", form)) {
 			yield return request.Send();
 
 			if(request.isError) {
 				Debug.Log(request.error);
 			}
 			else {
-				UserData CurrentUser = UserData.CreateFromJson (request.downloadHandler.text);
-				LogInEnter ();
+				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
+				state.StoreUser (CurrentUser ["user"]);
+				state.LoadScene ("Menu");
 			}
 		}
+	}
+
+	public void SignUp() {
+		Username = username.GetComponent<InputField> ().text;
+		Password = password.GetComponent<InputField> ().text;
+
 	}
 }

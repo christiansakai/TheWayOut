@@ -8,10 +8,12 @@ public class menuScript : MonoBehaviour {
 	public Button startText;
 	public Button exitText;
 	public string Level1;
-	public string SceneToLoad;
+//	public string SceneToLoad;
+	State state;
 
 	// Use this for initialization
 	void Start () {
+		state = GameObject.Find ("GameState").GetComponent<State> ();
 		quitMenu = quitMenu.GetComponent<Canvas> ();
 		startText = startText.GetComponent<Button> ();
 		exitText = exitText.GetComponent<Button> ();
@@ -34,11 +36,11 @@ public class menuScript : MonoBehaviour {
 
 	public void StartLevel()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene (Level1);   // load Scene
+		state.LoadScene (state.currentLevel);
 	}
 
 	public void LoadScene(){
-		UnityEngine.SceneManagement.SceneManager.LoadScene (SceneToLoad);
+		state.LoadScene ("LevelSelect");
 	}
 
 	public void ExitGame(){

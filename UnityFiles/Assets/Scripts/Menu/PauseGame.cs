@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 
 public class PauseGame : MonoBehaviour {
 	public Transform canvas;
@@ -11,18 +11,20 @@ public class PauseGame : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Pause ();
 		}
+		if (Input.GetKeyDown(KeyCode.Q)){
+			Time.timeScale = 1;
+			DontDestroyOnLoad (GameObject.Find("GameState").transform.gameObject);
+			SceneManager.LoadScene ("Menu");
+		}
 	}
 
 	public void Pause(){
 		if (canvas.gameObject.activeInHierarchy == false) {
 				canvas.gameObject.SetActive (true);
 				Time.timeScale = 0;
-				//				controller.enabled = false;
-
 			} else {
 				canvas.gameObject.SetActive (false);
 				Time.timeScale = 1;
-				//				controller.enabled = true;
 			}
 
 	}
