@@ -13,6 +13,7 @@ public class LevelSelect : MonoBehaviour {
 	string level = "1";
 	string name = "";
 	State state;
+	bool allTime = false;
 
 	// Use this for initialization
 	void Start () {
@@ -20,40 +21,30 @@ public class LevelSelect : MonoBehaviour {
 		scorePanel = GameObject.Find ("ScorePanel");
 		highScore = scorePanel.GetComponent<HighScores> ();
 		state = GameObject.Find ("GameState").GetComponent<State> ();
+		name = state.playerName;
 	}
 
-	public void Filter(string scores) {
-		highScore.FilterScores (level, scores);
+	public void Filter() {
+		highScore.FilterScores (level, allTime ? "" : name);
 	}
 
 	public void ChangeLevel (string newLevel) {
 		level = newLevel;
-		Filter ("");
-	}
-
-	public void ChangeName (string newName) {
-		name = newName;
-		Filter (name);
+		Filter ();
 	}
 
 	public void DisplayPlayerScores (){
-		Filter (name);
+		allTime = false;
+		Filter ();
 	}
 
 	public void DisplayAllScores () {
-		Filter ("");
+		allTime = true;
+		Filter ();
 	}
 
 	public void LoadLevel() {
-		string toLoad = "";
-		if (level == "1") {
-			toLoad = "GetTrough";
-		} else if (level == "2") {
-			toLoad = "PlatformerInTheSky";
-		} else if (level == "3") {
-			toLoad = "CindyLevel";
-		}
-		state.LoadScene (toLoad);
+		state.LoadScene (level);
 	}
 
 	public void LoadMenu() {

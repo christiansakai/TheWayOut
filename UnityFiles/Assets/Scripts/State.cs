@@ -14,10 +14,6 @@ public class State : MonoBehaviour {
 
 	JSONNode levels;
 
-	void Start () {
-//		StartCoroutine (GetLevels ());
-	}
-
 	public void LoadScene (string scene) {
 		DontDestroyOnLoad (transform.gameObject);
 		SceneManager.LoadScene (scene);
