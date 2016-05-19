@@ -8,7 +8,7 @@ public class menuScript : MonoBehaviour {
 	public Button startText;
 	public Button exitText;
 	public string Level1;
-	public string SceneToLoad;
+//	public string SceneToLoad;
 	State state;
 
 	// Use this for initialization
@@ -36,12 +36,11 @@ public class menuScript : MonoBehaviour {
 
 	public void StartLevel()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene (Level1);   // load Scene
+		state.LoadScene (state.currentLevel);
 	}
 
 	public void LoadScene(){
-		DontDestroyOnLoad (state.transform.gameObject);
-		UnityEngine.SceneManagement.SceneManager.LoadScene (SceneToLoad);
+		state.LoadScene ("LevelSelect");
 	}
 
 	public void ExitGame(){

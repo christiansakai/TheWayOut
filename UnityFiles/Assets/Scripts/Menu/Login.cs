@@ -55,7 +55,6 @@ public class Login : MonoBehaviour {
 			}
 			else {
 				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
-				Debug.Log (CurrentUser["user"]);
 				state.StoreUser (CurrentUser ["user"]);
 				state.LoadScene ("Menu");
 			}
