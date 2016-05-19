@@ -29,16 +29,14 @@ module.exports = require("express").Router()
   User.findTimeOfOneLevel(req.user._id, req.params.level)
   .then(timeinfo => res.json(timeinfo));
 })
+
 .get("/:id", ({user}, res, next) => res.json(user.sanitize()))
 
 
 .post("/:id", ({user, body}, res, next) => {
-  Level.findOne({name: body.currentLevel})
-  .then(level => {
-    user.set({currentLevel: level._id});
-    return user.save();
-  })
-  .populate("currentLevel")
+  // body {currentLevel, X,Y,Z,Angle}
+  console.log(body)
+  user.updateInfos(body)
   .then(updatedPlayer => res.json(updatedPlayer.sanitize()))
   .catch(next);
 })

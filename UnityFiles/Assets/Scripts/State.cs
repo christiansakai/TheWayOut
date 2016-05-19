@@ -16,7 +16,9 @@ public class State : MonoBehaviour {
 
 	public void LoadScene (string scene) {
 		DontDestroyOnLoad (transform.gameObject);
+		Debug.Log (scene);
 		SceneManager.LoadScene (scene);
+		currentLevel = currentLevel + 1;
 	}
 
 	public void StoreUser(JSONNode user) {
@@ -26,6 +28,29 @@ public class State : MonoBehaviour {
 		StartCoroutine (GetUserInfo ());
 	}
 
+	public void SaveUserInfo(){
+		//save user respawn point and user current level 
+		StartCoroutine(PostUserInfoWithCheckpoint());
+	}
+
+	IEnumerator PostUserInfoWithCheckpoint(){
+		WWWForm form = new WWWForm();
+		form.AddField ("currentLevel", currentLevel);
+		form.AddField ("X", PlayerHealth.respawnPoint.x.ToString());
+		form.AddField ("Y", PlayerHealth.respawnPoint.y.ToString());
+		form.AddField ("Z", PlayerHealth.respawnPoint.z.ToString());
+		form.AddField ("Angle", PlayerHealth.respawnPoint.z.ToString());
+		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/users/" + playerid, form)) {
+			yield return request.Send();
+
+			if(request.isError) {
+				Debug.Log(request.error);
+			}
+			else {
+				Debug.Log ("updated with " + request.downloadHandler.text);
+			}
+		}
+	}
 
 	IEnumerator PostUserInfo(){
 		WWWForm form = new WWWForm();
@@ -54,26 +79,14 @@ public class State : MonoBehaviour {
 			else {
 				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
 				currentLevel = CurrentUser ["currentLevel"] ["name"].Value;
+				// If the player has never played before, set the currentLevel to level 1;
 				if (currentLevel == null) {
 					currentLevel = "1";
-					StartCoroutine (PostUserInfo ());
+//					StartCoroutine (PostUserInfo ());
 				}
 				Debug.Log (CurrentUser);
 			}
 		}
 	}
-
-//	IEnumerator GetLevels()
-//	{
-//		using (UnityWebRequest request = UnityWebRequest.Get (url + "api/levels/")) {
-//			yield return request.Send();
-//
-//			if(request.isError) {
-//				Debug.Log(request.error);
-//			}
-//			else {
-//				levels = JSON.Parse(request.downloadHandler.text);
-//			}
-//		}
-//	}
+		
 }

@@ -15,10 +15,7 @@ public class PauseGame : MonoBehaviour {
 			Pause ();
 		}
 		if (Input.GetKeyDown(KeyCode.P)){
-			// Exit to the Start Menu
 			SaveGameSettings (true);
-			// Save player data to the backend database
-
 		}
 	}
 
@@ -37,7 +34,10 @@ public class PauseGame : MonoBehaviour {
 	{
 		if (Quit) {
 			Time.timeScale = 1;
+			// Exit to the Start Menu
 			state.LoadScene ("Menu");
+			// Save player data to the backend database
+			state.SaveUserInfo();
 		}
 	}
 		

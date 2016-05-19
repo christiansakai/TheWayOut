@@ -36,6 +36,7 @@ public class menuScript : MonoBehaviour {
 
 	public void StartLevel()
 	{
+		Debug.Log (state.currentLevel);
 		state.LoadScene (state.currentLevel);
 	}
 

@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var Schema = mongoose.Schema;
 var Time = mongoose.model("Time");
 var Level = mongoose.model("Level");
+var Respawnpoint = mongoose.model("Respawnpoint");
 
 var schema = new Schema({
   name: {
@@ -26,9 +27,9 @@ var schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Level"
   },
-  checkpoint: {
+  respawnpoint: {
     type: Schema.Types.ObjectId,
-    ref: "Checkpoint"
+    ref: "Respawnpoint"
   }
 });
 
@@ -36,9 +37,26 @@ var schema = new Schema({
 schema.statics.findTimeOfOneLevel = function(userId, level){
   return Level.findOne({name: level})
   .then(foundlevel => {
-    return Time.find({"player":userId,"level":foundlevel._id}).exec()
+    return Time.find({"player":userId,"level":foundlevel._id}).exec();
   })
   
+}
+
+// update user infos
+schema.methods.updateInfos = function(body){
+  var self = this;
+  return Level.findOne({name: body.currentLevel})
+  .then(level => {
+    self.set({currentLevel: level._id});
+    return user.save();
+  })
+  .then((updatedUser) => {
+    return Respawnpoint.create({X: body.X, Y: body.Y, Z: body.Z, Angle: body.Angle})
+  })
+  .then(respawn => {
+    self.set({respawnpoint: respawn._id})
+    return user.save()
+  })
 }
 
 

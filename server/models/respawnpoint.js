@@ -4,7 +4,10 @@ var crypto = require('crypto');
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
-	x: Number,
-	y: Number,
-	z: Number
+	X: Number,
+	Y: Number,
+	Z: Number,
+	Angle: Number
 })
+
+module.exports = mongoose.model("Respawnpoint", schema);
