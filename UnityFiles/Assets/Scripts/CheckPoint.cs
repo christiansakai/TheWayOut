@@ -14,6 +14,7 @@ public class CheckPoint : MonoBehaviour {
 	private float currentTime;
 	private Text currentMsg;
 	Transform Player;
+
 	void Start(){
 
 		currentMsg = GameObject.Find ("MessageCenter").GetComponent<Text>();
@@ -53,10 +54,10 @@ public class CheckPoint : MonoBehaviour {
 //				//health
 //				//		PlayerPrefs.SetInt ("currentHealth", PlayerHealth.currentHealth);
 //				//respawnPoint
-//				PlayerPrefs.SetFloat ("RPx", PlayerHealth.respawnPoint.x);
-//				PlayerPrefs.SetFloat ("RPy", PlayerHealth.respawnPoint.y);
-//				PlayerPrefs.SetFloat ("RPz", PlayerHealth.respawnPoint.z);
-//				PlayerPrefs.SetFloat ("RPA_y", PlayerHealth.respawnPointAngle.y);
+				PlayerPrefs.SetFloat ("RPx", PlayerHealth.respawnPoint.x);
+				PlayerPrefs.SetFloat ("RPy", PlayerHealth.respawnPoint.y);
+				PlayerPrefs.SetFloat ("RPz", PlayerHealth.respawnPoint.z);
+				PlayerPrefs.SetFloat ("RPA_y", PlayerHealth.respawnPointAngle.y);
 				// stamina
 			};
 

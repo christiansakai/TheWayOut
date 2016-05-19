@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class ExitAndSave : MonoBehaviour {
 	public Transform Player;
-
+	State state;
 //	void Awake()
 //	{	
 //		// set the initial playerPosition from PlayerPrefs
@@ -18,7 +18,7 @@ public class ExitAndSave : MonoBehaviour {
 	{
 		if (Quit) {
 			Time.timeScale = 1;
-			SceneManager.LoadScene ("Menu");
+			state.LoadScene ("Menu");
 		}
 	}
 }

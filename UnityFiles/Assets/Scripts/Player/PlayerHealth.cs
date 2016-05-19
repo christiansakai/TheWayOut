@@ -130,6 +130,7 @@ public class PlayerHealth : MonoBehaviour
 		currentHealth = 100;
 		healthSlider.value = currentHealth;
 		isDead = false;
+		// respawn the pillar in level3
 		pickpostscript.PostRespawn ();
 	}
 
