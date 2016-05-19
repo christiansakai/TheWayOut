@@ -26,6 +26,7 @@ public class PlayerControls : MonoBehaviour {
 	float currXVel;
 	float currZVel;
 	float currentMag;
+	GameObject templight;
 
 	bool isPortaling = false;
 	bool isVertical = false;
@@ -46,6 +47,7 @@ public class PlayerControls : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+//		templight = GameObject.FindGameObjectWithTag ("templight");
 		leftPortal = GameObject.Find ("LeftPortal");
 		rightPortal = GameObject.Find ("RightPortal");
 		characterController = GetComponent<CharacterController> ();
@@ -64,6 +66,7 @@ public class PlayerControls : MonoBehaviour {
 
 		rotY = Mathf.Clamp (rotY, -clampLook, clampLook);
 		Camera.main.transform.localRotation = Quaternion.Euler (rotY, 0, 0);
+//		templight.transform.localRotation = Quaternion.Euler (rotY, 0, 0);
 
 		vertical = Input.GetAxis ("Vertical") * forwardSpeed;
 		horizontal = Input.GetAxis ("Horizontal") * forwardSpeed;
