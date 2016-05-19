@@ -34,10 +34,10 @@ public class PauseGame : MonoBehaviour {
 	{
 		if (Quit) {
 			Time.timeScale = 1;
-			// Exit to the Start Menu
-			state.LoadScene ("Menu");
 			// Save player data to the backend database
 			state.SaveUserInfo();
+			// Exit to the Start Menu
+			state.LoadScene ("Menu");
 		}
 	}
 		

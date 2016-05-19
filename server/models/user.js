@@ -27,7 +27,7 @@ var schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Level"
   },
-  respawnpoint: {
+  respawnPoint: {
     type: Schema.Types.ObjectId,
     ref: "Respawnpoint"
   }
@@ -48,14 +48,14 @@ schema.methods.updateInfos = function(body){
   return Level.findOne({name: body.currentLevel})
   .then(level => {
     self.set({currentLevel: level._id});
-    return user.save();
+    return self.save();
   })
   .then((updatedUser) => {
     return Respawnpoint.create({X: body.X, Y: body.Y, Z: body.Z, Angle: body.Angle})
   })
   .then(respawn => {
-    self.set({respawnpoint: respawn._id})
-    return user.save()
+    self.set({respawnPoint: respawn._id})
+    return self.save()
   })
 }
 

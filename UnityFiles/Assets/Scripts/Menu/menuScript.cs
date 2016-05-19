@@ -7,8 +7,6 @@ public class menuScript : MonoBehaviour {
 	public Canvas quitMenu;
 	public Button startText;
 	public Button exitText;
-	public string Level1;
-//	public string SceneToLoad;
 	State state;
 
 	// Use this for initialization
@@ -36,8 +34,8 @@ public class menuScript : MonoBehaviour {
 
 	public void StartLevel()
 	{
-		Debug.Log (state.currentLevel);
 		state.LoadScene (state.currentLevel);
+		// set the respawnpoint 
 	}
 
 	public void LoadScene(){
