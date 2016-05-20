@@ -34,25 +34,15 @@ public class PlayerHealth : MonoBehaviour
 
 	void Awake ()
 	{
-		// Set the initial health of the player.
-//		if (!PlayerPrefs.HasKey("currentHealth")) {
-//			currentHealth = startingHealth;
-//		} else {
-//			currentHealth = PlayerPrefs.GetInt("currentHealth");
-//		}
-			
 		staminaCurrent = staminaMax;
 
-//		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = GameObject.Find ("GameState").GetComponent<State> ();
 		GameObject player = GameObject.Find ("Player");
 		playerControls = player.GetComponent<PlayerControls> ();
-
-		
-
-		//|| state.respawnPoint ["X"].Value == ""
+	
+		//Get the initial respawnpoint info either from level starting point or from gamestate controller
 		if (state.respawnPoint ["X"].Value == "") {
-			respawnPoint = new Vector3 (0, 4, 0);   // player.transform.position;
-			respawnPointAngle = new Vector3 (0, 1);
+			respawnPoint = new Vector3 (player.transform.position.x, player.transform.position.y, player.transform.position.z); 
 		} else {
 			player.transform.position = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
 			respawnPoint = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
@@ -127,7 +117,6 @@ public class PlayerHealth : MonoBehaviour
 
 	public void toKill () {
 		isDead = true;
-		Debug.Log("You died"); 
 //		toRespawn ();
 		transform.position = respawnPoint;
 		transform.eulerAngles = respawnPointAngle; 

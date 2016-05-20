@@ -11,6 +11,6 @@ public class EndPlatformBehavior : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		state.LoadScene (state.currentLevel);
+		state.LoadScene (nextScene);
 	}
 }
