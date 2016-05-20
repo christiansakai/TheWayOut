@@ -37,7 +37,7 @@ public class State : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-				Debug.Log ("updated with " + request.downloadHandler.text);
+//				Debug.Log ("updated with " + request.downloadHandler.text);
 			}
 		}
 	}
@@ -58,22 +58,8 @@ public class State : MonoBehaviour {
 					currentLevel = "1";
 					StartCoroutine (PostUserInfo ());
 				}
-				Debug.Log (CurrentUser);
 			}
 		}
 	}
 
-//	IEnumerator GetLevels()
-//	{
-//		using (UnityWebRequest request = UnityWebRequest.Get (url + "api/levels/")) {
-//			yield return request.Send();
-//
-//			if(request.isError) {
-//				Debug.Log(request.error);
-//			}
-//			else {
-//				levels = JSON.Parse(request.downloadHandler.text);
-//			}
-//		}
-//	}
 }

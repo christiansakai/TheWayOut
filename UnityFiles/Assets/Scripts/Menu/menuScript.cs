@@ -8,10 +8,8 @@ public class menuScript : MonoBehaviour {
 	public Button startText;
 	public Button exitText;
 	public string Level1;
-//	public string SceneToLoad;
 	State state;
 
-	// Use this for initialization
 	void Start () {
 		state = GameObject.Find ("GameState").GetComponent<State> ();
 		quitMenu = quitMenu.GetComponent<Canvas> ();
@@ -46,6 +44,5 @@ public class menuScript : MonoBehaviour {
 	public void ExitGame(){
 		Application.Quit ();
 	}
-		
 
 }
