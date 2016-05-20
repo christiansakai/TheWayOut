@@ -16,15 +16,17 @@ public class State : MonoBehaviour {
 	JSONNode levels;
 
 	public void LoadScene (string scene) {
-		DontDestroyOnLoad (transform.gameObject);
-		SceneManager.LoadScene (scene);
 		if (scene == "1") {
 			currentLevel = "1";
 		} else if ( scene == "2"){
+			Debug.Log (scene);
 			currentLevel = "2";
 		} else if (scene == "3"){
 			currentLevel = "3";
 		}
+		DontDestroyOnLoad (transform.gameObject);
+		SceneManager.LoadScene (scene);
+
 	}
 
 	// get user info from login 
@@ -39,16 +41,15 @@ public class State : MonoBehaviour {
 	public void SaveUserInfo(){
 		StartCoroutine(PostUserInfoWithCheckpoint());
 	}
-		
 
 	IEnumerator PostUserInfoWithCheckpoint(){
 		WWWForm form = new WWWForm();
-		Debug.Log ("save" + PlayerHealth.respawnPoint);
+		Debug.Log ("currentLevel" + currentLevel);
 		form.AddField ("currentLevel", currentLevel);
 		form.AddField ("X", PlayerHealth.respawnPoint.x.ToString());
 		form.AddField ("Y", PlayerHealth.respawnPoint.y.ToString());
 		form.AddField ("Z", PlayerHealth.respawnPoint.z.ToString());
-		form.AddField ("Angle", PlayerHealth.respawnPointAngle.ToString());
+		form.AddField ("Angle", PlayerHealth.respawnPointAngle.y.ToString());
 		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/users/" + playerid, form)) {
 			yield return request.Send();
 
@@ -74,8 +75,7 @@ public class State : MonoBehaviour {
 			else {
 				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
 				currentLevel = CurrentUser ["currentLevel"] ["name"].Value;
-				respawnPoint = CurrentUser ["respawnPoint"];  
-				Debug.Log (respawnPoint["X"].Value);
+				respawnPoint = CurrentUser ["respawnPoint"]; 
 				// If the player has never played before, set the currentLevel to level 1;
 				if (currentLevel == "") {
 					currentLevel = "1";

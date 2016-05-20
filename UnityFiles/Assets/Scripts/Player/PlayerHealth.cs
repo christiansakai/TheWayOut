@@ -52,15 +52,13 @@ public class PlayerHealth : MonoBehaviour
 			respawnPoint = new Vector3 (0, 4, 0);
 			respawnPointAngle = new Vector3 (0, 1);
 		} else {
-			Debug.Log ("PlayerHealthRS");
-			player.transform.position = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["X"].Value));
-			respawnPoint = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["X"].Value));
+			player.transform.position = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
+			respawnPoint = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
 			respawnPointAngle = new Vector3 (0, float.Parse (state.respawnPoint ["Angle"].Value));
 			state.respawnPoint ["X"].Value = "";
 			state.respawnPoint ["Y"].Value = "";
 			state.respawnPoint ["Z"].Value = "";
 			state.respawnPoint ["Angle"].Value = "";
-
 		}
 		
 	}
