@@ -43,13 +43,15 @@ public class PlayerHealth : MonoBehaviour
 			
 		staminaCurrent = staminaMax;
 
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+//		state = GameObject.Find ("GameState").GetComponent<State> ();
 		GameObject player = GameObject.Find ("Player");
 		playerControls = player.GetComponent<PlayerControls> ();
 
+		
+
 		//|| state.respawnPoint ["X"].Value == ""
 		if (state.respawnPoint ["X"].Value == "") {
-			respawnPoint = new Vector3 (0, 4, 0);
+			respawnPoint = new Vector3 (0, 4, 0);   // player.transform.position;
 			respawnPointAngle = new Vector3 (0, 1);
 		} else {
 			player.transform.position = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
