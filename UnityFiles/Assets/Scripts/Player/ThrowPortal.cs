@@ -48,10 +48,12 @@ public class ThrowPortal : MonoBehaviour {
 
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit)) {
-			Quaternion hitObjectRotation = Quaternion.LookRotation (hit.normal);
-			portal.transform.position = hit.point;
-			portal.transform.rotation = hitObjectRotation;
-			portal.transform.parent.transform.parent = hit.transform;
+			if (hit.collider.tag != "Portal") {
+				Quaternion hitObjectRotation = Quaternion.LookRotation (hit.normal);
+				portal.transform.position = hit.point;
+				portal.transform.rotation = hitObjectRotation;
+				portal.transform.parent.transform.parent = hit.transform;
+			}
 		}
 	}
 }
