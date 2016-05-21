@@ -40,6 +40,14 @@ module.exports = require("express").Router()
   user.updateInfos(body)
   .then(updatedPlayer => res.json(updatedPlayer.sanitize()))
   .catch(next);
+  // Level.findOne({name: body.currentLevel})
+  // .then(level => {
+  //   level !== null && user.set({currentLevel: level._id});
+  //   return user.save();
+  // })
+  // .then(() => res.sendStatus(204))
+
+
 })
 
 .delete("/:id", ({user}, res, next) => {

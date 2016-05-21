@@ -4,13 +4,17 @@ using System.Collections;
 public class EndPlatformBehavior : MonoBehaviour {
 
 	public string nextScene;
-	State state;
+
+	private State state;
 
 	void Start(){
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
 	}
 
 	void OnTriggerEnter(Collider other) {
+		state.SaveScore (Time.timeSinceLevelLoad);
+		state.currentLevel = nextScene;
+		state.SaveUserInfo ();
 		state.LoadScene (nextScene);
 	}
 }

@@ -3,18 +3,19 @@ using System.Collections;
 
 public class PauseGame : MonoBehaviour {
 	public Transform canvas;
-	State state;
+	private State state;
 	// Update is called once per frame
 
 	void Start(){
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
 	}
 
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Pause ();
 		}
-		if (Input.GetKeyDown(KeyCode.P)){
+
+		if (Input.GetKeyDown (KeyCode.P)) {
 			SaveGameSettings (true);
 		}
 	}

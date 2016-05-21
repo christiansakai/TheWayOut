@@ -30,13 +30,13 @@ public class PlayerHealth : MonoBehaviour
 
 	public pickuppost pickpostscript;
 
-	State state;
+	private State state;
 
 	void Awake ()
 	{
 		staminaCurrent = staminaMax;
 
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
 		GameObject player = GameObject.Find ("Player");
 		playerControls = player.GetComponent<PlayerControls> ();
 	
