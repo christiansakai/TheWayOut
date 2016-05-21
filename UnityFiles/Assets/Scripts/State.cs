@@ -6,6 +6,8 @@ using SimpleJSON;
 
 public class State : MonoBehaviour {
 
+	public static State instance = null;
+
 	public string currentLevel;
 	public string playerName;
 	public string playerEmail;
@@ -13,6 +15,15 @@ public class State : MonoBehaviour {
 	public string url = "http://localhost:1337/";
 
 	JSONNode levels;
+
+	void Awake(){
+		if (instance == null) {
+			instance = this;
+		} else if (instance != this) {
+			Destroy (gameObject);
+		}
+		DontDestroyOnLoad (gameObject);
+	}
 
 	public void LoadScene (string scene) {
 		DontDestroyOnLoad (transform.gameObject);

@@ -7,7 +7,7 @@ public class EndPlatformBehavior : MonoBehaviour {
 	private State state;
 
 	void Start(){
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
 	}
 
 	void OnTriggerEnter(Collider other) {

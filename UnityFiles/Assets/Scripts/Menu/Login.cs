@@ -11,7 +11,7 @@ public class Login : MonoBehaviour {
 	State state;
 
 	void Start () {
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
 	}
 	
 	void Update () {

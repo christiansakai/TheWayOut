@@ -11,7 +11,7 @@ public class menuScript : MonoBehaviour {
 	State state;
 
 	void Start () {
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
 		quitMenu = quitMenu.GetComponent<Canvas> ();
 		startText = startText.GetComponent<Button> ();
 		exitText = exitText.GetComponent<Button> ();

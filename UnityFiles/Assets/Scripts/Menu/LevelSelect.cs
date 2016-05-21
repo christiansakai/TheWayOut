@@ -20,7 +20,7 @@ public class LevelSelect : MonoBehaviour {
 		levelPanel = GameObject.Find ("LevelPanel");
 		scorePanel = GameObject.Find ("ScorePanel");
 		highScore = scorePanel.GetComponent<HighScores> ();
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
 		name = state.playerName;
 	}
 
