@@ -1,20 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
 public class PauseGame : MonoBehaviour {
 	public Transform canvas;
-//	private UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
-		
+	private State state;
 	// Update is called once per frame
+
+	void Start(){
+		state = State.instance;
+	}
+
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Pause ();
 		}
-		if (Input.GetKeyDown(KeyCode.Q)){
-			Time.timeScale = 1;
-			DontDestroyOnLoad (GameObject.Find("GameState").transform.gameObject);
-			SceneManager.LoadScene ("Menu");
+
+		if (Input.GetKeyDown (KeyCode.P)) {
+			SaveGameSettings (true);
 		}
 	}
 
@@ -27,6 +29,17 @@ public class PauseGame : MonoBehaviour {
 				Time.timeScale = 1;
 			}
 
+	}
+
+	public void SaveGameSettings(bool Quit)
+	{
+		if (Quit) {
+			Time.timeScale = 1;
+			// Save player data to the backend database
+			state.SaveUserInfo();
+			// Exit to the Start Menu
+			state.LoadScene ("Menu");
+		}
 	}
 		
 }

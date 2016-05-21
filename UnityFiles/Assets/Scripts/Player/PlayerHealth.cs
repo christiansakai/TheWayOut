@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using SimpleJSON;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -29,39 +30,32 @@ public class PlayerHealth : MonoBehaviour
 
 	public pickuppost pickpostscript;
 
+	private State state;
+
 	void Awake ()
 	{
-		// Set the initial health of the player.
-//		if (!PlayerPrefs.HasKey("currentHealth")) {
-//			currentHealth = startingHealth;
-//		} else {
-//			currentHealth = PlayerPrefs.GetInt("currentHealth");
-//		}
-			
 		staminaCurrent = staminaMax;
 
-		// initial respawn point position
-//		if (!PlayerPrefs.HasKey ("RPx")) {
-//			// set the initial respawnPoint position to level start position;
-			respawnPoint = new Vector3 (0, 4, 0);
-//		} else {
-//			respawnPoint = new Vector3 (PlayerPrefs.GetFloat ("RPx"), PlayerPrefs.GetFloat ("RPy"), PlayerPrefs.GetFloat ("RPz"));
-//		}
-
-		// initial respawn angle
-//		if (!PlayerPrefs.HasKey ("RPA_y")) {
-			respawnPointAngle = new Vector3 (0, 1);
-//		} else {
-//			respawnPointAngle = new Vector3 (0, PlayerPrefs.GetFloat ("RPA_y", 0));
-//		}
-
-
+		state = State.instance;
+		GameObject player = GameObject.Find ("Player");
+		playerControls = player.GetComponent<PlayerControls> ();
+	
+		//Get the initial respawnpoint info either from level starting point or from gamestate controller
+		if (state.respawnPoint ["X"].Value == "") {
+			respawnPoint = new Vector3 (player.transform.position.x, player.transform.position.y, player.transform.position.z); 
+		} else {
+			player.transform.position = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
+			respawnPoint = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
+			respawnPointAngle = new Vector3 (0, float.Parse (state.respawnPoint ["Angle"].Value));
+			state.respawnPoint ["X"].Value = "";
+			state.respawnPoint ["Y"].Value = "";
+			state.respawnPoint ["Z"].Value = "";
+			state.respawnPoint ["Angle"].Value = "";
+		}
 		
 	}
 
 	void Start(){
-		GameObject player = GameObject.Find ("Player");
-		playerControls = player.GetComponent<PlayerControls> ();
 		currentHealth = startingHealth;
 		tempRun = playerControls.runMultipler;
 	}
@@ -123,14 +117,14 @@ public class PlayerHealth : MonoBehaviour
 
 	public void toKill () {
 		isDead = true;
-		Debug.Log("You died"); 
 //		toRespawn ();
 		transform.position = respawnPoint;
 		transform.eulerAngles = respawnPointAngle; 
 		currentHealth = 100;
 		healthSlider.value = currentHealth;
 		isDead = false;
-		pickpostscript.PostRespawn ();
+		// respawn the pillar in level3
+//		pickpostscript.PostRespawn ();
 	}
 
 }

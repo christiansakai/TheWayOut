@@ -15,7 +15,7 @@ public class HighScores : MonoBehaviour {
 	void Start () {
 		nameList = GameObject.Find ("NameList");
 		timeList = GameObject.Find ("TimeList");
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
 		StartCoroutine (GetScores ());
 	}
 
@@ -45,6 +45,19 @@ public class HighScores : MonoBehaviour {
 	}
 
 	IEnumerator GetScores ()
+	{
+		using (UnityWebRequest request = UnityWebRequest.Get (state.url + "api/times")) {
+			yield return request.Send ();
+			if (request.isError) {
+				Debug.Log (request.error);
+			} else {
+				scores = JSON.Parse(request.downloadHandler.text);
+				FilterScores ("1", state.playerName);
+			}
+		}
+	}
+
+	IEnumerator GetScoresForUser ()
 	{
 		using (UnityWebRequest request = UnityWebRequest.Get (state.url + "api/times")) {
 			yield return request.Send ();

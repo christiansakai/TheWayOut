@@ -4,11 +4,13 @@ var crypto = require('crypto');
 var Schema = mongoose.Schema;
 var Time = mongoose.model("Time");
 var Level = mongoose.model("Level");
+var Respawnpoint = mongoose.model("Respawnpoint");
 
 var schema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   email: {
     type: String,
@@ -26,20 +28,33 @@ var schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Level"
   },
-  checkpoint: {
-    type: Number
+  respawnPoint: {
+    type: Schema.Types.ObjectId,
+    ref: "Respawnpoint"
   }
 });
 
 // get all the time for a level for a player
 schema.statics.findTimeOfOneLevel = function(userId, level){
   return Level.findOne({name: level})
-  .then(foundlevel => {
-    return Time.find({"player":userId,"level":foundlevel._id}).exec()
-  })
-  
+  .then(foundlevel => Time.find({"player":userId,"level":foundlevel._id}))
+  .limit(50);
 }
 
+// update user infos
+schema.methods.updateInfos = function(body){
+  var respawn = {X: body.X, Y: body.Y, Z: body.Z, Angle: body.Angle};
+  return Level.findOne({name: body.currentLevel})
+  .then(level => {
+    level && this.set({currentLevel: level._id});
+    return Respawnpoint.findOne(respawn);
+  })
+	.then(spawn => spawn || Respawnpoint.create(respawn))
+  .then(respawn => {
+    this.set({respawnPoint: respawn._id})
+    return this.save()
+  })
+}
 
 // sanitize userinfo
 schema.methods.sanitize = function () {
