@@ -10,16 +10,13 @@ public class LevelSelect : MonoBehaviour {
 	State state;
 	HighScores highScore;
 	string level = "1";
-	string name = "";
 	string playerid;
 	bool allTime = false;
 	private GameObject nameList;
 	private GameObject timeList;
-	private JSONNode scores;
 
 	void Start () {
 		state = State.instance;
-		name = state.playerName;
 		playerid = state.playerid;
 		nameList = GameObject.Find ("NameList");
 		timeList = GameObject.Find ("TimeList");
@@ -87,8 +84,7 @@ public class LevelSelect : MonoBehaviour {
 			if (request.isError) {
 				Debug.Log (request.error);
 			} else {
-				scores = JSON.Parse(request.downloadHandler.text);
-				PlaceScores (scores);
+				PlaceScores (JSON.Parse(request.downloadHandler.text));
 			}
 		}
 	}
