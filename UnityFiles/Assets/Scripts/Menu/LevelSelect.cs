@@ -44,6 +44,7 @@ public class LevelSelect : MonoBehaviour {
 	}
 
 	public void LoadLevel() {
+		state.currentLevel = level;
 		state.LoadScene (level);
 	}
 
