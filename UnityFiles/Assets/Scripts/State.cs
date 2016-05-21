@@ -26,7 +26,6 @@ public class State : MonoBehaviour {
 	}
 
 	public void LoadScene (string scene) {
-		DontDestroyOnLoad (transform.gameObject);
 		SceneManager.LoadScene (scene);
 	}
 
