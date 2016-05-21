@@ -7,7 +7,7 @@ public class menuScript : MonoBehaviour {
 	public Canvas quitMenu;
 	public Button startText;
 	public Button exitText;
-	public string Level1;
+
 	State state;
 
 	void Start () {

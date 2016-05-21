@@ -4,6 +4,7 @@ using System.Collections;
 public class EndPlatformBehavior : MonoBehaviour {
 
 	public string nextScene;
+
 	private State state;
 
 	void Start(){
