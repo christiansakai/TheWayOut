@@ -57,6 +57,19 @@ public class HighScores : MonoBehaviour {
 		}
 	}
 
+	IEnumerator GetScoresForUser ()
+	{
+		using (UnityWebRequest request = UnityWebRequest.Get (state.url + "api/times")) {
+			yield return request.Send ();
+			if (request.isError) {
+				Debug.Log (request.error);
+			} else {
+				scores = JSON.Parse(request.downloadHandler.text);
+				FilterScores ("1", state.playerName);
+			}
+		}
+	}
+
 	public void FilterScores(string level, string name) {
 		ArrayList filteredScores = new ArrayList();
 		ArrayList nameList = new ArrayList ();
