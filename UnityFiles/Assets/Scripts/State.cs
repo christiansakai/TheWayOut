@@ -47,15 +47,10 @@ public class State : MonoBehaviour {
 		StartCoroutine (GetUserInfo ());
 	}
 
-
 	// save user information when exiting to the main menu from the game
 	public void SaveUserInfo(){
 		StartCoroutine (PostUserInfoWithCheckpoint ());
 	}
-//	public void SaveUserInfo(){
-//		StartCoroutine (PostUserInfo ());
-
-	
 
 	IEnumerator PostUserInfoWithCheckpoint(){
 		WWWForm form = new WWWForm();
@@ -91,29 +86,12 @@ public class State : MonoBehaviour {
 				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
 				currentLevel = CurrentUser ["currentLevel"] ["name"].Value;
 				respawnPoint = CurrentUser ["respawnPoint"]; 
-				// If the player has never played before, set the currentLevel to level 1;
 				if (currentLevel == "") {
 					currentLevel = "1";
-//					StartCoroutine (PostUserInfo ());
 				}
 			}
 		}
 	}
-		
-	//	IEnumerator PostUserInfo(){
-	//		WWWForm form = new WWWForm();
-	//		form.AddField ("currentLevel", currentLevel);
-	//		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/users/" + playerid, form)) {
-	//			yield return request.Send();
-	//
-	//			if(request.isError) {
-	//				Debug.Log(request.error);
-	//			}
-	//			else {
-	//				Debug.Log ("updated with " + request.downloadHandler.text);
-	//			}
-	//		}
-	//	}
 		
 	public void SaveScore(float score){
 		StartCoroutine (PostScore (score));
@@ -132,7 +110,30 @@ public class State : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-				//				Debug.Log ("updated with " + request.downloadHandler.text);
+				//Debug.Log ("updated with " + request.downloadHandler.text);
+			}
+		}
+	}
+
+	public void Login(string user, string pw){
+		StartCoroutine(UserAuthentification(user, pw));
+	}
+
+	IEnumerator UserAuthentification(string user, string pw)
+	{
+		WWWForm form = new WWWForm();
+		form.AddField("email", user);
+		form.AddField("password", pw);
+		using (UnityWebRequest request = UnityWebRequest.Post (url + "login", form)) {
+			yield return request.Send();
+
+			if(request.isError) {
+				Debug.Log(request.error);
+			}
+			else {
+				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
+				StoreUser (CurrentUser ["user"]);
+				LoadScene ("Menu");
 			}
 		}
 	}

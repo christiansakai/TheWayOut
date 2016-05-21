@@ -27,30 +27,11 @@ public class Login : MonoBehaviour {
 	}
 
 	public void LogInEnter(){
-		StartCoroutine(UserAuthentification(username.GetComponent<InputField> ().text, password.GetComponent<InputField> ().text));
+		state.Login(username.GetComponent<InputField> ().text, password.GetComponent<InputField> ().text);
 	}
 
 	public void SignupPage(){
 		state.LoadScene ("Signup");
-	}
-
-	public IEnumerator UserAuthentification(string user, string pw)
-	{
-		WWWForm form = new WWWForm();
-		form.AddField("email", user);
-		form.AddField("password", pw);
-		using (UnityWebRequest request = UnityWebRequest.Post (state.url + "login", form)) {
-			yield return request.Send();
-
-			if(request.isError) {
-				Debug.Log(request.error);
-			}
-			else {
-				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
-				state.StoreUser (CurrentUser ["user"]);
-				state.LoadScene ("Menu");
-			}
-		}
 	}
 
 }

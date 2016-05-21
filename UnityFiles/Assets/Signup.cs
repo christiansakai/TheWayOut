@@ -29,6 +29,10 @@ public class Signup : MonoBehaviour {
 		}
 	}
 
+	public void BackToLogin(){
+		state.LoadScene ("Login");
+	}
+
 	public void PostSignup(){
 		StartCoroutine(UserAuthentification());
 	}
@@ -36,9 +40,10 @@ public class Signup : MonoBehaviour {
 	IEnumerator UserAuthentification()
 	{
 		string pw = password.GetComponent<InputField> ().text;
+		string mail = email.GetComponent<InputField> ().text;
 		WWWForm form = new WWWForm();
 		form.AddField("name", username.GetComponent<InputField> ().text);
-		form.AddField("email", email.GetComponent<InputField> ().text);
+		form.AddField("email", mail);
 		form.AddField("password", pw);
 		using (UnityWebRequest request = UnityWebRequest.Post (state.url + "api/users", form)) {
 			yield return request.Send();
@@ -48,9 +53,7 @@ public class Signup : MonoBehaviour {
 			}
 			else {
 				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text)["user"];
-//				StartCoroutine ( (CurrentUser["email"].Value, pw));
-//				state.StoreUser (CurrentUser ["user"]);
-//				state.LoadScene ("Menu");
+				state.Login (mail, pw);
 			}
 		}
 	}
