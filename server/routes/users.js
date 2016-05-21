@@ -20,6 +20,7 @@ module.exports = require("express").Router()
 .param("id", (req, res, next, id) => {
   User.findById(id)
   .populate("currentLevel")
+  .populate("respawnPoint")
   .then(user => req.user = user)
   .then(() => next(), next);
 })
@@ -28,17 +29,24 @@ module.exports = require("express").Router()
   User.findTimeOfOneLevel(req.user._id, req.params.level)
   .then(timeinfo => res.json(timeinfo));
 })
+
 .get("/:id", ({user}, res, next) => res.json(user.sanitize()))
 
 
 .post("/:id", ({user, body}, res, next) => {
-  Level.findOne({name: body.currentLevel})
-  .then(level => {
-    level !== null && user.set({currentLevel: level._id});
-    return user.save();
-  })
-  .then(() => res.sendStatus(204))
+  // body {currentLevel, X,Y,Z,Angle}
+  console.log(body)
+  user.updateInfos(body)
+  .then(updatedPlayer => res.json(updatedPlayer.sanitize()))
   .catch(next);
+  // Level.findOne({name: body.currentLevel})
+  // .then(level => {
+  //   level !== null && user.set({currentLevel: level._id});
+  //   return user.save();
+  // })
+  // .then(() => res.sendStatus(204))
+
+
 })
 
 .delete("/:id", ({user}, res, next) => {

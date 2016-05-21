@@ -5,4 +5,5 @@ db.on("error", console.error.bind(console, "connection error:"));
 
 require("./level");
 require("./time");
+require("./respawnpoint");
 require("./user");
