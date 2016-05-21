@@ -55,7 +55,6 @@ public class State : MonoBehaviour {
 		}
 	}
 
-
 	IEnumerator GetUserInfo()
 	{
 		using (UnityWebRequest request = UnityWebRequest.Get (url + "api/users/" + playerid)) {
