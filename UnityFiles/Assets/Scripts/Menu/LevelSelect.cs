@@ -1,31 +1,33 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 using UnityEngine.Experimental.Networking;
 using SimpleJSON;
 
 public class LevelSelect : MonoBehaviour {
 
-	JSONNode levels;
-	GameObject levelPanel;
-	GameObject scorePanel;
+	State state;
 	HighScores highScore;
 	string level = "1";
 	string name = "";
-	State state;
+	string playerid;
 	bool allTime = false;
+	private GameObject nameList;
+	private GameObject timeList;
+	private JSONNode scores;
 
-	// Use this for initialization
 	void Start () {
-		levelPanel = GameObject.Find ("LevelPanel");
-		scorePanel = GameObject.Find ("ScorePanel");
-		highScore = scorePanel.GetComponent<HighScores> ();
 		state = State.instance;
 		name = state.playerName;
+		playerid = state.playerid;
+		nameList = GameObject.Find ("NameList");
+		timeList = GameObject.Find ("TimeList");
+		Filter ();
 	}
 
-	public void Filter() {
-		highScore.FilterScores (level, allTime ? "" : name);
+	void Filter() {
+		StartCoroutine (GetScores ());
 	}
 
 	public void ChangeLevel (string newLevel) {
@@ -52,4 +54,42 @@ public class LevelSelect : MonoBehaviour {
 		state.LoadScene ("Menu");
 	}
 
+	void killTheKids(GameObject parent) {
+		for (int i = parent.transform.childCount - 1; i >= 0; --i) {
+			Destroy (parent.transform.GetChild (i).gameObject);
+		}
+	}
+
+	void PlaceScores(JSONNode list) {
+		killTheKids (nameList);
+		killTheKids (timeList);
+		for(int i = 0; i < list.Count; i++) {
+			JSONNode score = list [i];
+			GameObject name = new GameObject ();
+			GameObject time = new GameObject ();
+			name.transform.SetParent (nameList.transform);
+			time.transform.SetParent (timeList.transform);
+			Text nameText = name.AddComponent<Text> ();
+			Text timeText = time.AddComponent<Text> ();
+			nameText.text = score["player"]["name"].Value;
+			timeText.text = score["time"].Value;
+			nameText.font = timeText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 14);
+			nameText.horizontalOverflow = timeText.horizontalOverflow = HorizontalWrapMode.Overflow;
+			timeText.alignment = TextAnchor.UpperCenter;
+		}
+	}
+
+	IEnumerator GetScores ()
+	{
+		string url = state.url + (allTime ? ("api/times/" + level) : ("api/users/" + playerid + "/" + level));
+		using (UnityWebRequest request = UnityWebRequest.Get (url)) {
+			yield return request.Send ();
+			if (request.isError) {
+				Debug.Log (request.error);
+			} else {
+				scores = JSON.Parse(request.downloadHandler.text);
+				PlaceScores (scores);
+			}
+		}
+	}
 }

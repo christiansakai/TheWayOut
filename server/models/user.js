@@ -35,11 +35,10 @@ var schema = new Schema({
 });
 
 // get all the time for a level for a player
-schema.statics.findTimeOfOneLevel = function(userId, level){
-  return Level.findOne({name: level})
-  .then(foundlevel => Time.find({"player":userId,"level":foundlevel._id}))
-  .limit(50);
-}
+schema.methods.getTopTimes = function(level){
+  return Time.getTopTimes(level, this._id)
+  .then(times => times.slice(0, 50));
+};
 
 // update user infos
 schema.methods.updateInfos = function(body){
@@ -52,9 +51,9 @@ schema.methods.updateInfos = function(body){
 	.then(spawn => spawn || Respawnpoint.create(respawn))
   .then(respawn => {
     this.set({respawnPoint: respawn._id})
-    return this.save()
-  })
-}
+    return this.save();
+  });
+};
 
 // sanitize userinfo
 schema.methods.sanitize = function () {

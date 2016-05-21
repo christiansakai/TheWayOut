@@ -25,9 +25,10 @@ module.exports = require("express").Router()
   .then(() => next(), next);
 })
 
-.get("/:id/:level",(req, res, next) => {
-  User.findTimeOfOneLevel(req.user._id, req.params.level)
-  .then(timeinfo => res.json(timeinfo));
+.get("/:id/:level",({user, params}, res, next) => {
+  user.getTopTimes(params.level)
+  .then(times=> res.json(times))
+  .catch(next);
 })
 
 .get("/:id", ({user}, res, next) => res.json(user.sanitize()))

@@ -34,5 +34,17 @@ schema.statics.createTime = function(reqbody){
     });
 }
 
+schema.statics.getTopTimes = function (level, player) {
+  var query = {};
+  player && (query.player = player);
+  return Level.findOne({name: level})
+  .then(foundLevel => {
+    if(foundLevel) {
+      query.level = foundLevel.id;
+    }
+    return query;
+  })
+  .then(search => this.find(search).sort({time: 1}).populate("player"));
+};
 
 module.exports = mongoose.model("Time", schema);
