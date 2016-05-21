@@ -10,8 +10,8 @@ public class State : MonoBehaviour {
 
 	public string currentLevel;
 	public string playerName;
-	public string playerEmail;
-	public string playerid;
+	string playerEmail;
+	string playerid;
 	public string url = "http://localhost:1337/";
 
 	JSONNode levels;
@@ -36,6 +36,9 @@ public class State : MonoBehaviour {
 		StartCoroutine (GetUserInfo ());
 	}
 
+	public void SaveUserInfo(){
+		StartCoroutine (PostUserInfo ());
+	}
 
 	IEnumerator PostUserInfo(){
 		WWWForm form = new WWWForm();
@@ -68,6 +71,28 @@ public class State : MonoBehaviour {
 					currentLevel = "1";
 					StartCoroutine (PostUserInfo ());
 				}
+			}
+		}
+	}
+
+	public void SaveScore(float score){
+		StartCoroutine (PostScore (score));
+	}
+
+	IEnumerator PostScore(float score){
+		Debug.Log ("newScore! " + score);
+		WWWForm form = new WWWForm();
+		form.AddField ("level", currentLevel);
+		form.AddField ("time", score.ToString());
+		form.AddField ("player", playerid);
+		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/times/", form)) {
+			yield return request.Send();
+
+			if(request.isError) {
+				Debug.Log(request.error);
+			}
+			else {
+				//				Debug.Log ("updated with " + request.downloadHandler.text);
 			}
 		}
 	}

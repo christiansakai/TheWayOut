@@ -11,6 +11,9 @@ public class EndPlatformBehavior : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
+		state.SaveScore (Time.timeSinceLevelLoad);
+		state.currentLevel = nextScene;
+		state.SaveUserInfo ();
 		state.LoadScene (nextScene);
 	}
 }

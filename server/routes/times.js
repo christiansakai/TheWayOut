@@ -14,8 +14,8 @@ module.exports = require("express").Router()
 
 .post("/", (req, res, next) => {
 	Time.createTime(req.body)
-	.then(time => res.json(time));
-
+	.then(time => res.json(time))
+  .catch(next);
 })
 
 .put("/", (req, res, next) => {
