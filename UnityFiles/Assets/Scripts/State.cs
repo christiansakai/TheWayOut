@@ -6,16 +6,26 @@ using SimpleJSON;
 
 public class State : MonoBehaviour {
 
+	public static State instance = null;
+
 	public string currentLevel;
 	public string playerName;
-	public string playerEmail;
-	public string playerid;
+	string playerEmail;
+	string playerid;
 	public string url = "http://localhost:1337/";
 
 	JSONNode levels;
 
+	void Awake(){
+		if (instance == null) {
+			instance = this;
+		} else if (instance != this) {
+			Destroy (gameObject);
+		}
+		DontDestroyOnLoad (gameObject);
+	}
+
 	public void LoadScene (string scene) {
-		DontDestroyOnLoad (transform.gameObject);
 		SceneManager.LoadScene (scene);
 	}
 
@@ -26,6 +36,9 @@ public class State : MonoBehaviour {
 		StartCoroutine (GetUserInfo ());
 	}
 
+	public void SaveUserInfo(){
+		StartCoroutine (PostUserInfo ());
+	}
 
 	IEnumerator PostUserInfo(){
 		WWWForm form = new WWWForm();
@@ -37,7 +50,7 @@ public class State : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-				Debug.Log ("updated with " + request.downloadHandler.text);
+//				Debug.Log ("updated with " + request.downloadHandler.text);
 			}
 		}
 	}
@@ -58,22 +71,30 @@ public class State : MonoBehaviour {
 					currentLevel = "1";
 					StartCoroutine (PostUserInfo ());
 				}
-				Debug.Log (CurrentUser);
 			}
 		}
 	}
 
-//	IEnumerator GetLevels()
-//	{
-//		using (UnityWebRequest request = UnityWebRequest.Get (url + "api/levels/")) {
-//			yield return request.Send();
-//
-//			if(request.isError) {
-//				Debug.Log(request.error);
-//			}
-//			else {
-//				levels = JSON.Parse(request.downloadHandler.text);
-//			}
-//		}
-//	}
+	public void SaveScore(float score){
+		StartCoroutine (PostScore (score));
+	}
+
+	IEnumerator PostScore(float score){
+		Debug.Log ("newScore! " + score);
+		WWWForm form = new WWWForm();
+		form.AddField ("level", currentLevel);
+		form.AddField ("time", score.ToString());
+		form.AddField ("player", playerid);
+		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/times/", form)) {
+			yield return request.Send();
+
+			if(request.isError) {
+				Debug.Log(request.error);
+			}
+			else {
+				//				Debug.Log ("updated with " + request.downloadHandler.text);
+			}
+		}
+	}
+
 }

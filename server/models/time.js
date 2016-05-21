@@ -24,16 +24,14 @@ var schema = new Schema({
 });
 
 schema.statics.createTime = function(reqbody){
-    var self = this;
     return Level.findOne({name: reqbody.level})
     .then(level => {
-        return self.create({
+        return this.create({
           "level":level._id,
           "player":reqbody.player,
           "time": reqbody.time
         })
-    })
-
+    });
 }
 
 

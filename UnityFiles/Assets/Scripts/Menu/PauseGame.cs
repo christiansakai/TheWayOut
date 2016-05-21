@@ -13,8 +13,7 @@ public class PauseGame : MonoBehaviour {
 		}
 		if (Input.GetKeyDown(KeyCode.Q)){
 			Time.timeScale = 1;
-			DontDestroyOnLoad (GameObject.Find("GameState").transform.gameObject);
-			SceneManager.LoadScene ("Menu");
+			State.instance.LoadScene ("Menu");
 		}
 	}
 
