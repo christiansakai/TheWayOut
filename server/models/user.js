@@ -43,18 +43,16 @@ schema.statics.findTimeOfOneLevel = function(userId, level){
 
 // update user infos
 schema.methods.updateInfos = function(body){
-  var self = this;
+  var respawn = {X: body.X, Y: body.Y, Z: body.Z, Angle: body.Angle};
   return Level.findOne({name: body.currentLevel})
   .then(level => {
-    self.set({currentLevel: level._id});
-    return self.save();
+    level && this.set({currentLevel: level._id});
+    return Respawnpoint.findOne(respawn);
   })
-  .then((updatedUser) => {
-    return Respawnpoint.create({X: body.X, Y: body.Y, Z: body.Z, Angle: body.Angle})
-  })
+	.then(spawn => spawn || Respawnpoint.create(respawn))
   .then(respawn => {
-    self.set({respawnPoint: respawn._id})
-    return self.save()
+    this.set({respawnPoint: respawn._id})
+    return this.save()
   })
 }
 

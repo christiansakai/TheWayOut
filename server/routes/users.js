@@ -32,24 +32,8 @@ module.exports = require("express").Router()
 
 .get("/:id", ({user}, res, next) => res.json(user.sanitize()))
 
-
 .post("/:id", ({user, body}, res, next) => {
-  // body {currentLevel, X,Y,Z,Angle}
-  console.log(body)
   user.updateInfos(body)
   .then(updatedPlayer => res.json(updatedPlayer.sanitize()))
   .catch(next);
-  // Level.findOne({name: body.currentLevel})
-  // .then(level => {
-  //   level !== null && user.set({currentLevel: level._id});
-  //   return user.save();
-  // })
-  // .then(() => res.sendStatus(204))
-
-
-})
-
-.delete("/:id", ({user}, res, next) => {
-
 });
-
