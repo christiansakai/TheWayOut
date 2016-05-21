@@ -15,11 +15,9 @@ module.exports = require("express").Router()
 
 .get("/:level", ({params}, res, next) => {
   var seen = {};
-  Level.findOne({name: params.level})
-  .then(level => Time.find({level: level._id}))
-  .sort({time: 1})
+  Time.getTopTimes(params.level)
   .then(times => times.filter(({player}) => seen.hasOwnProperty(player) ? false : (seen[player] = true)))
-  .limit(100)
+  .then(times => res.json(times.slice(0, 100)))
   .catch(next);
 })
 
@@ -27,12 +25,4 @@ module.exports = require("express").Router()
 	Time.createTime(req.body)
 	.then(time => res.json(time))
   .catch(next);
-})
-
-.put("/", (req, res, next) => {
-
-})
-
-.delete("/:id", (req, res, next) => {
-
 });

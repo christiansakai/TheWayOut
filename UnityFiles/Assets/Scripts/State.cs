@@ -12,7 +12,7 @@ public class State : MonoBehaviour {
 	public JSONNode respawnPoint;
 	public string playerName;
 	string playerEmail;
-	string playerid;
+	public string playerid;
 	public string url = "http://localhost:1337/";
 
 	JSONNode levels;
