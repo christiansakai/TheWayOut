@@ -8,7 +8,8 @@ var Level = mongoose.model("Level");
 var schema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   email: {
     type: String,
@@ -34,12 +35,9 @@ var schema = new Schema({
 // get all the time for a level for a player
 schema.statics.findTimeOfOneLevel = function(userId, level){
   return Level.findOne({name: level})
-  .then(foundlevel => {
-    return Time.find({"player":userId,"level":foundlevel._id}).exec()
-  })
-  
+  .then(foundlevel => Time.find({"player":userId,"level":foundlevel._id}))
+  .limit(100);
 }
-
 
 // sanitize userinfo
 schema.methods.sanitize = function () {
