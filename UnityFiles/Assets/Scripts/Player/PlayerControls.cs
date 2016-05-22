@@ -42,6 +42,8 @@ public class PlayerControls : MonoBehaviour {
 
 	GameObject leftPortal;
 	GameObject rightPortal;
+	GameObject player;
+	PlayerHealth playerHealth;
 
 
 
@@ -53,6 +55,8 @@ public class PlayerControls : MonoBehaviour {
 		characterController = GetComponent<CharacterController> ();
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
+		player = GameObject.Find ("Player");
+		playerHealth = player.GetComponent <PlayerHealth> ();
 	}
 	
 	// Update is called once per frame
@@ -159,6 +163,10 @@ public class PlayerControls : MonoBehaviour {
 			if (colliderOn.tag == "GravityLift") {
 				isGrounded = false;
 				verticalVelocity = colliderOn.gameObject.GetComponent<GravityLift> ().liftForce;
+			}
+
+			if (colliderOn.tag == "Spikes") {
+				playerHealth.toKill ();
 			}
 
 			if (colliderOn.tag == "Platform") {

@@ -40,14 +40,9 @@ public class PlayerHealth : MonoBehaviour
 		GameObject player = GameObject.Find ("Player");
 		playerControls = player.GetComponent<PlayerControls> ();
 	
-		//Get the initial respawnpoint info either from level starting point or from gamestate controller
-//		if (state.respawnPoint ["X"].Value == "") {
-//			respawnPoint = new Vector3 (player.transform.position.x, player.transform.position.y, player.transform.position.z); 
-//		} else {
-			respawnPoint = state.GetRespawnPoint();
-			respawnPointAngle = state.GetRespawnAngle();
-			player.transform.position = respawnPoint;
-//		}
+		respawnPoint = state.GetRespawnPoint();
+		respawnPointAngle = state.GetRespawnAngle();
+		player.transform.position = respawnPoint;
 		
 	}
 
