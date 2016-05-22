@@ -63,7 +63,6 @@ public class State : MonoBehaviour {
 
 	IEnumerator PostUserInfoWithCheckpoint(){
 		WWWForm form = new WWWForm();
-		Debug.Log (respawnPoint["X"].Value);
 		form.AddField ("currentLevel", currentLevel);
 		form.AddField ("X", respawnPoint["X"].Value);
 		form.AddField ("Y", respawnPoint["Y"].Value);
