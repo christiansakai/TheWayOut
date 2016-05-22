@@ -97,7 +97,6 @@ public class State : MonoBehaviour {
 				if (currentLevel == "") {
 					currentLevel = "1";
 				}
-				Debug.Log (respawnPoint ["X"].Value);
 			}
 		}
 	}
