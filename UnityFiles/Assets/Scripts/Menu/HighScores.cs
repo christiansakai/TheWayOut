@@ -89,5 +89,4 @@ public class HighScores : MonoBehaviour {
 		}
 		placeScores (filteredScores);
 	}
-
 }
