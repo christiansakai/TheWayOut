@@ -6,28 +6,25 @@ using UnityEngine.Experimental.Networking;
 using SimpleJSON;
 
 public class Signup : MonoBehaviour {
-	string username = "Enter Username ";
-	string mail = "Enter Email";
-	string password = "Enter Password";
+	public GameObject email;
+	public GameObject password;
+	public GameObject username;
 	State state;
-	int posX;
-	int posY;
-
 
 	void Start () {
 		state = State.instance;
-		posX = Screen.width / 2 - 80;
-		posY = Screen.height / 2;
 	}
-
-	void OnGUI(){
-		username = GUI.TextField (new Rect (posX,posY - 28,160,30), username, 25);
-		mail = GUI.TextField (new Rect (posX,posY+4,160,30), mail, 25);
-		password = GUI.PasswordField (new Rect (posX,posY + 36,160, 30), password, "*" [0], 25);
-	}
-
+		
 	void Update () {
-	if (Input.GetKeyDown (KeyCode.Return)) {
+		if(Input.GetKeyDown(KeyCode.Tab)){
+			if (username.GetComponent<InputField> ().isFocused) {
+				password.GetComponent<InputField> ().Select ();
+			} else if (email.GetComponent<InputField> ().isFocused) {
+				username.GetComponent<InputField> ().Select ();
+			} else {
+				email.GetComponent<InputField> ().Select ();
+			}
+		} else if (Input.GetKeyDown (KeyCode.Return)) {
 			PostSignup();
 		}
 	}
@@ -42,10 +39,12 @@ public class Signup : MonoBehaviour {
 
 	IEnumerator UserAuthentification()
 	{
+		string pw = password.GetComponent<InputField> ().text;
+		string mail = email.GetComponent<InputField> ().text;
 		WWWForm form = new WWWForm();
-		form.AddField("name", username);
+		form.AddField("name", username.GetComponent<InputField> ().text);
 		form.AddField("email", mail);
-		form.AddField("password", password);
+		form.AddField("password", pw);
 		using (UnityWebRequest request = UnityWebRequest.Post (state.url + "api/users", form)) {
 			yield return request.Send();
 
@@ -54,7 +53,7 @@ public class Signup : MonoBehaviour {
 			}
 			else {
 				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text)["user"];
-				state.Login (mail, password);
+				state.Login (mail, pw);
 			}
 		}
 	}

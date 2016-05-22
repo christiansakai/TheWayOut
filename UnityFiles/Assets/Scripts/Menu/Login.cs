@@ -6,31 +6,28 @@ using UnityEngine.Experimental.Networking;
 using SimpleJSON;
 
 public class Login : MonoBehaviour {
-	string un = "Enter Email";
-	string pw = "Enter Password";
+	public GameObject username;
+	public GameObject password;
 	State state;
-	int posX;
-	int posY;
 
 	void Start () {
 		state = State.instance;
-		posX = Screen.width / 2 - 80;
-		posY = Screen.height / 2;
-	}
-
-	void OnGUI(){
-		un = GUI.TextField (new Rect (posX,posY-17,160,30), un, 25);
-		pw = GUI.PasswordField (new Rect (posX,posY+17,160, 30), pw, "*" [0], 25);
 	}
 	
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Return)) {
+		if(Input.GetKeyDown(KeyCode.Tab)){
+			if (username.GetComponent<InputField> ().isFocused) {
+				password.GetComponent<InputField> ().Select ();
+			} else if(password.GetComponent<InputField>().isFocused){
+				username.GetComponent<InputField>().Select();
+			}
+		} else if (Input.GetKeyDown (KeyCode.Return)) {
 			LogInEnter();
 		}
 	}
 
 	public void LogInEnter(){
-		state.Login(un,pw);
+		state.Login(username.GetComponent<InputField> ().text,password.GetComponent<InputField> ().text);
 	}
 
 	public void SignupPage(){
