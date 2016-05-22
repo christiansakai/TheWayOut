@@ -29,8 +29,22 @@ var schema = new Schema({
     ref: "Level"
   },
   respawnPoint: {
-    type: Schema.Types.ObjectId,
-    ref: "Respawnpoint"
+    X: {
+      type: Number,
+      default: 0
+    },
+    Y: {
+      type: Number,
+      default: 0
+    },
+    Z: {
+      type: Number,
+      default: 0
+    },
+    Angle: {
+      type: Number,
+      default: 0
+    }
   }
 });
 
@@ -42,15 +56,10 @@ schema.methods.getTopTimes = function(level){
 
 // update user infos
 schema.methods.updateInfos = function(body){
-  var respawn = {X: body.X, Y: body.Y, Z: body.Z, Angle: body.Angle};
+  var respawnPoint = {X: body.X, Y: body.Y, Z: body.Z, Angle: body.Angle};
   return Level.findOne({name: body.currentLevel})
   .then(level => {
-    level && this.set({currentLevel: level._id});
-    return Respawnpoint.findOne(respawn);
-  })
-	.then(spawn => spawn || Respawnpoint.create(respawn))
-  .then(respawn => {
-    this.set({respawnPoint: respawn._id})
+    level && this.set({currentLevel: level._id, respawnPoint});
     return this.save();
   });
 };

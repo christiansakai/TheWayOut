@@ -51,6 +51,7 @@ public class PlayerControls : MonoBehaviour {
 		leftPortal = GameObject.Find ("LeftPortal");
 		rightPortal = GameObject.Find ("RightPortal");
 		characterController = GetComponent<CharacterController> ();
+		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 	}
 	

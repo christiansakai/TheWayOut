@@ -20,6 +20,8 @@ public class LevelSelect : MonoBehaviour {
 		playerid = state.playerid;
 		nameList = GameObject.Find ("NameList");
 		timeList = GameObject.Find ("TimeList");
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 		Filter ();
 	}
 

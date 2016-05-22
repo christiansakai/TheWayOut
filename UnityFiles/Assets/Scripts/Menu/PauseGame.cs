@@ -11,35 +11,38 @@ public class PauseGame : MonoBehaviour {
 	}
 
 	void Update () {
+		Debug.Log (Cursor.visible);
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Pause ();
 		}
 
 		if (Input.GetKeyDown (KeyCode.P)) {
-			SaveGameSettings (true);
+			SaveGameSettings ();
 		}
 	}
 
 	public void Pause(){
 		if (canvas.gameObject.activeInHierarchy == false) {
-				canvas.gameObject.SetActive (true);
-				Time.timeScale = 0;
-			} else {
-				canvas.gameObject.SetActive (false);
-				Time.timeScale = 1;
-			}
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
+			canvas.gameObject.SetActive (true);
+			Time.timeScale = 0;
+		} else {
+			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Locked;
+			canvas.gameObject.SetActive (false);
+			Time.timeScale = 1;
+		}
 
 	}
 
-	public void SaveGameSettings(bool Quit)
+	public void SaveGameSettings()
 	{
-		if (Quit) {
-			Time.timeScale = 1;
-			// Save player data to the backend database
-			state.SaveUserInfo();
-			// Exit to the Start Menu
-			state.LoadScene ("Menu");
-		}
+		Time.timeScale = 1;
+		// Save player data to the backend database
+		state.SaveUserInfo();
+		// Exit to the Start Menu
+		state.LoadScene ("Menu");
 	}
 		
 }

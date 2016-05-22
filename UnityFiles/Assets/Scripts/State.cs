@@ -27,16 +27,7 @@ public class State : MonoBehaviour {
 	}
 
 	public void LoadScene (string scene) {
-		if (scene == "1") {
-			currentLevel = "1";
-		} else if ( scene == "2"){
-			currentLevel = "2";
-		} else if (scene == "3"){
-			currentLevel = "3";
-		}
-		DontDestroyOnLoad (transform.gameObject);
 		SceneManager.LoadScene (scene);
-
 	}
 
 	// get user info from login 
@@ -47,6 +38,24 @@ public class State : MonoBehaviour {
 		StartCoroutine (GetUserInfo ());
 	}
 
+	public Vector3 GetRespawnPoint(){
+		return new Vector3 (float.Parse (respawnPoint ["X"].Value), float.Parse (respawnPoint ["Y"].Value), float.Parse (respawnPoint ["Z"].Value));
+	}
+	public Vector3 GetRespawnAngle(){
+		return new Vector3 (0, float.Parse (respawnPoint ["Angle"].Value));
+	}
+
+	public void ResetRespawn(){
+		SetRespawn (Vector3.zero, 0f);
+	}
+
+	public void SetRespawn(Vector3 newPoint, float angle){
+		respawnPoint ["X"].Value = newPoint.x.ToString();
+		respawnPoint ["Y"].Value = newPoint.y.ToString();
+		respawnPoint ["Z"].Value = newPoint.z.ToString();
+		respawnPoint ["Angle"].Value = angle.ToString();
+	}
+
 	// save user information when exiting to the main menu from the game
 	public void SaveUserInfo(){
 		StartCoroutine (PostUserInfoWithCheckpoint ());
@@ -54,11 +63,12 @@ public class State : MonoBehaviour {
 
 	IEnumerator PostUserInfoWithCheckpoint(){
 		WWWForm form = new WWWForm();
+		Debug.Log (respawnPoint["X"].Value);
 		form.AddField ("currentLevel", currentLevel);
-		form.AddField ("X", PlayerHealth.respawnPoint.x.ToString());
-		form.AddField ("Y", PlayerHealth.respawnPoint.y.ToString());
-		form.AddField ("Z", PlayerHealth.respawnPoint.z.ToString());
-		form.AddField ("Angle", PlayerHealth.respawnPointAngle.y.ToString());
+		form.AddField ("X", respawnPoint["X"].Value);
+		form.AddField ("Y", respawnPoint["Y"].Value);
+		form.AddField ("Z", respawnPoint["Z"].Value);
+		form.AddField ("Angle", respawnPoint["Angle"].Value);
 		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/users/" + playerid, form)) {
 			yield return request.Send();
 
@@ -66,9 +76,7 @@ public class State : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-				Debug.Log ("updated with " + request.downloadHandler.text);
 				StartCoroutine (GetUserInfo ());
-//				Debug.Log ("updated with " + request.downloadHandler.text);
 			}
 		}
 	}
@@ -85,10 +93,11 @@ public class State : MonoBehaviour {
 			else {
 				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
 				currentLevel = CurrentUser ["currentLevel"] ["name"].Value;
-				respawnPoint = CurrentUser ["respawnPoint"]; 
+				respawnPoint = CurrentUser ["respawnPoint"];
 				if (currentLevel == "") {
 					currentLevel = "1";
 				}
+				Debug.Log (respawnPoint ["X"].Value);
 			}
 		}
 	}
@@ -98,7 +107,6 @@ public class State : MonoBehaviour {
 	}
 
 	IEnumerator PostScore(float score){
-		Debug.Log ("newScore! " + score);
 		WWWForm form = new WWWForm();
 		form.AddField ("level", currentLevel);
 		form.AddField ("time", score.ToString());
@@ -110,7 +118,7 @@ public class State : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-				//Debug.Log ("updated with " + request.downloadHandler.text);
+			
 			}
 		}
 	}

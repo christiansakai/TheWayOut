@@ -20,7 +20,6 @@ module.exports = require("express").Router()
 .param("id", (req, res, next, id) => {
   User.findById(id)
   .populate("currentLevel")
-  .populate("respawnPoint")
   .then(user => req.user = user)
   .then(() => next(), next);
 })
