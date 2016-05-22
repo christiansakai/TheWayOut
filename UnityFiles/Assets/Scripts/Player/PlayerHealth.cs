@@ -40,18 +40,9 @@ public class PlayerHealth : MonoBehaviour
 		GameObject player = GameObject.Find ("Player");
 		playerControls = player.GetComponent<PlayerControls> ();
 	
-		//Get the initial respawnpoint info either from level starting point or from gamestate controller
-//		if (state.respawnPoint ["X"].Value == "") {
-			respawnPoint = new Vector3 (player.transform.position.x, player.transform.position.y, player.transform.position.z); 
-//		} else {
-//			player.transform.position = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
-//			respawnPoint = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
-//			respawnPointAngle = new Vector3 (0, float.Parse (state.respawnPoint ["Angle"].Value));
-//			state.respawnPoint ["X"].Value = "";
-//			state.respawnPoint ["Y"].Value = "";
-//			state.respawnPoint ["Z"].Value = "";
-//			state.respawnPoint ["Angle"].Value = "";
-//		}
+		respawnPoint = state.GetRespawnPoint();
+		respawnPointAngle = state.GetRespawnAngle();
+		player.transform.position = respawnPoint;
 		
 	}
 
@@ -118,8 +109,8 @@ public class PlayerHealth : MonoBehaviour
 	public void toKill () {
 		isDead = true;
 //		toRespawn ();
-		transform.position = respawnPoint;
-		transform.eulerAngles = respawnPointAngle; 
+		transform.position = state.GetRespawnPoint();
+		transform.eulerAngles = state.GetRespawnAngle ();
 		currentHealth = 100;
 		healthSlider.value = currentHealth;
 		isDead = false;

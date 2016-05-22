@@ -41,8 +41,9 @@ public class CheckPoint : MonoBehaviour {
 
 			if(isCheckpoint) {
 				// also update the respawn position to this checkpoint position;
-				PlayerHealth.respawnPoint = transform.position;
-				PlayerHealth.respawnPointAngle = transform.eulerAngles;
+				State.instance.SetRespawn(transform.position, transform.eulerAngles.y);
+//				PlayerHealth.respawnPoint = transform.position;
+//				PlayerHealth.respawnPointAngle = transform.eulerAngles;
 			};
 
 			alreadyEntered = true;

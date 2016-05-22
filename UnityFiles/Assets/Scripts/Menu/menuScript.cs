@@ -16,6 +16,8 @@ public class menuScript : MonoBehaviour {
 		startText = startText.GetComponent<Button> ();
 		exitText = exitText.GetComponent<Button> ();
 		quitMenu.enabled = false;
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 	}
 	
 	public void ExitPress()

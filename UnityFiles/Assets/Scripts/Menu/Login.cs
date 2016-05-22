@@ -12,6 +12,8 @@ public class Login : MonoBehaviour {
 
 	void Start () {
 		state = State.instance;
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 	}
 
 	void OnGUI(){
