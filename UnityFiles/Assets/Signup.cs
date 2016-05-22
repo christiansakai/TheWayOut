@@ -10,16 +10,20 @@ public class Signup : MonoBehaviour {
 	string mail = "Enter Email";
 	string password = "Enter Password";
 	State state;
+	int posX;
+	int posY;
 
 
 	void Start () {
 		state = State.instance;
+		posX = Screen.width / 2 - 80;
+		posY = Screen.height / 2;
 	}
 
 	void OnGUI(){
-		username = GUI.TextField (new Rect (278,240,160,30), username, 25);
-		mail = GUI.TextField (new Rect (278,275,160,30), mail, 25);
-		password = GUI.PasswordField (new Rect (278,310,160, 30), password, "*" [0], 25);
+		username = GUI.TextField (new Rect (posX,posY - 28,160,30), username, 25);
+		mail = GUI.TextField (new Rect (posX,posY+4,160,30), mail, 25);
+		password = GUI.PasswordField (new Rect (posX,posY + 36,160, 30), password, "*" [0], 25);
 	}
 
 	void Update () {
