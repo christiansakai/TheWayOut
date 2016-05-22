@@ -41,17 +41,17 @@ public class PlayerHealth : MonoBehaviour
 		playerControls = player.GetComponent<PlayerControls> ();
 	
 		//Get the initial respawnpoint info either from level starting point or from gamestate controller
-		if (state.respawnPoint ["X"].Value == "") {
+//		if (state.respawnPoint ["X"].Value == "") {
 			respawnPoint = new Vector3 (player.transform.position.x, player.transform.position.y, player.transform.position.z); 
-		} else {
-			player.transform.position = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
-			respawnPoint = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
-			respawnPointAngle = new Vector3 (0, float.Parse (state.respawnPoint ["Angle"].Value));
-			state.respawnPoint ["X"].Value = "";
-			state.respawnPoint ["Y"].Value = "";
-			state.respawnPoint ["Z"].Value = "";
-			state.respawnPoint ["Angle"].Value = "";
-		}
+//		} else {
+//			player.transform.position = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
+//			respawnPoint = new Vector3 (float.Parse (state.respawnPoint ["X"].Value), float.Parse (state.respawnPoint ["Y"].Value), float.Parse (state.respawnPoint ["Z"].Value));
+//			respawnPointAngle = new Vector3 (0, float.Parse (state.respawnPoint ["Angle"].Value));
+//			state.respawnPoint ["X"].Value = "";
+//			state.respawnPoint ["Y"].Value = "";
+//			state.respawnPoint ["Z"].Value = "";
+//			state.respawnPoint ["Angle"].Value = "";
+//		}
 		
 	}
 
