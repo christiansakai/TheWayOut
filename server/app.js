@@ -25,4 +25,4 @@ app.use((err, req, res, next) => console.error(err, err.stack));
 
 app.listen(port, () => console.log("listening on port:", port));
 
-app.use("/deploy", (req, res, next) => (res.json("DEPLOY PAGE")));//res.sendFile("../deploy/index.html"));
+app.use("/deploy", (req, res, next) => res.sendFile(path.join(__dirname, "/deploy/index.html")));
