@@ -13,7 +13,8 @@ public class State : MonoBehaviour {
 	public string playerName;
 	string playerEmail;
 	public string playerid;
-	public string url = "http://localhost:1337/";
+//	public string url = "http://localhost:1337/";
+	public string url = "https://mysterious-cove-43800.herokuapp.com/";
 
 	JSONNode levels;
 
