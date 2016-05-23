@@ -11,7 +11,6 @@ public class State : MonoBehaviour {
 	public string currentLevel;
 	public JSONNode respawnPoint;
 	public string playerName;
-	string playerEmail;
 	public string playerid;
 //	public string url = "https://mysterious-cove-43800.herokuapp.com/";
 	public string url;
@@ -19,8 +18,8 @@ public class State : MonoBehaviour {
 	JSONNode levels;
 
 	void Awake(){
-		url = "http://localhost:1337/";
-//		url = "https://mysterious-cove-43800.herokuapp.com/";
+//		url = "http://localhost:1337/";
+		url = "https://mysterious-cove-43800.herokuapp.com/";
 		if (instance == null) {
 			instance = this;
 		} else if (instance != this) {
@@ -38,7 +37,6 @@ public class State : MonoBehaviour {
 	public void StoreUser(JSONNode user) {
 		playerid = user ["_id"].Value;
 		playerName = user ["name"].Value;
-		playerEmail = user ["email"].Value;
 		StartCoroutine (GetUserInfo ());
 	}
 
