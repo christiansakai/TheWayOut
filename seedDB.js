@@ -23,7 +23,7 @@ mongoose.connect(DATABASE_URI,function(){
           //process.exit(0);
       })
 
-    })
+    });
 
 });
 
