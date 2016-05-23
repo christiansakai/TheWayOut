@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/unityportal");
+var mongodb = process.env.NODE_ENV === "production" ? process.env.MONGOLAB_URI : "mongodb://localhost/unityportal";
+mongoose.connect(mongodb);
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 
