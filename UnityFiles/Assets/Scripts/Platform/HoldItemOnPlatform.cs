@@ -12,7 +12,6 @@ public class HoldItemOnPlatform : MonoBehaviour {
 			rb.isKinematic = true;
 //			rb.MovePosition (transform.position);
 			onBox = true;
-			Debug.Log ("onboard!");
 	//		col.transform.parent = gameObject.transform;
 //			col.transform.parent = transform.parent.transform;
 		}
