@@ -1,6 +1,5 @@
 var mongoose = require("mongoose");
 var User = mongoose.model("User");
-var Level = mongoose.model("Level");
 
 module.exports = require("express").Router()
 
@@ -19,7 +18,6 @@ module.exports = require("express").Router()
 
 .param("id", (req, res, next, id) => {
   User.findById(id)
-  .populate("currentLevel")
   .then(user => req.user = user)
   .then(() => next(), next);
 })

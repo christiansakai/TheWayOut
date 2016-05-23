@@ -3,7 +3,6 @@ var _ = require('lodash');
 var crypto = require('crypto');
 var Schema = mongoose.Schema;
 var Time = mongoose.model("Time");
-var Level = mongoose.model("Level");
 var Respawnpoint = mongoose.model("Respawnpoint");
 
 var schema = new Schema({
@@ -25,8 +24,8 @@ var schema = new Schema({
     type: String
   },
   currentLevel: {
-    type: Schema.Types.ObjectId,
-    ref: "Level"
+    type: String,
+    default: "1"
   },
   respawnPoint: {
     X: {
@@ -56,12 +55,9 @@ schema.methods.getTopTimes = function(level){
 
 // update user infos
 schema.methods.updateInfos = function(body){
-  var respawnPoint = {X: body.X, Y: body.Y, Z: body.Z, Angle: body.Angle};
-  return Level.findOne({name: body.currentLevel})
-  .then(level => {
-    level && this.set({currentLevel: level._id, respawnPoint});
-    return this.save();
-  });
+  var respawnPoint = {X: body.X || 0, Y: body.Y || 0, Z: body.Z || 0, Angle: body.Angle || 0};
+  this.set({currentLevel: body.currentLevel || "1", respawnPoint});
+  return this.save();
 };
 
 // sanitize userinfo

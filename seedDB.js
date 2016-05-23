@@ -8,6 +8,7 @@ mongoose.connect(DATABASE_URI,function(){
         /* Drop the DB */
         mongoose.connection.db.dropDatabase(function (err) {
           console.log('db dropped');
+/*
           var args = ['--db', 'unityportal', './dump/unityportal']
           var mongorestore = spawn('/usr/local/bin/mongorestore', args);
 
@@ -20,6 +21,7 @@ mongoose.connect(DATABASE_URI,function(){
           mongorestore.on('exit', function (code) {
             console.log('mongorestore exited with code ' + code);
           });
+*/
           //process.exit(0);
       })
 

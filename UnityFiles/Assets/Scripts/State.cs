@@ -11,20 +11,22 @@ public class State : MonoBehaviour {
 	public string currentLevel;
 	public JSONNode respawnPoint;
 	public string playerName;
-	string playerEmail;
 	public string playerid;
-//	public string url = "http://localhost:1337/";
-	public string url = "https://mysterious-cove-43800.herokuapp.com/";
+//	public string url = "https://mysterious-cove-43800.herokuapp.com/";
+	public string url;
 
 	JSONNode levels;
 
 	void Awake(){
+//		url = "http://localhost:1337/";
+		url = "https://mysterious-cove-43800.herokuapp.com/";
 		if (instance == null) {
 			instance = this;
 		} else if (instance != this) {
 			Destroy (gameObject);
 		}
 		DontDestroyOnLoad (gameObject);
+		Debug.Log (url);
 	}
 
 	public void LoadScene (string scene) {
@@ -35,7 +37,6 @@ public class State : MonoBehaviour {
 	public void StoreUser(JSONNode user) {
 		playerid = user ["_id"].Value;
 		playerName = user ["name"].Value;
-		playerEmail = user ["email"].Value;
 		StartCoroutine (GetUserInfo ());
 	}
 
@@ -68,6 +69,7 @@ public class State : MonoBehaviour {
 		form.AddField ("X", respawnPoint["X"].Value);
 		form.AddField ("Y", respawnPoint["Y"].Value);
 		form.AddField ("Z", respawnPoint["Z"].Value);
+		Debug.Log ("Saving user info with checkpoint X: " + respawnPoint["X"].Value);
 		form.AddField ("Angle", respawnPoint["Angle"].Value);
 		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/users/" + playerid, form)) {
 			yield return request.Send();
@@ -76,6 +78,7 @@ public class State : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
+				Debug.Log ("POSTED SVING USER INFO");
 				StartCoroutine (GetUserInfo ());
 			}
 		}
@@ -92,8 +95,9 @@ public class State : MonoBehaviour {
 			}
 			else {
 				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
-				currentLevel = CurrentUser ["currentLevel"] ["name"].Value;
+				currentLevel = CurrentUser ["currentLevel"].Value;
 				respawnPoint = CurrentUser ["respawnPoint"];
+				Debug.Log (currentLevel);
 				if (currentLevel == "") {
 					currentLevel = "1";
 				}
@@ -110,6 +114,7 @@ public class State : MonoBehaviour {
 		form.AddField ("level", currentLevel);
 		form.AddField ("time", score.ToString());
 		form.AddField ("player", playerid);
+		Debug.Log ("ABOUT TO POST!");
 		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/times/", form)) {
 			yield return request.Send();
 
@@ -117,7 +122,7 @@ public class State : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-			
+				Debug.Log ("MADE A POST!");
 			}
 		}
 	}
