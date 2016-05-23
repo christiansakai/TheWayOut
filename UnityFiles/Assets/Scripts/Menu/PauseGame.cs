@@ -11,7 +11,6 @@ public class PauseGame : MonoBehaviour {
 	}
 
 	void Update () {
-		Debug.Log (Cursor.visible);
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Pause ();
 		}
