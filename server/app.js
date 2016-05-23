@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 require("./authentication")(app);
-app.use((req, res, next) => (res.json("HELLO"), console.log("running"), next()));
+app.use((req, res, next) => (console.log("running"), next()));
 // api routes
 app.use("/api", require("./routes"));
 

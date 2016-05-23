@@ -31,7 +31,6 @@ public class LevelSelect : MonoBehaviour {
 		allTimeImage = allTimeButton.GetComponent<Image> ();
 		playerImage = playerButton.GetComponent<Image> ();
 		levelButton = GameObject.Find ("1").GetComponent<Button> ();
-		Debug.Log (levelButton);
 		levelName = GameObject.Find ("LevelName").GetComponent<Text> ();
 		Cursor.visible = true;
 		Cursor.lockState = CursorLockMode.None;
