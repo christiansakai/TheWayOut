@@ -25,4 +25,5 @@ app.use((err, req, res, next) => console.error(err, err.stack));
 
 app.listen(port, () => console.log("listening on port:", port));
 
+app.use(express.static(path.join(__dirname, "/deploy")));
 app.use("/deploy", (req, res, next) => res.sendFile(path.join(__dirname, "/deploy/index.html")));
