@@ -62,7 +62,7 @@ schema.methods.updateInfos = function(body){
 
 // sanitize userinfo
 schema.methods.sanitize = function () {
-    return _.omit(this.toJSON(), ['password', 'salt']);
+    return _.omit(this.toJSON(), ['password', 'salt', "email"]);
 };
 
 // hash the password with salt

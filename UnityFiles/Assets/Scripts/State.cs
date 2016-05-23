@@ -26,7 +26,6 @@ public class State : MonoBehaviour {
 			Destroy (gameObject);
 		}
 		DontDestroyOnLoad (gameObject);
-		Debug.Log (url);
 	}
 
 	public void LoadScene (string scene) {
@@ -69,7 +68,6 @@ public class State : MonoBehaviour {
 		form.AddField ("X", respawnPoint["X"].Value);
 		form.AddField ("Y", respawnPoint["Y"].Value);
 		form.AddField ("Z", respawnPoint["Z"].Value);
-		Debug.Log ("Saving user info with checkpoint X: " + respawnPoint["X"].Value);
 		form.AddField ("Angle", respawnPoint["Angle"].Value);
 		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/users/" + playerid, form)) {
 			yield return request.Send();
@@ -78,7 +76,6 @@ public class State : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-				Debug.Log ("POSTED SVING USER INFO");
 				StartCoroutine (GetUserInfo ());
 			}
 		}
@@ -97,7 +94,6 @@ public class State : MonoBehaviour {
 				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
 				currentLevel = CurrentUser ["currentLevel"].Value;
 				respawnPoint = CurrentUser ["respawnPoint"];
-				Debug.Log (currentLevel);
 				if (currentLevel == "") {
 					currentLevel = "1";
 				}
@@ -114,7 +110,6 @@ public class State : MonoBehaviour {
 		form.AddField ("level", currentLevel);
 		form.AddField ("time", score.ToString());
 		form.AddField ("player", playerid);
-		Debug.Log ("ABOUT TO POST!");
 		using (UnityWebRequest request = UnityWebRequest.Post (url + "api/times/", form)) {
 			yield return request.Send();
 
@@ -122,7 +117,6 @@ public class State : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-				Debug.Log ("MADE A POST!");
 			}
 		}
 	}
