@@ -52,7 +52,6 @@ public class Signup : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text)["user"];
 				state.Login (mail, pw);
 			}
 		}

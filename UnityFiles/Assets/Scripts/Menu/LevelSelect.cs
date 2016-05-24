@@ -8,7 +8,6 @@ using SimpleJSON;
 public class LevelSelect : MonoBehaviour {
 
 	State state;
-	HighScores highScore;
 	string level = "1";
 	string playerid;
 	public bool allTime = true;
@@ -84,6 +83,7 @@ public class LevelSelect : MonoBehaviour {
 		killTheKids (timeList);
 		for(int i = 0; i < list.Count; i++) {
 			JSONNode score = list [i];
+			Debug.Log (score);
 			GameObject name = new GameObject ();
 			GameObject time = new GameObject ();
 			name.transform.SetParent (nameList.transform);
@@ -94,6 +94,7 @@ public class LevelSelect : MonoBehaviour {
 			timeText.text = score["time"].Value;
 			nameText.font = timeText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 18);
 			nameText.horizontalOverflow = timeText.horizontalOverflow = HorizontalWrapMode.Overflow;
+			nameText.verticalOverflow = timeText.verticalOverflow = VerticalWrapMode.Overflow;
 			timeText.alignment = TextAnchor.UpperRight;
 		}
 	}
