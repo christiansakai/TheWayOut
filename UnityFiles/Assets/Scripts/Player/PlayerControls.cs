@@ -26,6 +26,7 @@ public class PlayerControls : MonoBehaviour {
 	float currXVel;
 	float currZVel;
 	float currentMag;
+	GameObject templight;
 
 	bool isPortaling = false;
 	bool isVertical = false;
@@ -41,15 +42,21 @@ public class PlayerControls : MonoBehaviour {
 
 	GameObject leftPortal;
 	GameObject rightPortal;
+	GameObject player;
+	PlayerHealth playerHealth;
 
 
 
 	// Use this for initialization
 	void Start () {
+//		templight = GameObject.FindGameObjectWithTag ("templight");
 		leftPortal = GameObject.Find ("LeftPortal");
 		rightPortal = GameObject.Find ("RightPortal");
 		characterController = GetComponent<CharacterController> ();
+		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
+		player = GameObject.Find ("Player");
+		playerHealth = player.GetComponent <PlayerHealth> ();
 	}
 	
 	// Update is called once per frame
@@ -64,6 +71,7 @@ public class PlayerControls : MonoBehaviour {
 
 		rotY = Mathf.Clamp (rotY, -clampLook, clampLook);
 		Camera.main.transform.localRotation = Quaternion.Euler (rotY, 0, 0);
+//		templight.transform.localRotation = Quaternion.Euler (rotY, 0, 0);
 
 		vertical = Input.GetAxis ("Vertical") * forwardSpeed;
 		horizontal = Input.GetAxis ("Horizontal") * forwardSpeed;
@@ -155,6 +163,10 @@ public class PlayerControls : MonoBehaviour {
 			if (colliderOn.tag == "GravityLift") {
 				isGrounded = false;
 				verticalVelocity = colliderOn.gameObject.GetComponent<GravityLift> ().liftForce;
+			}
+
+			if (colliderOn.tag == "Spikes") {
+				playerHealth.toKill ();
 			}
 
 			if (colliderOn.tag == "Platform") {

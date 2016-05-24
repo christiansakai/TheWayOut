@@ -18,7 +18,7 @@ module.exports = function (app) {
     // Our sessions will get stored in Mongo using the same connection from
     // mongoose. Check out the sessions collection in your MongoCLI.
     app.use(session({
-        secret: "Optimus Prime is my real dad", //app.getValue('env').SESSION_SECRET,
+        secret: process.env.NODE_ENV === "production" ? process.env.SESSION_SECRET : "Optimus Prime is my real dad", //app.getValue('env').SESSION_SECRET,
         store: new MongoStore({mongooseConnection: mongoose.connection}),
         resave: false,
         saveUninitialized: false
@@ -43,6 +43,14 @@ module.exports = function (app) {
     // We provide a simple GET /session in order to get session information directly.
     // This is used by the browser application (Angular) to determine if a user is
     // logged in already.
+    //
+		app.use(function(req, res, next) {
+			res.header("Access-Control-Allow-Origin", "*");
+			res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, X-Unity-Version, X-Access-Token, X-Application-Name, X-Request-Sent-Time");
+      res.header("Access-Control-Allow-Credentials", "true");
+      res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+			next();
+		});
     app.get('/session', function (req, res) {
         if (req.user) {
             res.send({ user: req.user.sanitize() });

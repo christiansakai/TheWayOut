@@ -93,7 +93,6 @@ public class PlayerController : MonoBehaviour {
 				Debug.Log(request.error);
 			}
 			else {
-				Debug.Log("Form upload complete!");
 			}
 		}
 	}

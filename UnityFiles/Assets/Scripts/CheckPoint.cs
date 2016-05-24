@@ -13,13 +13,12 @@ public class CheckPoint : MonoBehaviour {
 	private float enteredTime;
 	private float currentTime;
 	private Text currentMsg;
-	Transform Player;
+
 	void Start(){
 
 		currentMsg = GameObject.Find ("MessageCenter").GetComponent<Text>();
 		if (isCheckpoint) {
 			txtmessage = "Checkpoint!";
-			Player = GameObject.Find ("Player").transform;
 		}
 	}
 
@@ -39,25 +38,8 @@ public class CheckPoint : MonoBehaviour {
 			currentMsg.text = txtmessage;
 
 			if(isCheckpoint) {
-				
 				// also update the respawn position to this checkpoint position;
-				PlayerHealth.respawnPoint = transform.position;
-				PlayerHealth.respawnPointAngle = transform.eulerAngles;
-
-				// save all the player info at the checkpoint to PlayerPrefs;
-				//position
-//				PlayerPrefs.SetFloat ("x",Player.position.x);
-//				PlayerPrefs.SetFloat ("y",Player.position.y);
-//				PlayerPrefs.SetFloat ("z",Player.position.z);
-//				PlayerPrefs.SetFloat ("Cam_y", Player.eulerAngles.y);
-//				//health
-//				//		PlayerPrefs.SetInt ("currentHealth", PlayerHealth.currentHealth);
-//				//respawnPoint
-//				PlayerPrefs.SetFloat ("RPx", PlayerHealth.respawnPoint.x);
-//				PlayerPrefs.SetFloat ("RPy", PlayerHealth.respawnPoint.y);
-//				PlayerPrefs.SetFloat ("RPz", PlayerHealth.respawnPoint.z);
-//				PlayerPrefs.SetFloat ("RPA_y", PlayerHealth.respawnPointAngle.y);
-				// stamina
+				State.instance.SetRespawn(transform.position, transform.eulerAngles.y);
 			};
 
 			alreadyEntered = true;
