@@ -38,6 +38,7 @@ schema.statics.getTopTimes = function (level, player) {
   .sort({time: 1})
   .populate("player")
   .then(times => times.map(time => {
+      time.time = time.time.toFixed(3);
       time.player = time.player.sanitize();
       return time;
   }));

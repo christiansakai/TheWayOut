@@ -83,7 +83,6 @@ public class LevelSelect : MonoBehaviour {
 		killTheKids (timeList);
 		for(int i = 0; i < list.Count; i++) {
 			JSONNode score = list [i];
-			Debug.Log (score);
 			GameObject name = new GameObject ();
 			GameObject time = new GameObject ();
 			name.transform.SetParent (nameList.transform);
@@ -107,7 +106,8 @@ public class LevelSelect : MonoBehaviour {
 			if (request.isError) {
 				Debug.Log (request.error);
 			} else {
-				PlaceScores (JSON.Parse(request.downloadHandler.text));
+				JSONNode scores = JSON.Parse (request.downloadHandler.text);
+				PlaceScores (scores);
 			}
 		}
 	}

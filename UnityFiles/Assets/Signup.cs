@@ -18,11 +18,11 @@ public class Signup : MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.Tab)){
 			if (username.GetComponent<InputField> ().isFocused) {
-				password.GetComponent<InputField> ().Select ();
-			} else if (email.GetComponent<InputField> ().isFocused) {
-				username.GetComponent<InputField> ().Select ();
-			} else {
 				email.GetComponent<InputField> ().Select ();
+			} else if (email.GetComponent<InputField> ().isFocused) {
+				password.GetComponent<InputField> ().Select ();
+			} else {
+				username.GetComponent<InputField> ().Select ();
 			}
 		} else if (Input.GetKeyDown (KeyCode.Return)) {
 			PostSignup();
