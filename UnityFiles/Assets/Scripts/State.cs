@@ -12,7 +12,6 @@ public class State : MonoBehaviour {
 	public JSONNode respawnPoint;
 	public string playerName;
 	public string playerid;
-//	public string url = "https://mysterious-cove-43800.herokuapp.com/";
 	public string url;
 
 	JSONNode levels;

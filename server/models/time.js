@@ -34,7 +34,10 @@ schema.statics.getTopTimes = function (level, player) {
   var query = {};
   player && (query.player = player);
   level && (query.level = level);
-  return this.find(query).sort({time: 1}).populate("player");
+  return this.find(query)
+  .sort({time: 1})
+  .populate("player")
+  .then(times => times.map(time => (time.player.sanitize(), time)));
 };
 
 module.exports = mongoose.model("Time", schema);
