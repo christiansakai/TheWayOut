@@ -1,11 +1,10 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-var Level = mongoose.model("Level");
 
 var schema = new Schema({
   level: {
-    type: Schema.Types.ObjectId,
-    ref: "Level",
+    type: String,
+    default: "1",
     required: true
   },
   player: {
@@ -24,17 +23,25 @@ var schema = new Schema({
 });
 
 schema.statics.createTime = function(reqbody){
-    var self = this;
-    return Level.findOne({name: reqbody.level})
-    .then(level => {
-        return self.create({
-          "level":level._id,
-          "player":reqbody.player,
-          "time": reqbody.time
-        })
-    })
+		return this.create({
+			"level": reqbody.level,
+			"player":reqbody.player,
+			"time": reqbody.time
+    });
+};
 
-}
-
+schema.statics.getTopTimes = function (level, player) {
+  var query = {};
+  player && (query.player = player);
+  level && (query.level = level);
+  return this.find(query)
+  .sort({time: 1})
+  .populate("player")
+  .then(times => times.map(time => {
+      time.time = time.time.toFixed(3);
+      time.player = time.player.sanitize();
+      return time;
+  }));
+};
 
 module.exports = mongoose.model("Time", schema);

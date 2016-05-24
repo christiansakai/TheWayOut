@@ -7,15 +7,17 @@ public class menuScript : MonoBehaviour {
 	public Canvas quitMenu;
 	public Button startText;
 	public Button exitText;
-	public string Level1;
+
 	State state;
 
 	void Start () {
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
 		quitMenu = quitMenu.GetComponent<Canvas> ();
 		startText = startText.GetComponent<Button> ();
 		exitText = exitText.GetComponent<Button> ();
 		quitMenu.enabled = false;
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 	}
 	
 	public void ExitPress()
@@ -34,7 +36,7 @@ public class menuScript : MonoBehaviour {
 
 	public void StartLevel()
 	{
-		state.LoadScene (state.currentLevel);
+		state.LoadScene (state.currentLevel == "Menu" ? "1": state.currentLevel);
 	}
 
 	public void LoadScene(){

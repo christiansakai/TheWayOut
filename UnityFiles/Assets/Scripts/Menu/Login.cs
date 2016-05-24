@@ -11,7 +11,9 @@ public class Login : MonoBehaviour {
 	State state;
 
 	void Start () {
-		state = GameObject.Find ("GameState").GetComponent<State> ();
+		state = State.instance;
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 	}
 	
 	void Update () {
@@ -27,26 +29,11 @@ public class Login : MonoBehaviour {
 	}
 
 	public void LogInEnter(){
-		StartCoroutine(UserAuthentification());
+		state.Login(username.GetComponent<InputField> ().text,password.GetComponent<InputField> ().text);
 	}
 
-	IEnumerator UserAuthentification()
-	{
-		WWWForm form = new WWWForm();
-		form.AddField("email", username.GetComponent<InputField> ().text);
-		form.AddField("password", password.GetComponent<InputField> ().text);
-		using (UnityWebRequest request = UnityWebRequest.Post (state.url + "login", form)) {
-			yield return request.Send();
-
-			if(request.isError) {
-				Debug.Log(request.error);
-			}
-			else {
-				JSONNode CurrentUser = JSON.Parse(request.downloadHandler.text);
-				state.StoreUser (CurrentUser ["user"]);
-				state.LoadScene ("Menu");
-			}
-		}
+	public void SignupPage(){
+		state.LoadScene ("Signup");
 	}
 
 }
