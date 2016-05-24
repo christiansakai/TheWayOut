@@ -13,14 +13,12 @@ public class CheckPoint : MonoBehaviour {
 	private float enteredTime;
 	private float currentTime;
 	private Text currentMsg;
-	Transform Player;
 
 	void Start(){
 
 		currentMsg = GameObject.Find ("MessageCenter").GetComponent<Text>();
 		if (isCheckpoint) {
 			txtmessage = "Checkpoint!";
-			Player = GameObject.Find ("Player").transform;
 		}
 	}
 
@@ -42,8 +40,6 @@ public class CheckPoint : MonoBehaviour {
 			if(isCheckpoint) {
 				// also update the respawn position to this checkpoint position;
 				State.instance.SetRespawn(transform.position, transform.eulerAngles.y);
-//				PlayerHealth.respawnPoint = transform.position;
-//				PlayerHealth.respawnPointAngle = transform.eulerAngles;
 			};
 
 			alreadyEntered = true;

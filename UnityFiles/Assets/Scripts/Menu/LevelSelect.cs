@@ -8,7 +8,6 @@ using SimpleJSON;
 public class LevelSelect : MonoBehaviour {
 
 	State state;
-	HighScores highScore;
 	string level = "1";
 	string playerid;
 	public bool allTime = true;
@@ -94,6 +93,7 @@ public class LevelSelect : MonoBehaviour {
 			timeText.text = score["time"].Value;
 			nameText.font = timeText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 18);
 			nameText.horizontalOverflow = timeText.horizontalOverflow = HorizontalWrapMode.Overflow;
+			nameText.verticalOverflow = timeText.verticalOverflow = VerticalWrapMode.Overflow;
 			timeText.alignment = TextAnchor.UpperRight;
 		}
 	}
@@ -106,7 +106,8 @@ public class LevelSelect : MonoBehaviour {
 			if (request.isError) {
 				Debug.Log (request.error);
 			} else {
-				PlaceScores (JSON.Parse(request.downloadHandler.text));
+				JSONNode scores = JSON.Parse (request.downloadHandler.text);
+				PlaceScores (scores);
 			}
 		}
 	}

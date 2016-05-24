@@ -24,7 +24,7 @@ module.exports = require("express").Router()
 
 .get("/:id/:level",({user, params}, res, next) => {
   user.getTopTimes(params.level)
-  .then(times=> res.json(times))
+  .then(times => res.json(times))
   .catch(next);
 })
 

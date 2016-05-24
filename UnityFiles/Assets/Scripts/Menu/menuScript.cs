@@ -36,7 +36,7 @@ public class menuScript : MonoBehaviour {
 
 	public void StartLevel()
 	{
-		state.LoadScene (state.currentLevel);
+		state.LoadScene (state.currentLevel == "Menu" ? "1": state.currentLevel);
 	}
 
 	public void LoadScene(){
