@@ -73,7 +73,7 @@ public class LevelSelect : MonoBehaviour {
 	}
 
 	void killTheKids(GameObject parent) {
-		for (int i = parent.transform.childCount - 1; i >= 0; --i) {
+		for (int i = parent.transform.childCount - 1; i >= 1; --i) {
 			Destroy (parent.transform.GetChild (i).gameObject);
 		}
 	}
@@ -91,10 +91,10 @@ public class LevelSelect : MonoBehaviour {
 			Text timeText = time.AddComponent<Text> ();
 			nameText.text = score["player"]["name"].Value;
 			timeText.text = score["time"].Value;
-			nameText.font = timeText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 18);
+			nameText.font = timeText.font = UnityEngine.Font.CreateDynamicFontFromOSFont ("Arial", 24);
 			nameText.horizontalOverflow = timeText.horizontalOverflow = HorizontalWrapMode.Overflow;
 			nameText.verticalOverflow = timeText.verticalOverflow = VerticalWrapMode.Overflow;
-			timeText.alignment = TextAnchor.UpperRight;
+			timeText.alignment = TextAnchor.UpperLeft;
 		}
 	}
 
