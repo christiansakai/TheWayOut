@@ -40,6 +40,7 @@ public class menuScript : MonoBehaviour {
 	}
 
 	public void LoadScene(){
+		state.ResetRespawn ();
 		state.LoadScene ("LevelSelect");
 	}
 
