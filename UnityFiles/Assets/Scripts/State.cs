@@ -17,8 +17,8 @@ public class State : MonoBehaviour {
 	JSONNode levels;
 
 	void Awake(){
-		url = "http://localhost:1337/";
-//		url = "https://mysterious-cove-43800.herokuapp.com/";
+//		url = "http://localhost:1337/";
+		url = "https://mysterious-cove-43800.herokuapp.com/";
 		if (instance == null) {
 			instance = this;
 		} else if (instance != this) {
