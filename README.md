@@ -1,10 +1,11 @@
 # TheWayOut
 
-TheWayOut is a first-person, 3D, puzzle platformer game, trying to remake Portal.
+TheWayOut is a first-person, 3D, puzzle platformer game, based on the popular game Portal.
 
-Team member:
+Team members:
 Ari Levin
 Cindy Liu
 Immad Mohamed
 
-[Try playing here!](thewayout.space)
+Play Our Game Here!
+http://thewayout.space
